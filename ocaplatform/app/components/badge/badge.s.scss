@@ -1,0 +1,12 @@
+@import "../../styles/variable.scss";
+
+.badge {
+    background-color: $ghost-white;
+    color: $mid-gray;
+    width: fit-content;
+    padding: 2px 12px;
+    font-size: 12px;
+    border-radius: 15px;
+    gap: 4px;
+    margin-right: 4px;
+}
