@@ -111,6 +111,10 @@
             text-align: right;
           }
         }
+        &-active {
+          border-color:  $orange;
+          border-left-width: 5px;
+        }
       }
     }
     .job-detail {

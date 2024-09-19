@@ -131,7 +131,8 @@ const HomePage: React.FC = () => {
   const handleOnclick = () => {
     setState({ onClickApply: !state.onClickApply });
   };
-  const handleActiveCard = (index: number) => {
+  const handleActiveCard = (index: number, jobId: number) => {
+    console.log('test active', index)
     setState({ indexActive: index})
   }
 
@@ -212,6 +213,8 @@ const HomePage: React.FC = () => {
       setState({ listJob: [] });
     }
   };
+
+  
 
   useEffect(() => {
     getListState();
@@ -313,7 +316,7 @@ const HomePage: React.FC = () => {
                 index === state.indexActive && "job-card-active"
               )}
               key={index}
-              onClick={() => handleActiveCard(index)}
+              onClick={() => handleActiveCard(index, job.jobId)}
             >
               <div className="job-card-left">
                 <div className="job-title">
