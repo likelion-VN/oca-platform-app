@@ -19,7 +19,12 @@ import {
   workingOptions,
 } from "@/app/constants/selectOptions";
 import useMergeState from "@/app/utils/customHook/useMergeState";
-import { calculateDaysDiff, keyFormatter } from "@/app/utils/formatter";
+import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
+import {
+  calculateDaysDiff,
+  formatDate,
+  keyFormatter,
+} from "@/app/utils/formatter";
 import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
 import _ from "lodash";
@@ -32,75 +37,13 @@ import {
   UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
+import { ApiState, JobBody, JobDetail, RequestBody, StateOption } from "./home";
 import "./home.s.scss";
-
-interface RequestBody {
-  jobTitle?: string;
-  jobTypeId: number;
-  negotiable: boolean;
-  workplaceTypeId: number;
-  countryId: number;
-  searchOptionId: number;
-}
-
-interface Job {
-  jobId: number;
-  jobTitle: string;
-  companyName: string;
-  countryName: string;
-  stateName: string;
-  keywords: string;
-  negotiable: string;
-  postDateTime: string;
-  marked: boolean;
-  companyAvatarUrl: string;
-}
-
-interface JobBody {
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  content: Job[];
-  number: number;
-  sort: {
-    direction: string;
-    nullHandling: string;
-    ascending: boolean;
-    property: string;
-    ignoreCase: boolean;
-  }[];
-  pageable: {
-    offset: number;
-    sort: {
-      direction: string;
-      nullHandling: string;
-      ascending: boolean;
-      property: string;
-      ignoreCase: boolean;
-    }[];
-    unpaged: boolean;
-    paged: boolean;
-    pageNumber: number;
-    pageSize: number;
-  };
-  numberOfElements: number;
-  first: boolean;
-  last: boolean;
-  empty: boolean;
-}
-
-interface ApiState {
-  id: number;
-  name: string;
-}
-
-interface StateOption {
-  label: string;
-  value: string;
-}
 
 const HomePage: React.FC = () => {
   const divRef = useRef<HTMLDivElement>(null);
+  const topButtonRef = useRef<HTMLDivElement>(null);
+  const jobDetailRef = useRef<HTMLDivElement>(null);
 
   const [state, setState] = useMergeState({
     program: "O-CA Program",
@@ -114,6 +57,8 @@ const HomePage: React.FC = () => {
     pageSize: 10,
     jobs: undefined,
     indexActive: 0,
+    jobDetail: undefined,
+    showBottomButton: false,
   });
 
   const handleChangeProgram = (value: string) => {
@@ -131,10 +76,12 @@ const HomePage: React.FC = () => {
   const handleOnclick = () => {
     setState({ onClickApply: !state.onClickApply });
   };
-  const handleActiveCard = (index: number, jobId: number) => {
-    console.log('test active', index)
-    setState({ indexActive: index})
-  }
+
+  const scrollToTop = () => {
+    if (jobDetailRef.current) {
+      jobDetailRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const url = "https://be.oca.classlionvn.net/";
 
@@ -175,6 +122,21 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const fetchDetailJob = async (jobId: number): Promise<JobDetail | void> => {
+    try {
+      const response = await axios.get<JobDetail[]>(url + "jobs/" + jobId);
+      return response.data;
+    } catch (error) {
+      console.log("error", { error });
+    }
+  };
+
+  const handleActiveCard = async (index: number, jobId: number) => {
+    scrollToTop();
+    const dataDetail = await fetchDetailJob(jobId);
+    setState({ indexActive: index, jobDetail: dataDetail });
+  };
+
   const getListState = async () => {
     try {
       const states = await fetchListStates();
@@ -204,7 +166,12 @@ const HomePage: React.FC = () => {
         if (isLoadMore) {
           _.assign(newState, { listJob: data.content });
         } else {
-          _.assign(newState, { listJob: data.content, jobs: data });
+          const dataDetail = await fetchDetailJob(data.content[0].jobId);
+          _.assign(newState, {
+            listJob: data.content,
+            jobs: data,
+            jobDetail: dataDetail,
+          });
         }
       }
       setState(newState);
@@ -214,14 +181,12 @@ const HomePage: React.FC = () => {
     }
   };
 
-  
-
   useEffect(() => {
     getListState();
     getListJob();
   }, []);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     const handleScroll = () => {
       const div = divRef.current;
       if (div) {
@@ -242,6 +207,28 @@ const HomePage: React.FC = () => {
       }
     };
   }, []);
+
+  useUpdateEffect(() => {
+    const handleScroll = () => {
+      if (topButtonRef.current) {
+        const rect = topButtonRef.current.getBoundingClientRect();
+        if (rect.top < 0) {
+          setState({ showBottomButton: true}) 
+        } else {
+          setState({ showBottomButton: false}) 
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const { jobDetail } = state || {};
 
   return (
     <div className="home-page">
@@ -360,164 +347,178 @@ const HomePage: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="job-detail">
-          <div className="job-detail-name">
-            <Image
-              src={notificationIcon}
-              alt="notification-icon"
-              className="company-logo"
-            />
-            <div className="job-title">
-              <div className="title">
-                E-Commerce Fraud Prevention Internship – Summer 2025
-                <span className="title-sub">(Negotiable)</span>
-                <Tooltip
-                  className="tooltip"
-                  placement="bottom"
-                  title="This indicates that the company is willing to negotiate and adjust the job duties, working hours, duration, and location through discussion"
-                >
-                  <QuestionCircleOutlined
-                    style={{ fontSize: 16, color: "#0A5CD8" }}
-                  />
-                </Tooltip>
-              </div>
-              <div className="company-info">
-                <div className="company-info-name">LIKELION US</div>
-                <div className="company-info-state">
-                  <EnvironmentOutlined className="icon" />
-                  San Jose, CA
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="job-detail-action">
-            <ButtonComponent
-              className="application-btn"
-              title="Apply now"
-              onClick={handleOnclick}
-            />
-            <ButtonComponent
-              className="save-btn"
-              icon={
-                state.markSave ? (
-                  <BookmarkSimple size={24} weight="fill" color="#FF7710" />
-                ) : (
-                  <BookmarkSimple size={24} />
-                )
-              }
-              onClick={handleMarkSave}
-            />
-          </div>
-          <div className="job-detail-keys">
-            <Badge title="Product intern" />
-            <Badge title="Industry" />
-            <Badge title="English" />
-            <Badge title="Remote" />
-            <Badge title="Negotiable" />
-            <Badge title="Test" />
-          </div>
-          <div className="job-detail-about">
-            <div className="job-detail-title">About the job</div>
-            <div className="job-detail-content">
-              We are user-oriented and dedicated to technical excellence. We aim
-              to drive and lead the technology renovation in the ads tech and
-              creative industry, powering products and driving values for our
-              clients, creators, and the whole ecosystem. We are looking for
-              experienced product managers to continually push the innovation
-              bar and make our product the best place to get inspired and
-              express creativity.
-            </div>
-            <div className="job-detail-duration">
-              <div className="apply-duration">
-                <div className="apply-duration-icon">
-                  <Image src={CalendarDotIcon} alt="calendar-icon" />
-                </div>
-                <div className="apply-duration-detail">
-                  <div className="apply-duration-detail-title">
-                    Working period
-                  </div>
-                  <div className="apply-duration-detail-time">
-                    07/01/2024 - 08/31/2024
-                  </div>
-                </div>
-              </div>
-              <div className="apply-duration">
-                <div className="apply-duration-icon">
-                  <Clock size={24} />
-                </div>
-                <div className="apply-duration-detail">
-                  <div className="apply-duration-detail-title">
-                    Hours per week
-                  </div>
-                  <div className="apply-duration-detail-time">10 hours</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="job-detail-tasks">
-            <div className="job-detail-title">Tasks</div>
-            <div className="job-detail-content">
-              <ul>
-                <li>Basic Data Extraction and Organization</li>
-                <li>Meeting Minutes Compilation and Sharing</li>
-                <li>Training: Backend coding practise, review and revision</li>
-              </ul>
-            </div>
-          </div>
-          <div className="job-detail-qualify">
-            <div className="job-detail-title">Minimum Qualifications</div>
-            <div className="job-detail-content">
-              <ul>
-                <li>Basic Data Extraction and Organization</li>
-                <li>Meeting Minutes Compilation and Sharing</li>
-                <li>Training: Backend coding practise, review and revision</li>
-              </ul>
-            </div>
-          </div>
-          <div className="job-detail-company">
-            <div className="job-detail-company-intro">
-              <div className="job-detail-company-intro-left">
+        <div ref={jobDetailRef} className="job-detail">
+          {!_.isEmpty(jobDetail) && (
+            <>
+              <div className="job-detail-name">
                 <Image
                   src={notificationIcon}
                   alt="notification-icon"
-                  className="company-logo-intro"
+                  className="company-logo"
                 />
-                <div className="company-info">
-                  <div className="company-info-name">LIKELION US</div>
-                  <div className="company-info-detail">
-                    <div className="company-info-detail-state">
-                      <MapPin className="icon" size={18} />
-                      <span>San Jose, CA</span>
+                <div className="job-title">
+                  <div className="title">
+                    {jobDetail.title}
+                    {jobDetail.negotiable && (
+                      <span className="title-sub">(Negotiable)</span>
+                    )}
+                    <Tooltip
+                      className="tooltip"
+                      placement="bottom"
+                      title="This indicates that the company is willing to negotiate and adjust the job duties, working hours, duration, and location through discussion"
+                    >
+                      <QuestionCircleOutlined
+                        style={{ fontSize: 16, color: "#0A5CD8" }}
+                      />
+                    </Tooltip>
+                  </div>
+                  <div className="company-info">
+                    <div className="company-info-name">
+                      {jobDetail.company.name}
                     </div>
-                    <div className="company-info-detail-employ">
-                      <UsersFour className="icon" size={18} />
-                      10-50 employees
+                    <div className="company-info-state">
+                      <EnvironmentOutlined className="icon" />
+                      {_.compact([
+                        jobDetail.location.country,
+                        jobDetail.location.state,
+                      ]).join(", ")}
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="job-detail-company-intro-right">
+              <div ref={topButtonRef} className="job-detail-action">
                 <ButtonComponent
-                  title="View company"
-                  icon={<ExportOutlined />}
-                  className="view-btn"
-                  iconPosition="end"
-                  type="link"
+                  className="application-btn"
+                  title="Apply now"
+                  onClick={handleOnclick}
+                />
+                <ButtonComponent
+                  className="save-btn"
+                  icon={
+                    state.markSave ? (
+                      <BookmarkSimple size={24} weight="fill" color="#FF7710" />
+                    ) : (
+                      <BookmarkSimple size={24} />
+                    )
+                  }
+                  onClick={handleMarkSave}
                 />
               </div>
-            </div>
-            <div className="job-detail-company-overview">
-              <div className="job-detail-title">Company overview</div>
-              <div className="job-detail-content">
-                LIKELION is a student-run Tech Entrepreneurship Community that
-                helps students solve real-world problems and develop their ideas
-                into competitive products using programming. With our
-                beginner-friendly program, learn to code, build experiences, and
-                connect with a network of diverse individuals to achieve your
-                goals.
+              <div className="job-detail-keys">
+                {_.map(jobDetail.keywords, (keyword) => (
+                  <Badge title={keyword.name} />
+                ))}
               </div>
-            </div>
-          </div>
+              <div className="job-detail-about">
+                <div className="job-detail-title">About the job</div>
+                <div className="job-detail-content">
+                  {jobDetail.description}
+                </div>
+                <div className="job-detail-duration">
+                  <div className="apply-duration">
+                    <div className="apply-duration-icon">
+                      <Image src={CalendarDotIcon} alt="calendar-icon" />
+                    </div>
+                    <div className="apply-duration-detail">
+                      <div className="apply-duration-detail-title">
+                        Working period
+                      </div>
+                      <div className="apply-duration-detail-time">
+                        {`${formatDate(jobDetail.workStart)} - ${formatDate(
+                          jobDetail.workEnd
+                        )}`}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="apply-duration">
+                    <div className="apply-duration-icon">
+                      <Clock size={24} />
+                    </div>
+                    <div className="apply-duration-detail">
+                      <div className="apply-duration-detail-title">
+                        Hours per week
+                      </div>
+                      <div className="apply-duration-detail-time">
+                        {`${jobDetail.hoursPerWeek} hours`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="job-detail-tasks">
+                <div className="job-detail-title">Tasks</div>
+                <div className="job-detail-content">
+                  <ul>
+                    {!_.isEmpty(jobDetail.tasks) ? (
+                      _.map(jobDetail.tasks, (task) => <li>{task}</li>)
+                    ) : (
+                      <li>No description</li>
+                    )}
+                  </ul>
+                </div>
+              </div>
+              <div className="job-detail-qualify">
+                <div className="job-detail-title">Minimum Qualifications</div>
+                <div className="job-detail-content">
+                  <ul>
+                    {!_.isEmpty(jobDetail.qualifications) ? (
+                      _.map(jobDetail.qualifications, (qualification) => (
+                        <li>{qualification}</li>
+                      ))
+                    ) : (
+                      <li>No description</li>
+                    )}
+                  </ul>
+                </div>
+              </div>
+              <div className="job-detail-company">
+                <div className="job-detail-company-intro">
+                  <div className="job-detail-company-intro-left">
+                    <Image
+                      src={notificationIcon}
+                      alt="notification-icon"
+                      className="company-logo-intro"
+                    />
+                    <div className="company-info">
+                      <div className="company-info-name">
+                        {jobDetail.company.name}
+                      </div>
+                      <div className="company-info-detail">
+                        <div className="company-info-detail-state">
+                          <MapPin className="icon" size={18} />
+                          <span>
+                            {_.compact([
+                              jobDetail.location.country,
+                              jobDetail.location.state,
+                            ]).join(", ")}
+                          </span>
+                        </div>
+                        <div className="company-info-detail-employ">
+                          <UsersFour className="icon" size={18} />
+                          {jobDetail.company.companySize}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="job-detail-company-intro-right">
+                    <ButtonComponent
+                      title="View company"
+                      icon={<ExportOutlined />}
+                      className="view-btn"
+                      iconPosition="end"
+                      type="link"
+                    />
+                  </div>
+                </div>
+                <div className="job-detail-company-overview">
+                  <div className="job-detail-title">Company overview</div>
+                  <div className="job-detail-content">
+                    {jobDetail.company.companyOverview}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

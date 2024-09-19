@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import "./badge.s.scss";
 
@@ -11,7 +12,7 @@ const Badge: React.FC<IPropsBadge> = ({
   title,
 }) => {
   return (
-    <span className="badge">
+    <span className={classNames("badge", className)}>
         {title}
     </span>
   );
