@@ -4,15 +4,13 @@ import { CaretDown } from "phosphor-react";
 import "./selectOption.s.scss";
 
 interface IPropsSelectOption {
-  defaultValue: string;
-  options: {
-    value: string;
-    label: string;
-  }[];
+  defaultValue?: string;
+  options: React.ReactNode[];
   onChange: (value: string) => void;
   minWidth: number;
   allowClear?: boolean;
   suffixIcon?: React.ReactNode | null;
+  placeholder?: React.ReactNode;
 }
 
 const SelectOption: React.FC<IPropsSelectOption> = ({
@@ -21,7 +19,8 @@ const SelectOption: React.FC<IPropsSelectOption> = ({
   onChange,
   minWidth,
   allowClear = false,
-  suffixIcon = <CaretDown color="#0F172A"/>
+  suffixIcon = <CaretDown color="#0F172A"/>,
+  placeholder,
 }) => {
   return (
     <Select
@@ -31,6 +30,7 @@ const SelectOption: React.FC<IPropsSelectOption> = ({
       onChange={onChange}
       options={options}
       suffixIcon={suffixIcon}
+      placeholder={placeholder}
     />
   );
 };

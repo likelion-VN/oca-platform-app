@@ -8,6 +8,7 @@ interface IPropsButton {
   title?: string;
   iconPosition?: "start" | "end";
   type?: "default" | "link" | "primary";
+  size?: "large" | "middle" | "small";
 }
 
 const ButtonComponent: React.FC<IPropsButton> = ({
@@ -16,10 +17,18 @@ const ButtonComponent: React.FC<IPropsButton> = ({
   className,
   title,
   iconPosition,
-  type = "default"
+  type = "default",
+  size = "middle",
 }) => {
   return (
-    <Button className={className} icon={icon} onClick={onClick} iconPosition={iconPosition} type={type}>
+    <Button
+      className={className}
+      icon={icon}
+      onClick={onClick}
+      iconPosition={iconPosition}
+      type={type}
+      size={size}
+    >
       {title}
     </Button>
   );

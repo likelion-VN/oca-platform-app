@@ -7,7 +7,7 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Button, Input, Space, Tooltip } from "antd";
+import { Button, Select, Space, Tooltip } from "antd";
 
 import { CalendarDotIcon, notificationIcon } from "@/app/assets/svg";
 import Badge from "@/app/components/badge/badge";
@@ -46,6 +46,8 @@ const HomePage: React.FC = () => {
   const jobDetailRef = useRef<HTMLDivElement>(null);
 
   const [state, setState] = useMergeState({
+    searchState: "",
+    searchJob: "",
     program: "O-CA Program",
     salary: "nonnegotiable",
     working: "remote",
@@ -76,10 +78,19 @@ const HomePage: React.FC = () => {
   const handleOnclick = () => {
     setState({ onClickApply: !state.onClickApply });
   };
+  const onChangeJob = (value: string) => {
+    setState({ searchJob: value });
+  };
+  const onChangeState = (value: string) => {
+    setState({ searchState: value });
+  };
+  const onSearch = () => {
+    console.log('test search');
+  }
 
   const scrollToTop = () => {
     if (jobDetailRef.current) {
-      jobDetailRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      jobDetailRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -213,18 +224,18 @@ const HomePage: React.FC = () => {
       if (topButtonRef.current) {
         const rect = topButtonRef.current.getBoundingClientRect();
         if (rect.top < 0) {
-          setState({ showBottomButton: true}) 
+          setState({ showBottomButton: true });
         } else {
-          setState({ showBottomButton: false}) 
+          setState({ showBottomButton: false });
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     handleScroll();
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -233,28 +244,53 @@ const HomePage: React.FC = () => {
   return (
     <div className="home-page">
       <div className="search">
-        <Space.Compact>
-          <Input
-            className="input-experience"
-            style={{ width: "50%" }}
-            placeholder="Find your perfect experience"
-            prefix={<SearchOutlined />}
-          />
-          <SelectOption
-            allowClear
-            minWidth={350}
-            options={state.listState}
-            suffixIcon={null}
-          />
-          {/* <Input
-            className="input-state"
-            style={{ width: "50%" }}
-            placeholder="City, state"
-            prefix={<EnvironmentOutlined />}
-            addonAfter={<SelectOption options={listState} />}
-          /> */}
-          <ButtonComponent title="Search" type="primary" />
-        </Space.Compact>
+        <Select
+          showSearch
+          allowClear
+          className="select-custom"
+          style={{ width: 350, fontWeight: 400 }}
+          suffixIcon={null}
+          onChange={onChangeJob}
+          size="large"
+          placeholder={
+            <>
+              <SearchOutlined
+                style={{ marginRight: 6, color: "#0F172A" }}
+              />
+              Find your perfect experience
+            </>
+          }
+        >
+          {_.map(state.listState, (state) => (
+            <Select.Option value={state.value}>
+              <SearchOutlined style={{ marginRight: 6 }} /> {state.label}
+            </Select.Option>
+          ))}
+        </Select>
+        <Select
+          showSearch
+          allowClear
+          className="select-custom"
+          style={{ width: 350, fontWeight: 400 }}
+          suffixIcon={null}
+          onChange={onChangeState}
+          size="large"
+          placeholder={
+            <>
+              <EnvironmentOutlined
+                style={{ marginRight: 6, color: "#0F172A" }}
+              />
+              City, state
+            </>
+          }
+        >
+          {_.map(state.listState, (state) => (
+            <Select.Option value={state.value}>
+              <EnvironmentOutlined style={{ marginRight: 6 }} /> {state.label}
+            </Select.Option>
+          ))}
+        </Select>
+        <ButtonComponent className="search-btn" title="Search" type="primary" size="large" onClick={onSearch} />
       </div>
       <div className="filter">
         <div className="filter-left">
@@ -291,9 +327,9 @@ const HomePage: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="count-jobs">
+      {/* <div className="count-jobs">
         <strong>50 Product intern</strong> jobs in United State
-      </div>
+      </div> */}
       <div className="jobs">
         <div ref={divRef} className="job-list">
           {_.map(state.listJob, (job, index) => (

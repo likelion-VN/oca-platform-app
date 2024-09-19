@@ -7,15 +7,26 @@
   .search {
     display: flex;
     justify-content: center;
-    .ant-space-compact {
-      width: 736px;
-      
+    column-gap: 4px;
+    .ant-select-selector {
+      background-color: $white-smokes;
+    }
+    .ant-select-selection-item {
+      font-weight: 400;
+    }
+    &-btn {
+      background-color: $orange !important;
+          color: $white-smokes;
+      border-radius: 4px;
+      &:hover {
+        background: $orange;
+      }
     }
   }
   .filter {
     display: flex;
     justify-content: space-between;
-    margin-top: 32px;
+    margin: 32px 0 20px 0;
     &-right {
       .ant-btn {
         font-family: "Inter";
@@ -32,7 +43,7 @@
   }
   .count-jobs {
     font-size: 12px;
-    margin: 20px 0 16px 0;
+    margin-bottom: 16px;
   }
   .jobs {
     display: grid;
@@ -187,7 +198,7 @@
         margin-top: 16px;
         .application-btn {
           flex: 1;
-          background-color: $orange;
+          background-color: $orange !important;
           color: $white-smokes;
           height: 40px;
         }
