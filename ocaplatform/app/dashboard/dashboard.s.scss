@@ -1,0 +1,15 @@
+@import "../styles/variable.scss";
+
+.content {
+    display: flex;
+    .nav-bar {
+        height: calc(100vh - 65px);
+        border-inline-end: 1px solid $neutral !important;
+    }
+    &-detail {
+        width: 100%;
+        height: calc(100vh - 89px);
+        padding: 24px;
+        padding-bottom: 0;
+    }
+}
