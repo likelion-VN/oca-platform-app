@@ -63,8 +63,9 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
           script: |
             docker pull 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/nextjs-app-container:latest
-            docker stop $CONTAINER_NAME || true
-            docker rm $CONTAINER_NAME || true
+            docker stop nextjs-app-container || true
+            docker rm nextjs-app-container || true
             docker run -d -p 80:3000 --name $$CONTAINER_NAME 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/nextjs-app-container:latest
