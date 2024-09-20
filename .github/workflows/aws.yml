@@ -53,6 +53,7 @@ jobs:
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          echo "image=$IMAGE_NAME" >> $GITHUB_OUTPUT
 
   deploy:
     runs-on: ubuntu-latest
@@ -66,9 +67,11 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: 22
         script: |
-          IMAGE_NAME="${{ env.IMAGE_NAME }}"
+          IMAGE_NAME="${{ needs.build.outputs.image }}"
           CONTAINER_NAME="${{ env.CONTAINER_NAME }}"
+          if [ $(docker ps -q -f name=$CONTAINER_NAME) ]; then
+            docker stop $CONTAINER_NAME
+            docker rm $CONTAINER_NAME
+          fi
           docker pull $IMAGE_NAME
-          docker stop $CONTAINER_NAME || true
-          docker rm $CONTAINER_NAME || true
           docker run -d -p 80:3000 --name $CONTAINER_NAME $IMAGE_NAME
