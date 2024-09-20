@@ -37,7 +37,7 @@ import {
   UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
-import { ApiState, JobBody, JobDetail, RequestBody, StateOption } from "./home";
+import { ApiState, JobBody, JobDetail, RequestBody, StateOption } from "./home.d";
 import "./home.s.scss";
 
 const HomePage: React.FC = () => {
@@ -135,14 +135,14 @@ const HomePage: React.FC = () => {
 
   const fetchDetailJob = async (jobId: number): Promise<JobDetail | void> => {
     try {
-      const response = await axios.get<JobDetail[]>(url + "jobs/" + jobId);
+      const response = await axios.get<JobDetail>(url + "jobs/" + jobId);
       return response.data;
     } catch (error) {
       console.log("error", { error });
     }
   };
 
-  const handleActiveCard = async (index: number, jobId: number) => {
+  const handleActiveCard = async (index: string, jobId: number) => {
     scrollToTop();
     const dataDetail = await fetchDetailJob(jobId);
     setState({ indexActive: index, jobDetail: dataDetail });
@@ -543,6 +543,7 @@ const HomePage: React.FC = () => {
                       className="view-btn"
                       iconPosition="end"
                       type="link"
+                      onClick={onSearch}
                     />
                   </div>
                 </div>

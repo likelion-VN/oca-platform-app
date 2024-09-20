@@ -1,11 +1,12 @@
 import { Select } from "antd";
 
+import { BaseOptionType } from "antd/es/select";
 import { CaretDown } from "phosphor-react";
 import "./selectOption.s.scss";
 
 interface IPropsSelectOption {
   defaultValue?: string;
-  options: React.ReactNode[];
+  options: BaseOptionType[];
   onChange: (value: string) => void;
   minWidth: number;
   allowClear?: boolean;

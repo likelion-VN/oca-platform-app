@@ -1,4 +1,4 @@
-# Sử dụng Node.js phiên bản 18 (LTS)
+# Sử dụng Node.js phiên bản 20 (LTS)
 FROM node:20.17.0-alpine
 
 # Thiết lập thư mục làm việc

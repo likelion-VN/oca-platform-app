@@ -1,0 +1,22 @@
+@import "../styles/variable.scss";
+
+.background {
+    
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    border-bottom: 1px solid $neutral;
+    img {
+        margin-left: 56px;
+    }
+}
+
+.content {
+    background-image: url("../assets/png/background-login.png");
+    background-size: cover;
+    background-position: center;
+    height: calc(100vh - 65px);
+}
