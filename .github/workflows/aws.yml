@@ -5,6 +5,11 @@ on:
     branches:
       - develop
 
+env:
+  AWS_REGION: ap-southeast-1
+  ECR_REPOSITORY: temp-oca-fe
+  CONTAINER_NAME: nextjs-app-container  # Đặt tên container tại đây
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,35 +21,37 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Thay đổi nếu bạn sử dụng phiên bản khác
+          node-version: '18'
 
       - name: Install dependencies
-        working-directory: ocaplatform  # Thay đổi đường dẫn đến thư mục ocaplatform
+        working-directory: ocaplatform
         run: npm install
 
       - name: Build application
-        working-directory: ocaplatform  # Thay đổi đường dẫn đến thư mục ocaplatform
+        working-directory: ocaplatform
         run: npm run build
-
-      - name: Build Docker image
-        working-directory: ocaplatform  # Thay đổi đường dẫn đến thư mục ocaplatform
-        run: |
-          docker build -t my-nextjs-app .
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Thay thế với secret của bạn
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Thay thế với secret của bạn
-          aws-region: ap-southeast-1  # Khu vực của bạn
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Log in to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Tag and push Docker image
+      - name: Build, tag, and push Docker image to Amazon ECR
+        id: build-and-push
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        working-directory: ocaplatform
         run: |
-          docker tag my-nextjs-app:latest 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/my-nextjs-app:latest
-          docker push 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/my-nextjs-app:latest
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,7 +65,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/my-nextjs-app:latest
-            docker stop my-nextjs-app || true
-            docker rm my-nextjs-app || true
-            docker run -d -p 80:3000 --name my-nextjs-app 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/my-nextjs-app:latest
+            docker pull ${{ steps.build-and-push.outputs.image }}
+            docker stop ${{ env.CONTAINER_NAME }} || true
+            docker rm ${{ env.CONTAINER_NAME }} || true
+            docker run -d -p 80:3000 --name ${{ env.CONTAINER_NAME }} ${{ steps.build-and-push.outputs.image }}
