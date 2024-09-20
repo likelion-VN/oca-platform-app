@@ -31,10 +31,14 @@ jobs:
         run: |
           docker build -t my-nextjs-app .
 
-      - name: Log in to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          region: ap-southeast-1
+      - name: Login to AWS ECR
+        run: |
+          aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com
+
+      # - name: Log in to Amazon ECR
+      #   uses: aws-actions/amazon-ecr-login@v1
+      #   with:
+      #     region: ap-southeast-1
 
       - name: Tag and push Docker image
         run: |
