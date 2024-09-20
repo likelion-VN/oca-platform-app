@@ -56,16 +56,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
       - name: SSH to EC2 and deploy
-        run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@18.141.191.239 << 'EOF'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/nextjs-app-container:latest
             docker stop $CONTAINER_NAME || true
             docker rm $CONTAINER_NAME || true
-            docker run -d -p 80:3000 --name $$CONTAINER_NAME 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/nextjs-app-container:latest || true
-          EOF
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            docker run -d -p 80:3000 --name $$CONTAINER_NAME 121942292331.dkr.ecr.ap-southeast-1.amazonaws.com/nextjs-app-container:latest
