@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Thay đổi nếu bạn sử dụng phiên bản khác
+          node-version: '18'  # Thay đổi nếu bạn sử dụng phiên bản khác
 
       - name: Install dependencies
         working-directory: ocaplatform  # Thay đổi đường dẫn đến thư mục ocaplatform
