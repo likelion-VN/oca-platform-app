@@ -1,22 +1,78 @@
 @import "../styles/variable.scss";
 
 .background {
-    
-}
-
-.header {
+  background-image: url("../assets/png/background-login.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  .header {
     display: flex;
     align-items: center;
     height: 64px;
     border-bottom: 1px solid $neutral;
+    background-color: $white;
     img {
-        margin-left: 56px;
+      margin-left: 56px;
     }
-}
+  }
 
-.content {
-    background-image: url("../assets/png/background-login.png");
-    background-size: cover;
-    background-position: center;
-    height: calc(100vh - 65px);
+  .login {
+    font-family: "Inter";
+    width: 410px;
+    text-align: center;
+    margin-top: 10vh;
+    margin-left: 8%;
+    &-title {
+      font-weight: 700;
+      font-size: 38px;
+      line-height: 48px;
+    }
+    &-subtitle {
+      color: $grey;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      margin-top: 8px;
+    }
+    &-linkedin {
+      margin-top: 32px;
+      border-radius: 4px;
+      width: 100%;
+      height: 56px;
+      font-size: 14px;
+      font-weight: 600;
+      background: $neutral-primary !important;
+      color: $white;
+    }
+    &-space {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 17px 0;
+      &::before,
+      &::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid $light-grey;
+      }
+      span {
+        font-size: 14px;
+        padding: 0 21px;
+      }
+    }
+    &-google {
+        border-radius: 4px;
+        width: 100%;
+        height: 56px;
+        font-size: 14px;
+      font-weight: 600;
+    }
+    &-policy {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      margin-top: 32px;
+    }
+  }
 }

@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Select, Space, Tooltip } from "antd";
 
-import { CalendarDotIcon, notificationIcon } from "@/app/assets/svg";
+import { CalendarDotIcon, NotificationIcon } from "@/app/assets/svg";
 import Badge from "@/app/components/badge/badge";
 import ButtonComponent from "@/app/components/button/button";
 import SelectOption from "@/app/components/selectOption/selectOption";
@@ -95,6 +95,25 @@ const HomePage: React.FC = () => {
   };
 
   const url = "https://be.oca.classlionvn.net/";
+
+  // const fetchAvatarImage = async (avatarUrl: string) => {
+  //   try {
+  //     const avatarId = _.last(_.split(avatarUrl, '/'));
+  //     const response = await axios.get(url + 'avatars/' + avatarId,
+  //       {
+  //         headers: {
+  //           'accept': 'image/png',
+  //         },
+  //         responseType: 'blob',
+  //       }
+  //     );
+  //     const imageBlobUrl = URL.createObjectURL(response.data);
+  //     return imageBlobUrl;
+  //   } catch (error) {
+  //     console.error('Error fetching image:', error);
+  //     return null;
+  //   }
+  // };
 
   const fetchListJob = async (
     page: number,
@@ -353,7 +372,7 @@ const HomePage: React.FC = () => {
                 <div className="company">
                   <Image
                     // src={job.companyAvatarUrl}
-                    src={notificationIcon}
+                    src={NotificationIcon}
                     alt="notification-icon"
                     className="company-logo"
                   />
@@ -388,7 +407,7 @@ const HomePage: React.FC = () => {
             <>
               <div className="job-detail-name">
                 <Image
-                  src={notificationIcon}
+                  src={NotificationIcon}
                   alt="notification-icon"
                   className="company-logo"
                 />
@@ -511,7 +530,7 @@ const HomePage: React.FC = () => {
                 <div className="job-detail-company-intro">
                   <div className="job-detail-company-intro-left">
                     <Image
-                      src={notificationIcon}
+                      src={NotificationIcon}
                       alt="notification-icon"
                       className="company-logo-intro"
                     />

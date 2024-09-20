@@ -1,6 +1,6 @@
 "use client";
 
-import { Logo, notificationIcon } from "@/app/assets/svg";
+import { Logo, NotificationIcon } from "@/app/assets/svg";
 import { MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 import Image from "next/image";
@@ -26,7 +26,7 @@ const Header: React.FC<IPropsHeader> = ({ toggleCollapsed }) => {
         </div>
         <div className="header-right">
           <Image
-            src={notificationIcon}
+            src={NotificationIcon}
             alt="notification-icon"
             className="notification-icon"
           />

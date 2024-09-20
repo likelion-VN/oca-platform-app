@@ -9,6 +9,7 @@ interface IPropsButton {
   iconPosition?: "start" | "end";
   type?: "default" | "link" | "primary";
   size?: "large" | "middle" | "small";
+  disabled?: boolean;
 }
 
 const ButtonComponent: React.FC<IPropsButton> = ({
@@ -19,6 +20,7 @@ const ButtonComponent: React.FC<IPropsButton> = ({
   iconPosition,
   type = "default",
   size = "middle",
+  disabled = false,
 }) => {
   return (
     <Button
@@ -28,6 +30,7 @@ const ButtonComponent: React.FC<IPropsButton> = ({
       iconPosition={iconPosition}
       type={type}
       size={size}
+      disabled={disabled}
     >
       {title}
     </Button>
