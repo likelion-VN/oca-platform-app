@@ -371,8 +371,7 @@ const HomePage: React.FC = () => {
                 </div>
                 <div className="company">
                   <Image
-                    // src={job.companyAvatarUrl}
-                    src={NotificationIcon}
+                    src={job.companyAvatarUrl}
                     alt="notification-icon"
                     className="company-logo"
                   />
