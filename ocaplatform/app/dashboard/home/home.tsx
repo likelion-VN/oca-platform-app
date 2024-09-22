@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
@@ -18,6 +19,11 @@ import {
   salaryOptions,
   workingOptions,
 } from "@/app/constants/selectOptions";
+import {
+  fetchDetailJob,
+  fetchListJob,
+  fetchListStates,
+} from "@/app/services/home";
 import useMergeState from "@/app/utils/customHook/useMergeState";
 import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
 import {
@@ -25,7 +31,6 @@ import {
   formatDate,
   keyFormatter,
 } from "@/app/utils/formatter";
-import axios, { AxiosResponse } from "axios";
 import classNames from "classnames";
 import _ from "lodash";
 import Image from "next/image";
@@ -37,7 +42,7 @@ import {
   UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
-import { ApiState, JobBody, JobDetail, RequestBody, StateOption } from "./home.d";
+import { RequestHomePageBody } from "../../interface/home";
 import "./home.s.scss";
 
 const HomePage: React.FC = () => {
@@ -61,6 +66,8 @@ const HomePage: React.FC = () => {
     indexActive: 0,
     jobDetail: undefined,
     showBottomButton: false,
+    hasShadowTop: false,
+    hasShadowBottom: true,
   });
 
   const handleChangeProgram = (value: string) => {
@@ -85,79 +92,12 @@ const HomePage: React.FC = () => {
     setState({ searchState: value });
   };
   const onSearch = () => {
-    console.log('test search');
-  }
+    console.log("test search");
+  };
 
   const scrollToTop = () => {
     if (jobDetailRef.current) {
       jobDetailRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const url = "https://be.oca.classlionvn.net/";
-
-  // const fetchAvatarImage = async (avatarUrl: string) => {
-  //   try {
-  //     const avatarId = _.last(_.split(avatarUrl, '/'));
-  //     const response = await axios.get(url + 'avatars/' + avatarId,
-  //       {
-  //         headers: {
-  //           'accept': 'image/png',
-  //         },
-  //         responseType: 'blob',
-  //       }
-  //     );
-  //     const imageBlobUrl = URL.createObjectURL(response.data);
-  //     return imageBlobUrl;
-  //   } catch (error) {
-  //     console.error('Error fetching image:', error);
-  //     return null;
-  //   }
-  // };
-
-  const fetchListJob = async (
-    page: number,
-    pageSize: number,
-    requestBody: RequestBody
-  ): Promise<JobBody | void> => {
-    try {
-      const response: AxiosResponse<JobBody> = await axios.post(
-        url + "jobs?page=" + page + "&size=" + pageSize,
-        {
-          ...requestBody,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Có lỗi xảy ra:", error);
-    }
-  };
-
-  const fetchListStates = async (): Promise<StateOption[]> => {
-    try {
-      const response = await axios.get<ApiState[]>(url + "countries/1/states");
-      const mappedStates = _.map(response.data, (state) => ({
-        label: state.name,
-        value: state.name,
-      }));
-      return mappedStates;
-    } catch (error) {
-      console.error("Error fetching", error);
-      return [];
-    }
-  };
-
-  const fetchDetailJob = async (jobId: number): Promise<JobDetail | void> => {
-    try {
-      const response = await axios.get<JobDetail>(url + "jobs/" + jobId);
-      return response.data;
-    } catch (error) {
-      console.log("error", { error });
     }
   };
 
@@ -180,7 +120,7 @@ const HomePage: React.FC = () => {
 
   const getListJob = async (isLoadMore: boolean = false) => {
     try {
-      const filter: RequestBody = {
+      const filter: RequestHomePageBody = {
         jobTitle: "",
         jobTypeId: 1,
         negotiable: true,
@@ -218,22 +158,33 @@ const HomePage: React.FC = () => {
 
   useUpdateEffect(() => {
     const handleScroll = () => {
-      const div = divRef.current;
-      if (div) {
-        if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+      const element = divRef.current;
+      if (element) {
+        if (element.scrollTop + element.clientHeight >= element.scrollHeight) {
           getListJob(true);
         }
+        const isAtTop = element.scrollTop === 0;
+        const isAtBottom =
+          element.scrollHeight - element.scrollTop <= element.clientHeight;
+
+        setState({
+          hasShadowTop: !isAtTop && element.scrollTop > 0,
+          hasShadowBottom:
+            !isAtBottom && element.scrollHeight > element.clientHeight,
+        });
       }
     };
 
-    const div = divRef.current;
-    if (div) {
-      div.addEventListener("scroll", handleScroll);
+    const element = divRef.current;
+    if (element) {
+      element.addEventListener("scroll", handleScroll);
     }
 
+    handleScroll();
+
     return () => {
-      if (div) {
-        div.removeEventListener("scroll", handleScroll);
+      if (element) {
+        element.removeEventListener("scroll", handleScroll);
       }
     };
   }, []);
@@ -273,9 +224,7 @@ const HomePage: React.FC = () => {
           size="large"
           placeholder={
             <>
-              <SearchOutlined
-                style={{ marginRight: 6, color: "#0F172A" }}
-              />
+              <SearchOutlined style={{ marginRight: 6, color: "#0F172A" }} />
               Find your perfect experience
             </>
           }
@@ -309,7 +258,13 @@ const HomePage: React.FC = () => {
             </Select.Option>
           ))}
         </Select>
-        <ButtonComponent className="search-btn" title="Search" type="primary" size="large" onClick={onSearch} />
+        <ButtonComponent
+          className="search-btn"
+          title="Search"
+          type="primary"
+          size="large"
+          onClick={onSearch}
+        />
       </div>
       <div className="filter">
         <div className="filter-left">
@@ -350,7 +305,17 @@ const HomePage: React.FC = () => {
         <strong>50 Product intern</strong> jobs in United State
       </div> */}
       <div className="jobs">
-        <div ref={divRef} className="job-list">
+        <div
+          ref={divRef}
+          className={classNames(
+            "job-list",
+            state.hasShadowTop && state.hasShadowBottom
+              ? "shadow-top-bottom"
+              : state.hasShadowTop
+              ? "shadow-top"
+              : "shadow-bottom"
+          )}
+        >
           {_.map(state.listJob, (job, index) => (
             <div
               className={classNames(
@@ -371,10 +336,11 @@ const HomePage: React.FC = () => {
                 </div>
                 <div className="company">
                   <Image
-                    // src={job.companyAvatarUrl}
-                    src={NotificationIcon}
+                    src={job.companyAvatarUrl}
                     alt="notification-icon"
                     className="company-logo"
+                    width={40}
+                    height={40}
                   />
                   <div className="company-info">
                     <div className="company-info-name">{job.companyName}</div>

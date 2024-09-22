@@ -1,4 +1,4 @@
-export interface RequestBody {
+export interface RequestHomePageBody {
   jobTitle?: string;
   jobTypeId: number;
   negotiable: boolean;
@@ -53,7 +53,7 @@ export interface JobBody {
   empty: boolean;
 }
 
-export interface ApiState {
+export interface State {
   id: number;
   name: string;
 }
