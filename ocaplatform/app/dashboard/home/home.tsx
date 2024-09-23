@@ -166,7 +166,6 @@ const HomePage: React.FC = () => {
         const isAtTop = element.scrollTop === 0;
         const isAtBottom =
           element.scrollHeight - element.scrollTop <= element.clientHeight;
-
         setState({
           hasShadowTop: !isAtTop && element.scrollTop > 0,
           hasShadowBottom:
