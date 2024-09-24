@@ -1,20 +1,19 @@
-const positionOptions = [{ value: "people", label: "People" }];
-
-const ocaProgramOptions = [
-  { value: "internship", label: "Internship" },
-  { value: "fulltime", label: "Full-time" },
-  { value: "parttime", label: "Part-time" },
+const JobTypeOptions = [
+  { value: 1, label: "Internship" },
+  { value: 2, label: "Full-time", isDisabled: true },
+  { value: 3, label: "Part-time", isDisabled: true },
 ];
 
-const salaryOptions = [
-  { value: "nonnegotiable", label: "Nonnegotiable" },
+const ApplicationTermsOptions = [
+  { value: "nonnegotiable", label: "Non-negotiable" },
   { value: "negotiable", label: "Negotiable" },
 ];
 
-const workingOptions = [
-  { value: "remote", label: "Remote" },
-  { value: "hybrid", label: "Hybrid" },
-  { value: "onsite", label: "Onsite" },
+const WorkTypeOptions = [
+  { value: 1, label: "Remote" },
+  { value: 2, label: "Hybrid" },
+  { value: 3, label: "Onsite" },
 ];
 
-export { ocaProgramOptions, positionOptions, salaryOptions, workingOptions };
+export { ApplicationTermsOptions, JobTypeOptions, WorkTypeOptions };
+

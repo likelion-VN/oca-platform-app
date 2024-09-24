@@ -8,21 +8,22 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Button, Select, Space, Tooltip } from "antd";
+import { AutoComplete, Button, Input, Space, Tooltip } from "antd";
 
-import { CalendarDotIcon, NotificationIcon } from "@/app/assets/svg";
+import { CalendarDotIcon } from "@/app/assets/svg";
 import Badge from "@/app/components/badge/badge";
 import ButtonComponent from "@/app/components/button/button";
-import SelectOption from "@/app/components/selectOption/selectOption";
+import SelectCustom from "@/app/components/selectCustom/selectCustom";
 import {
-  ocaProgramOptions,
-  salaryOptions,
-  workingOptions,
+  ApplicationTermsOptions,
+  JobTypeOptions,
+  WorkTypeOptions,
 } from "@/app/constants/selectOptions";
 import {
+  fetchAutoComplete,
   fetchDetailJob,
   fetchListJob,
-  fetchListStates,
+  fetchListLocation,
 } from "@/app/services/home";
 import useMergeState from "@/app/utils/customHook/useMergeState";
 import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
@@ -42,20 +43,35 @@ import {
   UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
-import { RequestHomePageBody } from "../../interface/home";
+import { Option, RequestHomePageBody } from "../../interface/home";
 import "./home.s.scss";
 
 const HomePage: React.FC = () => {
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
+  const filter = useRef<RequestHomePageBody>({
+    jobTitle: "",
+    jobTypeId: 0,
+    negotiable: null,
+    workplaceTypeIds: [],
+    cityId: 0,
+    stateId: 0,
+    countryId: 1,
+    searchOptionId: 0,
+  });
 
   const [state, setState] = useMergeState({
-    searchState: "",
     searchJob: "",
-    program: "O-CA Program",
-    salary: "nonnegotiable",
-    working: "remote",
+    listAutoComplete: [],
+    searchLocation: "",
+    listLocation: [],
+    jobType: [],
+    valueJobType: null,
+    application: null,
+    valueApplication: null,
+    workType: [],
+    valueWorkType: null,
     listJob: [],
     listState: [],
     markSave: false,
@@ -70,48 +86,57 @@ const HomePage: React.FC = () => {
     hasShadowBottom: true,
   });
 
-  const handleChangeProgram = (value: string) => {
-    setState({ program: value });
-  };
-  const handleChangeSalary = (value: string) => {
-    setState({ salary: value });
-  };
-  const handleChangeWorking = (value: string) => {
-    setState({ working: value });
-  };
-  const handleMarkSave = () => {
-    setState({ markSave: !state.markSave });
-  };
-  const handleOnclick = () => {
-    setState({ onClickApply: !state.onClickApply });
-  };
-  const onChangeJob = (value: string) => {
-    setState({ searchJob: value });
-  };
-  const onChangeState = (value: string) => {
-    setState({ searchState: value });
-  };
-  const onSearch = () => {
-    console.log("test search");
+  const renderValue = (
+    values: (string | number)[],
+    options: { value: string | number; label: string }[]
+  ) => {
+    const selectedOptions = !_.isEmpty(values)
+      ? options.filter((option) => values.includes(option.value))
+      : [];
+
+    if (selectedOptions.length === 0) return;
+
+    if (selectedOptions.length === 1) return selectedOptions[0].label;
+
+    const firstOption = selectedOptions[0].label;
+    const moreCount = selectedOptions.length - 1;
+
+    return `${firstOption} + ${moreCount} more`;
   };
 
-  const scrollToTop = () => {
-    if (jobDetailRef.current) {
-      jobDetailRef.current.scrollTo({ top: 0, behavior: "smooth" });
+  const getListAutoComplete = async (text: string) => {
+    try {
+      const autoCompletes = await fetchAutoComplete(text, 0, 6);
+      if (!_.isEmpty(autoCompletes)) {
+        const listAutoComplete = _.map(autoCompletes, (item) => ({
+          value: item.value,
+          label: (
+            <>
+              <SearchOutlined style={{ marginRight: 6 }} /> {item.label}
+            </>
+          ),
+        }));
+        setState({ listAutoComplete });
+      }
+    } catch (error) {
+      console.error("error");
     }
   };
 
-  const handleActiveCard = async (index: string, jobId: number) => {
-    scrollToTop();
-    const dataDetail = await fetchDetailJob(jobId);
-    setState({ indexActive: index, jobDetail: dataDetail });
-  };
-
-  const getListState = async () => {
+  const getListLocation = async (text: string) => {
     try {
-      const states = await fetchListStates();
-      if (!_.isEmpty(states)) {
-        setState({ listState: states });
+      const locations = await fetchListLocation(text, 0, 6);
+      if (!_.isEmpty(locations)) {
+        const listLocation = _.map(locations, (item) => ({
+          id: item.id,
+          value: item.value,
+          label: (
+            <>
+              <EnvironmentOutlined style={{ marginRight: 6 }} /> {item.label}
+            </>
+          ),
+        }));
+        setState({ listLocation });
       }
     } catch (error) {
       console.error("error");
@@ -120,17 +145,9 @@ const HomePage: React.FC = () => {
 
   const getListJob = async (isLoadMore: boolean = false) => {
     try {
-      const filter: RequestHomePageBody = {
-        jobTitle: "",
-        jobTypeId: 1,
-        negotiable: true,
-        workplaceTypeId: 1,
-        countryId: 1,
-        searchOptionId: 0,
-      };
       const { page, pageSize } = state;
       const newPage = isLoadMore ? page + 1 : page;
-      const data = await fetchListJob(0, pageSize * newPage, filter);
+      const data = await fetchListJob(0, pageSize * newPage, filter.current);
       const newState = { page: newPage };
       if (data && !_.isEmpty(data.content)) {
         if (isLoadMore) {
@@ -151,8 +168,73 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const handleChangeJobType = (values: string[]) => {
+    setState({
+      jobType: values,
+      valueJobType: renderValue(values, JobTypeOptions),
+    });
+  };
+
+  const handleChangeApplication = (value: string | null) => {
+    setState({
+      application: value,
+      valueApplication:
+        ApplicationTermsOptions.find((option) => option.value === value)
+          ?.label || "Application Terms",
+    });
+  };
+
+  const handleChangeWorkType = (values: string[]) => {
+    setState({
+      workType: values,
+      valueWorkType: renderValue(values, WorkTypeOptions),
+    });
+  };
+
+  const handleMarkSave = () => {
+    setState({ markSave: !state.markSave });
+  };
+
+  const handleOnclick = () => {
+    setState({ onClickApply: !state.onClickApply });
+  };
+
+  const onChangeJob = (value: string) => {
+    setState({ searchJob: value });
+  };
+
+  const onChangeLocation = (value: string, option: Option) => {
+    setState({ searchLocation: option.id });
+  };
+
+  const onSearch = () => {
+    const { searchJob, searchLocation } = state;
+    const cityId = searchLocation[0] | 0;
+    const stateId = searchLocation[1] | 0;
+    const clonedFilter = _.cloneDeep(filter.current);
+    const newFilter = {
+      ...clonedFilter,
+      jobTitle: searchJob,
+      cityId,
+      stateId,
+    };
+    filter.current = newFilter;
+    getListJob()
+  };
+
+  const scrollToTop = () => {
+    if (jobDetailRef.current) {
+      jobDetailRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleActiveCard = async (index: string, jobId: number) => {
+    scrollToTop();
+    const dataDetail = await fetchDetailJob(jobId);
+    setState({ indexActive: index, jobDetail: dataDetail });
+  };
+
   useEffect(() => {
-    getListState();
     getListJob();
   }, []);
 
@@ -208,55 +290,61 @@ const HomePage: React.FC = () => {
     };
   }, []);
 
+  useUpdateEffect(() => {
+    const { jobType, application, workType } = state;
+    const clonedFilter = _.cloneDeep(filter.current);
+    const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
+    const negotiable = !!application ? application === "negotiable" : null;
+    const workplaceTypeIds = !_.isEmpty(workType) ? workType : [];
+    const newFilter = {
+      ...clonedFilter,
+      jobTypeId,
+      negotiable,
+      workplaceTypeIds,
+    };
+    filter.current = newFilter;
+    getListJob();
+  }, [state.jobType, state.application, state.workType]);
+
   const { jobDetail } = state || {};
 
   return (
     <div className="home-page">
       <div className="search">
-        <Select
-          showSearch
-          allowClear
-          className="select-custom"
+        <AutoComplete
+          className="auto-completed-custom"
           style={{ width: 350, fontWeight: 400 }}
-          suffixIcon={null}
+          onSearch={(text) => getListAutoComplete(text)}
           onChange={onChangeJob}
-          size="large"
-          placeholder={
-            <>
-              <SearchOutlined style={{ marginRight: 6, color: "#0F172A" }} />
-              Find your perfect experience
-            </>
-          }
+          options={state.listAutoComplete}
         >
-          {_.map(state.listState, (state) => (
-            <Select.Option value={state.value}>
-              <SearchOutlined style={{ marginRight: 6 }} /> {state.label}
-            </Select.Option>
-          ))}
-        </Select>
-        <Select
-          showSearch
-          allowClear
-          className="select-custom"
+          <Input
+            allowClear
+            size="large"
+            placeholder="Find your perfect experience"
+            prefix={
+              <SearchOutlined style={{ marginRight: 6, color: "#0F172A" }} />
+            }
+          />
+        </AutoComplete>
+        <AutoComplete
+          className="auto-completed-custom"
           style={{ width: 350, fontWeight: 400 }}
-          suffixIcon={null}
-          onChange={onChangeState}
-          size="large"
-          placeholder={
-            <>
+          onSearch={(text) => getListLocation(text)}
+          onChange={onChangeLocation}
+          options={state.listLocation}
+        >
+          <Input
+            allowClear
+            size="large"
+            placeholder="City, state"
+            prefix={
               <EnvironmentOutlined
                 style={{ marginRight: 6, color: "#0F172A" }}
               />
-              City, state
-            </>
-          }
-        >
-          {_.map(state.listState, (state) => (
-            <Select.Option value={state.value}>
-              <EnvironmentOutlined style={{ marginRight: 6 }} /> {state.label}
-            </Select.Option>
-          ))}
-        </Select>
+            }
+          />
+        </AutoComplete>
         <ButtonComponent
           className="search-btn"
           title="Search"
@@ -268,29 +356,26 @@ const HomePage: React.FC = () => {
       <div className="filter">
         <div className="filter-left">
           <Space wrap>
-            {/* <SelectOption
-              defaultValue={position}
-              options={positionOptions}
-              onChange={handleChangePosition}
-              minWidth={105}
-            /> */}
-            <SelectOption
-              defaultValue={state.program}
-              options={ocaProgramOptions}
-              onChange={handleChangeProgram}
-              minWidth={150}
+            <SelectCustom
+              value={state.valueJobType}
+              placeholder="O-CA Program"
+              options={JobTypeOptions}
+              onChange={handleChangeJobType}
+              type="checkbox"
             />
-            <SelectOption
-              defaultValue={state.salary}
-              options={salaryOptions}
-              onChange={handleChangeSalary}
-              minWidth={150}
+            <SelectCustom
+              value={state.valueApplication}
+              placeholder="Application Terms"
+              options={ApplicationTermsOptions}
+              onChangeRadio={handleChangeApplication}
+              type="radio"
             />
-            <SelectOption
-              defaultValue={state.working}
-              options={workingOptions}
-              onChange={handleChangeWorking}
-              minWidth={100}
+            <SelectCustom
+              value={state.valueWorkType}
+              placeholder="Work Type"
+              options={WorkTypeOptions}
+              onChange={handleChangeWorkType}
+              type="checkbox"
             />
           </Space>
         </div>
@@ -355,9 +440,9 @@ const HomePage: React.FC = () => {
               <div className="job-card-right">
                 <div className="job-mark">
                   {job.marked ? (
-                    <BookmarkSimple size={20} />
-                  ) : (
                     <BookmarkSimple size={20} color="#FF7710" weight="fill" />
+                  ) : (
+                    <BookmarkSimple size={20} />
                   )}
                 </div>
                 <div className="update-time">
@@ -372,9 +457,11 @@ const HomePage: React.FC = () => {
             <>
               <div className="job-detail-name">
                 <Image
-                  src={NotificationIcon}
+                  src={jobDetail.company.companyAvatarUrl}
                   alt="notification-icon"
                   className="company-logo"
+                  width={84}
+                  height={84}
                 />
                 <div className="job-title">
                   <div className="title">
@@ -470,7 +557,9 @@ const HomePage: React.FC = () => {
                 <div className="job-detail-content">
                   <ul>
                     {!_.isEmpty(jobDetail.tasks) ? (
-                      _.map(jobDetail.tasks, (task) => <li>{task}</li>)
+                      _.map(jobDetail.tasks, (task) => (
+                        <li>{task.description}</li>
+                      ))
                     ) : (
                       <li>No description</li>
                     )}
@@ -483,7 +572,7 @@ const HomePage: React.FC = () => {
                   <ul>
                     {!_.isEmpty(jobDetail.qualifications) ? (
                       _.map(jobDetail.qualifications, (qualification) => (
-                        <li>{qualification}</li>
+                        <li>{qualification.description}</li>
                       ))
                     ) : (
                       <li>No description</li>
@@ -495,9 +584,11 @@ const HomePage: React.FC = () => {
                 <div className="job-detail-company-intro">
                   <div className="job-detail-company-intro-left">
                     <Image
-                      src={NotificationIcon}
+                      src={jobDetail.company.companyAvatarUrl}
                       alt="notification-icon"
                       className="company-logo-intro"
+                      height={64}
+                      width={64}
                     />
                     <div className="company-info">
                       <div className="company-info-name">

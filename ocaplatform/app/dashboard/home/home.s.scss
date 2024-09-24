@@ -8,8 +8,16 @@
     display: flex;
     justify-content: center;
     column-gap: 4px;
-    .ant-select-selector {
+    .ant-input-affix-wrapper {
       background-color: $white-smokes;
+      border-radius: 4px;
+      height: 40px;
+      .ant-input {
+        font-family: "Inter";
+        font-weight: 400;
+        line-height: 20px;
+        font-size: 14px;
+      }
     }
     .ant-select-selection-item {
       font-weight: 400;
@@ -27,6 +35,20 @@
     display: flex;
     justify-content: space-between;
     margin: 32px 0 20px 0;
+    &-left {
+      .ant-select-selector {
+        border-radius: 4px;
+      }
+      .ant-select-selection-placeholder {
+        color: $neutral-primary !important;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "Inter";
+      }
+      .ant-select-selection-item {
+        font-weight: 600;
+      }
+    }
     &-right {
       .ant-btn {
         font-family: "Inter";
@@ -67,7 +89,7 @@
         box-shadow: inset 0 15px 15px -10px rgba(0, 0, 0, 0.2);
         transition: box-shadow 0.3s ease;
       }
-      
+
       &.shadow-bottom {
         box-shadow: inset 0 -15px 15px -10px rgba(0, 0, 0, 0.2);
         transition: box-shadow 0.3s ease;

@@ -1,8 +1,10 @@
 export interface RequestHomePageBody {
   jobTitle?: string;
   jobTypeId: number;
-  negotiable: boolean;
-  workplaceTypeId: number;
+  negotiable: boolean | null;
+  workplaceTypeIds: number[];
+  cityId: number;
+  stateId: number;
   countryId: number;
   searchOptionId: number;
 }
@@ -20,46 +22,49 @@ export interface Job {
   companyAvatarUrl: string;
 }
 
+interface Sort {
+  direction: string;
+  nullHandling: string;
+  ascending: boolean;
+  property: string;
+  ignoreCase: boolean;
+}
+
+interface Pageable {
+  offset: number;
+  sort: Sort[];
+  unpaged: boolean;
+  paged: boolean;
+  pageNumber: number;
+  pageSize: number;
+}
+
 export interface JobBody {
   totalElements: number;
   totalPages: number;
   size: number;
   content: Job[];
   number: number;
-  sort: {
-    direction: string;
-    nullHandling: string;
-    ascending: boolean;
-    property: string;
-    ignoreCase: boolean;
-  }[];
-  pageable: {
-    offset: number;
-    sort: {
-      direction: string;
-      nullHandling: string;
-      ascending: boolean;
-      property: string;
-      ignoreCase: boolean;
-    }[];
-    unpaged: boolean;
-    paged: boolean;
-    pageNumber: number;
-    pageSize: number;
-  };
+  sort: Sort[];
+  pageable: Pageable;
   numberOfElements: number;
   first: boolean;
   last: boolean;
   empty: boolean;
 }
 
-export interface State {
-  id: number;
-  name: string;
+export interface City {
+  countryId: number;
+  country: string;
+  stateId: number;
+  state: string;
+  cityId: number;
+  city: string;
 }
 
-export interface StateOption {
-  label: string;
+export interface Option {
+  id?: number | number[];
+  label: React.ReactNode;
   value: string;
 }
 
@@ -101,4 +106,30 @@ export interface JobDetail {
     id: number;
     description: string;
   }[];
+}
+
+export interface AutoCompletedBody {
+  totalPages: number;
+  size: number;
+  content: { name: string }[];
+  number: number;
+  sort: Sort[];
+  pageable: Pageable;
+  numberOfElements: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
+
+export interface LocationBody {
+  totalPages: number;
+  size: number;
+  content: City[];
+  number: number;
+  sort: Sort[];
+  pageable: Pageable;
+  numberOfElements: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
 }

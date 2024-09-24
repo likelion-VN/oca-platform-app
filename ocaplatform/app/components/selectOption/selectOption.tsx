@@ -27,7 +27,7 @@ const SelectOption: React.FC<IPropsSelectOption> = ({
     <Select
       allowClear={allowClear}
       defaultValue={defaultValue}
-      style={{ width: minWidth }}
+      style={{ minWidth: minWidth }}
       onChange={onChange}
       options={options}
       suffixIcon={suffixIcon}
