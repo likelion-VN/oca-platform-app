@@ -35,6 +35,7 @@ import {
 import classNames from "classnames";
 import _ from "lodash";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   BookmarkSimple,
   Clock,
@@ -47,6 +48,7 @@ import { RequestHomePageBody } from "../../interface/home";
 import "./home.s.scss";
 
 const HomePage: React.FC = () => {
+  const router = useRouter();
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
@@ -75,7 +77,6 @@ const HomePage: React.FC = () => {
     listJob: [],
     listState: [],
     markSave: false,
-    onClickApply: false,
     page: 1,
     pageSize: 10,
     jobs: undefined,
@@ -160,15 +161,15 @@ const HomePage: React.FC = () => {
             jobDetail: dataDetail,
           });
         }
+      } else {
+        setState({ listJob: [], jobDetail: {} });
       }
       setState(newState);
     } catch (error) {
       console.log("error", { error });
-      setState({ listJob: [] });
+      setState({ listJob: [], jobDetail: {} });
     }
   };
-
-  console.log('test', state.listJob)
 
   const handleChangeJobType = (values: string[]) => {
     setState({
@@ -198,7 +199,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleOnclick = () => {
-    setState({ onClickApply: !state.onClickApply });
+    router.push("./application-form");
   };
 
   const onChangeJob = (value: string) => {
@@ -221,7 +222,7 @@ const HomePage: React.FC = () => {
       stateId,
     };
     filter.current = newFilter;
-    getListJob()
+    getListJob();
   };
 
   const scrollToTop = () => {
@@ -395,11 +396,13 @@ const HomePage: React.FC = () => {
           ref={divRef}
           className={classNames(
             "job-list",
-            state.hasShadowTop && state.hasShadowBottom
-              ? "shadow-top-bottom"
-              : state.hasShadowTop
-              ? "shadow-top"
-              : "shadow-bottom"
+            !_.isEmpty(state.listJob) && state.listJob.length > 4
+              ? state.hasShadowTop && state.hasShadowBottom
+                ? "shadow-top-bottom"
+                : state.hasShadowTop
+                ? "shadow-top"
+                : "shadow-bottom"
+              : ""
           )}
         >
           {_.map(state.listJob, (job, index) => (
