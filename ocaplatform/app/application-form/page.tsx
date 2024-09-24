@@ -7,7 +7,7 @@ import "./application-form.s.scss";
 
 const ApplicationForm = () => {
   const [state, setState] = useMergeState({
-    activeType: null,
+    checked: false,
     isOpenConfirm: false,
   });
   const onCreateAccount = () => {
@@ -26,6 +26,18 @@ const ApplicationForm = () => {
           icon={<ArrowLeft size={24}/>}
           iconPosition="start"
         />
+      </div>
+      <div className="content">
+        <div className="switch-component switch-background">
+            <div className="switch-item">
+                <div className="switch-item-index">1</div>
+                <div className="switch-item-title">Negotiable</div>
+            </div>
+            <div className="switch-item active">
+                <div className="switch-item-index">2</div>
+                <div className="switch-item-title">Resume</div>
+            </div>
+        </div>
       </div>
     </div>
   );

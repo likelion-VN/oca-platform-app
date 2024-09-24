@@ -8,7 +8,7 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { AutoComplete, Button, Input, Space, Tooltip } from "antd";
+import { AutoComplete, Button, Input, Skeleton, Space, Tooltip } from "antd";
 
 import { CalendarDotIcon } from "@/app/assets/svg";
 import Badge from "@/app/components/badge/badge";
@@ -66,7 +66,7 @@ const HomePage: React.FC = () => {
   const [state, setState] = useMergeState({
     searchJob: "",
     listAutoComplete: [],
-    searchLocation: "",
+    searchLocation: [],
     listLocation: [],
     jobType: [],
     valueJobType: null,
@@ -85,6 +85,8 @@ const HomePage: React.FC = () => {
     showBottomButton: false,
     hasShadowTop: false,
     hasShadowBottom: true,
+    isLoadingList: false,
+    isLoadingDetail: false,
   });
 
   const renderValue = (
@@ -145,6 +147,7 @@ const HomePage: React.FC = () => {
   };
 
   const getListJob = async (isLoadMore: boolean = false) => {
+    setState({ isLoadingList: true, isLoadingDetail: true });
     try {
       const { page, pageSize } = state;
       const newPage = isLoadMore ? page + 1 : page;
@@ -159,15 +162,22 @@ const HomePage: React.FC = () => {
             listJob: data.content,
             jobs: data,
             jobDetail: dataDetail,
+            isLoadingDetail: false,
           });
         }
       } else {
-        setState({ listJob: [], jobDetail: {} });
+        _.assign(newState, { listJob: [], jobDetail: {} });
       }
+      _.assign(newState, { isLoadingList: false });
       setState(newState);
     } catch (error) {
       console.log("error", { error });
-      setState({ listJob: [], jobDetail: {} });
+      setState({
+        listJob: [],
+        jobDetail: {},
+        isLoadingList: false,
+        isLoadingDetail: false,
+      });
     }
   };
 
@@ -212,8 +222,8 @@ const HomePage: React.FC = () => {
 
   const onSearch = () => {
     const { searchJob, searchLocation } = state;
-    const cityId = searchLocation[0] | 0;
-    const stateId = searchLocation[1] | 0;
+    const cityId = searchLocation?.[0] | 0;
+    const stateId = searchLocation?.[1] | 0;
     const clonedFilter = _.cloneDeep(filter.current);
     const newFilter = {
       ...clonedFilter,
@@ -232,9 +242,14 @@ const HomePage: React.FC = () => {
   };
 
   const handleActiveCard = async (index: string, jobId: number) => {
+    setState({ isLoadingDetail: true });
     scrollToTop();
     const dataDetail = await fetchDetailJob(jobId);
-    setState({ indexActive: index, jobDetail: dataDetail });
+    setState({
+      indexActive: index,
+      jobDetail: dataDetail,
+      isLoadingDetail: false,
+    });
   };
 
   useEffect(() => {
@@ -405,236 +420,254 @@ const HomePage: React.FC = () => {
               : ""
           )}
         >
-          {_.map(state.listJob, (job, index) => (
-            <div
-              className={classNames(
-                "job-card",
-                index === state.indexActive && "job-card-active"
-              )}
-              key={index}
-              onClick={() => handleActiveCard(index, job.jobId)}
-            >
-              <div className="job-card-left">
-                <div className="job-title">
-                  <div className="title">
-                    {job.jobTitle}
-                    {job.negotiable && (
-                      <span className="title-sub">(Negotiable)</span>
+          {state.isLoadingList ? (
+             _.map(new Array(5), (item, index) => (
+              <div className="job-card" key={index}>
+                  <Skeleton active title={false} paragraph={{ rows: 3 }} />
+                </div>
+            ))
+          ) : (
+            _.map(state.listJob, (job, index) => (
+              <div
+                className={classNames(
+                  "job-card",
+                  index === state.indexActive && "job-card-active"
+                )}
+                key={index}
+                onClick={() => handleActiveCard(index, job.jobId)}
+              >
+                <div className="job-card-left">
+                  <div className="job-title">
+                    <div className="title">
+                      {job.jobTitle}
+                      {job.negotiable && (
+                        <span className="title-sub">(Negotiable)</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="company">
+                    <Image
+                      src={job.companyAvatarUrl}
+                      alt="notification-icon"
+                      className="company-logo"
+                      width={40}
+                      height={40}
+                    />
+                    <div className="company-info">
+                      <div className="company-info-name">{job.companyName}</div>
+                      <div className="company-info-state">
+                        {job.countryName}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="job-keys">
+                    {_.map(keyFormatter(job.keywords), (keyword) => (
+                      <Badge title={keyword} />
+                    ))}
+                  </div>
+                </div>
+                <div className="job-card-right">
+                  <div className="job-mark">
+                    {job.marked ? (
+                      <BookmarkSimple size={20} color="#FF7710" weight="fill" />
+                    ) : (
+                      <BookmarkSimple size={20} />
                     )}
                   </div>
-                </div>
-                <div className="company">
-                  <Image
-                    src={job.companyAvatarUrl}
-                    alt="notification-icon"
-                    className="company-logo"
-                    width={40}
-                    height={40}
-                  />
-                  <div className="company-info">
-                    <div className="company-info-name">{job.companyName}</div>
-                    <div className="company-info-state">{job.countryName}</div>
+                  <div className="update-time">
+                    {calculateDaysDiff(job.postDateTime)}
                   </div>
                 </div>
-                <div className="job-keys">
-                  {_.map(keyFormatter(job.keywords), (keyword) => (
-                    <Badge title={keyword} />
-                  ))}
-                </div>
               </div>
-              <div className="job-card-right">
-                <div className="job-mark">
-                  {job.marked ? (
-                    <BookmarkSimple size={20} color="#FF7710" weight="fill" />
-                  ) : (
-                    <BookmarkSimple size={20} />
-                  )}
-                </div>
-                <div className="update-time">
-                  {calculateDaysDiff(job.postDateTime)}
-                </div>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
         <div ref={jobDetailRef} className="job-detail">
-          {!_.isEmpty(jobDetail) && (
-            <>
-              <div className="job-detail-name">
-                <Image
-                  src={jobDetail.company.companyAvatarUrl}
-                  alt="notification-icon"
-                  className="company-logo"
-                  width={84}
-                  height={84}
-                />
-                <div className="job-title">
-                  <div className="title">
-                    {jobDetail.title}
-                    {jobDetail.negotiable && (
-                      <span className="title-sub">(Negotiable)</span>
-                    )}
-                    <Tooltip
-                      className="tooltip"
-                      placement="bottom"
-                      title="This indicates that the company is willing to negotiate and adjust the job duties, working hours, duration, and location through discussion"
-                    >
-                      <QuestionCircleOutlined
-                        style={{ fontSize: 16, color: "#0A5CD8" }}
-                      />
-                    </Tooltip>
-                  </div>
-                  <div className="company-info">
-                    <div className="company-info-name">
-                      {jobDetail.company.name}
+          {state.isLoadingDetail ? (
+            <Skeleton active paragraph={{ rows: 13 }} />
+          ) : (
+            !_.isEmpty(jobDetail) && (
+              <>
+                <div className="job-detail-name">
+                  <Image
+                    src={jobDetail.company.companyAvatarUrl}
+                    alt="notification-icon"
+                    className="company-logo"
+                    width={84}
+                    height={84}
+                  />
+                  <div className="job-title">
+                    <div className="title">
+                      {jobDetail.title}
+                      {jobDetail.negotiable && (
+                        <span className="title-sub">(Negotiable)</span>
+                      )}
+                      <Tooltip
+                        className="tooltip"
+                        placement="bottom"
+                        title="This indicates that the company is willing to negotiate and adjust the job duties, working hours, duration, and location through discussion"
+                      >
+                        <QuestionCircleOutlined
+                          style={{ fontSize: 16, color: "#0A5CD8" }}
+                        />
+                      </Tooltip>
                     </div>
-                    <div className="company-info-state">
-                      <EnvironmentOutlined className="icon" />
-                      {_.compact([
-                        jobDetail.location.country,
-                        jobDetail.location.state,
-                      ]).join(", ")}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div ref={topButtonRef} className="job-detail-action">
-                <ButtonComponent
-                  className="application-btn"
-                  title="Apply now"
-                  onClick={handleOnclick}
-                />
-                <ButtonComponent
-                  className="save-btn"
-                  icon={
-                    state.markSave ? (
-                      <BookmarkSimple size={24} weight="fill" color="#FF7710" />
-                    ) : (
-                      <BookmarkSimple size={24} />
-                    )
-                  }
-                  onClick={handleMarkSave}
-                />
-              </div>
-              <div className="job-detail-keys">
-                {_.map(jobDetail.keywords, (keyword) => (
-                  <Badge title={keyword.name} />
-                ))}
-              </div>
-              <div className="job-detail-about">
-                <div className="job-detail-title">About the job</div>
-                <div className="job-detail-content">
-                  {jobDetail.description}
-                </div>
-                <div className="job-detail-duration">
-                  <div className="apply-duration">
-                    <div className="apply-duration-icon">
-                      <Image src={CalendarDotIcon} alt="calendar-icon" />
-                    </div>
-                    <div className="apply-duration-detail">
-                      <div className="apply-duration-detail-title">
-                        Working period
-                      </div>
-                      <div className="apply-duration-detail-time">
-                        {`${formatDate(jobDetail.workStart)} - ${formatDate(
-                          jobDetail.workEnd
-                        )}`}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="apply-duration">
-                    <div className="apply-duration-icon">
-                      <Clock size={24} />
-                    </div>
-                    <div className="apply-duration-detail">
-                      <div className="apply-duration-detail-title">
-                        Hours per week
-                      </div>
-                      <div className="apply-duration-detail-time">
-                        {`${jobDetail.hoursPerWeek} hours`}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="job-detail-tasks">
-                <div className="job-detail-title">Tasks</div>
-                <div className="job-detail-content">
-                  <ul>
-                    {!_.isEmpty(jobDetail.tasks) ? (
-                      _.map(jobDetail.tasks, (task) => (
-                        <li>{task.description}</li>
-                      ))
-                    ) : (
-                      <li>No description</li>
-                    )}
-                  </ul>
-                </div>
-              </div>
-              <div className="job-detail-qualify">
-                <div className="job-detail-title">Minimum Qualifications</div>
-                <div className="job-detail-content">
-                  <ul>
-                    {!_.isEmpty(jobDetail.qualifications) ? (
-                      _.map(jobDetail.qualifications, (qualification) => (
-                        <li>{qualification.description}</li>
-                      ))
-                    ) : (
-                      <li>No description</li>
-                    )}
-                  </ul>
-                </div>
-              </div>
-              <div className="job-detail-company">
-                <div className="job-detail-company-intro">
-                  <div className="job-detail-company-intro-left">
-                    <Image
-                      src={jobDetail.company.companyAvatarUrl}
-                      alt="notification-icon"
-                      className="company-logo-intro"
-                      height={64}
-                      width={64}
-                    />
                     <div className="company-info">
                       <div className="company-info-name">
                         {jobDetail.company.name}
                       </div>
-                      <div className="company-info-detail">
-                        <div className="company-info-detail-state">
-                          <MapPin className="icon" size={18} />
-                          <span>
-                            {_.compact([
-                              jobDetail.location.country,
-                              jobDetail.location.state,
-                            ]).join(", ")}
-                          </span>
+                      <div className="company-info-state">
+                        <EnvironmentOutlined className="icon" />
+                        {_.compact([
+                          jobDetail.location.country,
+                          jobDetail.location.state,
+                        ]).join(", ")}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div ref={topButtonRef} className="job-detail-action">
+                  <ButtonComponent
+                    className="application-btn"
+                    title="Apply now"
+                    onClick={handleOnclick}
+                  />
+                  <ButtonComponent
+                    className="save-btn"
+                    icon={
+                      state.markSave ? (
+                        <BookmarkSimple
+                          size={24}
+                          weight="fill"
+                          color="#FF7710"
+                        />
+                      ) : (
+                        <BookmarkSimple size={24} />
+                      )
+                    }
+                    onClick={handleMarkSave}
+                  />
+                </div>
+                <div className="job-detail-keys">
+                  {_.map(jobDetail.keywords, (keyword) => (
+                    <Badge title={keyword.name} />
+                  ))}
+                </div>
+                <div className="job-detail-about">
+                  <div className="job-detail-title">About the job</div>
+                  <div className="job-detail-content">
+                    {jobDetail.description}
+                  </div>
+                  <div className="job-detail-duration">
+                    <div className="apply-duration">
+                      <div className="apply-duration-icon">
+                        <Image src={CalendarDotIcon} alt="calendar-icon" />
+                      </div>
+                      <div className="apply-duration-detail">
+                        <div className="apply-duration-detail-title">
+                          Working period
                         </div>
-                        <div className="company-info-detail-employ">
-                          <UsersFour className="icon" size={18} />
-                          {jobDetail.company.companySize}
+                        <div className="apply-duration-detail-time">
+                          {`${formatDate(jobDetail.workStart)} - ${formatDate(
+                            jobDetail.workEnd
+                          )}`}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="apply-duration">
+                      <div className="apply-duration-icon">
+                        <Clock size={24} />
+                      </div>
+                      <div className="apply-duration-detail">
+                        <div className="apply-duration-detail-title">
+                          Hours per week
+                        </div>
+                        <div className="apply-duration-detail-time">
+                          {`${jobDetail.hoursPerWeek} hours`}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="job-detail-company-intro-right">
-                    <ButtonComponent
-                      title="View company"
-                      icon={<ExportOutlined />}
-                      className="view-btn"
-                      iconPosition="end"
-                      type="link"
-                      onClick={onSearch}
-                    />
-                  </div>
                 </div>
-                <div className="job-detail-company-overview">
-                  <div className="job-detail-title">Company overview</div>
+                <div className="job-detail-tasks">
+                  <div className="job-detail-title">Tasks</div>
                   <div className="job-detail-content">
-                    {jobDetail.company.companyOverview}
+                    <ul>
+                      {!_.isEmpty(jobDetail.tasks) ? (
+                        _.map(jobDetail.tasks, (task) => (
+                          <li>{task.description}</li>
+                        ))
+                      ) : (
+                        <li>No description</li>
+                      )}
+                    </ul>
                   </div>
                 </div>
-              </div>
-            </>
+                <div className="job-detail-qualify">
+                  <div className="job-detail-title">Minimum Qualifications</div>
+                  <div className="job-detail-content">
+                    <ul>
+                      {!_.isEmpty(jobDetail.qualifications) ? (
+                        _.map(jobDetail.qualifications, (qualification) => (
+                          <li>{qualification.description}</li>
+                        ))
+                      ) : (
+                        <li>No description</li>
+                      )}
+                    </ul>
+                  </div>
+                </div>
+                <div className="job-detail-company">
+                  <div className="job-detail-company-intro">
+                    <div className="job-detail-company-intro-left">
+                      <Image
+                        src={jobDetail.company.companyAvatarUrl}
+                        alt="notification-icon"
+                        className="company-logo-intro"
+                        height={64}
+                        width={64}
+                      />
+                      <div className="company-info">
+                        <div className="company-info-name">
+                          {jobDetail.company.name}
+                        </div>
+                        <div className="company-info-detail">
+                          <div className="company-info-detail-state">
+                            <MapPin className="icon" size={18} />
+                            <span>
+                              {_.compact([
+                                jobDetail.location.country,
+                                jobDetail.location.state,
+                              ]).join(", ")}
+                            </span>
+                          </div>
+                          <div className="company-info-detail-employ">
+                            <UsersFour className="icon" size={18} />
+                            {jobDetail.company.companySize}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="job-detail-company-intro-right">
+                      <ButtonComponent
+                        title="View company"
+                        icon={<ExportOutlined />}
+                        className="view-btn"
+                        iconPosition="end"
+                        type="link"
+                        onClick={onSearch}
+                      />
+                    </div>
+                  </div>
+                  <div className="job-detail-company-overview">
+                    <div className="job-detail-title">Company overview</div>
+                    <div className="job-detail-content">
+                      {jobDetail.company.companyOverview}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )
           )}
         </div>
       </div>

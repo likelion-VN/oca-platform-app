@@ -1,7 +1,7 @@
 @import "../styles/variable.scss";
 
 .background {
-    font-family: "";
+    font-family: "Inter";
   .header {
     display: flex;
     justify-content: space-between;
@@ -17,4 +17,61 @@
         font-weight: 600;
     }
   }
+  .content {
+    display: flex;
+    height: calc(100vh - 64px);
+    justify-content: center;
+    .switch-background {
+        height: 48px;
+        border-radius: 100px;
+        background: $white-smokes;
+        padding: 0 4px;
+    }
+    .switch-component {
+        display: flex;
+        align-items: center;
+        margin-top:24px;
+        font-weight: 600;
+        line-height: 16px;
+        font-size: 12px;
+        .switch-item {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            border-radius: 100px;
+            &-index {
+                display: flex;
+                color: $white;
+                background-color: $suva-grey;
+                border-radius: 50%;
+                align-items: center;
+                justify-content: center;
+                height: 24px;
+                width: 24px;
+                margin-right: 6px;
+            }
+            &-title {
+                color: $suva-grey;
+            }
+            &.active {
+                background-color: $white;
+                .switch-item-index {
+                    display: flex;
+                    color: $white;
+                    background-color: $neutral-primary;
+                    border-radius: 50%;
+                    align-items: center;
+                    justify-content: center;
+                    height: 24px;
+                    width: 24px;
+                    margin-right: 6px;
+                }
+                .switch-item-title {
+                    color: $neutral-primary;
+                }
+            }
+        }
+    }
+}
 }
