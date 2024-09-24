@@ -43,7 +43,7 @@ import {
   UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
-import { Option, RequestHomePageBody } from "../../interface/home";
+import { RequestHomePageBody } from "../../interface/home";
 import "./home.s.scss";
 
 const HomePage: React.FC = () => {
@@ -168,6 +168,8 @@ const HomePage: React.FC = () => {
     }
   };
 
+  console.log('test', state.listJob)
+
   const handleChangeJobType = (values: string[]) => {
     setState({
       jobType: values,
@@ -203,7 +205,7 @@ const HomePage: React.FC = () => {
     setState({ searchJob: value });
   };
 
-  const onChangeLocation = (value: string, option: Option) => {
+  const onChangeLocation = (value: string, option: any) => {
     setState({ searchLocation: option.id });
   };
 
