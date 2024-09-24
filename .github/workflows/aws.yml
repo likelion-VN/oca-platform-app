@@ -60,14 +60,6 @@ jobs:
           port: 22
           envs: IMAGE,CONTAINER_NAME
           script: |
-            echo "Checking Docker login status..."
-            if ! docker info | grep -q "Username:"; then
-              echo "Not logged in. Logging in to Amazon ECR..."
-              aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $(echo $IMAGE | cut -d'/' -f1)
-            else
-              echo "Already logged in to Docker."
-            fi
-            
             echo "Deploying $IMAGE"
             docker pull $IMAGE
             docker stop $CONTAINER_NAME || true
