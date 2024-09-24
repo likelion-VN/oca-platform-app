@@ -162,13 +162,12 @@ const HomePage: React.FC = () => {
             listJob: data.content,
             jobs: data,
             jobDetail: dataDetail,
-            isLoadingDetail: false,
           });
         }
       } else {
         _.assign(newState, { listJob: [], jobDetail: {} });
       }
-      _.assign(newState, { isLoadingList: false });
+      _.assign(newState, { isLoadingList: false, isLoadingDetail: false });
       setState(newState);
     } catch (error) {
       console.log("error", { error });
@@ -420,67 +419,71 @@ const HomePage: React.FC = () => {
               : ""
           )}
         >
-          {state.isLoadingList ? (
-             _.map(new Array(5), (item, index) => (
-              <div className="job-card" key={index}>
+          {state.isLoadingList
+            ? _.map(new Array(5), (item, index) => (
+                <div className="job-card" key={index}>
                   <Skeleton active title={false} paragraph={{ rows: 3 }} />
                 </div>
-            ))
-          ) : (
-            _.map(state.listJob, (job, index) => (
-              <div
-                className={classNames(
-                  "job-card",
-                  index === state.indexActive && "job-card-active"
-                )}
-                key={index}
-                onClick={() => handleActiveCard(index, job.jobId)}
-              >
-                <div className="job-card-left">
-                  <div className="job-title">
-                    <div className="title">
-                      {job.jobTitle}
-                      {job.negotiable && (
-                        <span className="title-sub">(Negotiable)</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="company">
-                    <Image
-                      src={job.companyAvatarUrl}
-                      alt="notification-icon"
-                      className="company-logo"
-                      width={40}
-                      height={40}
-                    />
-                    <div className="company-info">
-                      <div className="company-info-name">{job.companyName}</div>
-                      <div className="company-info-state">
-                        {job.countryName}
+              ))
+            : _.map(state.listJob, (job, index) => (
+                <div
+                  className={classNames(
+                    "job-card",
+                    index === state.indexActive && "job-card-active"
+                  )}
+                  key={index}
+                  onClick={() => handleActiveCard(index, job.jobId)}
+                >
+                  <div className="job-card-left">
+                    <div className="job-title">
+                      <div className="title">
+                        {job.jobTitle}
+                        {job.negotiable && (
+                          <span className="title-sub">(Negotiable)</span>
+                        )}
                       </div>
                     </div>
+                    <div className="company">
+                      <Image
+                        src={job.companyAvatarUrl}
+                        alt="notification-icon"
+                        className="company-logo"
+                        width={40}
+                        height={40}
+                      />
+                      <div className="company-info">
+                        <div className="company-info-name">
+                          {job.companyName}
+                        </div>
+                        <div className="company-info-state">
+                          {job.countryName}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="job-keys">
+                      {_.map(keyFormatter(job.keywords), (keyword) => (
+                        <Badge title={keyword} />
+                      ))}
+                    </div>
                   </div>
-                  <div className="job-keys">
-                    {_.map(keyFormatter(job.keywords), (keyword) => (
-                      <Badge title={keyword} />
-                    ))}
+                  <div className="job-card-right">
+                    <div className="job-mark">
+                      {job.marked ? (
+                        <BookmarkSimple
+                          size={20}
+                          color="#FF7710"
+                          weight="fill"
+                        />
+                      ) : (
+                        <BookmarkSimple size={20} />
+                      )}
+                    </div>
+                    <div className="update-time">
+                      {calculateDaysDiff(job.postDateTime)}
+                    </div>
                   </div>
                 </div>
-                <div className="job-card-right">
-                  <div className="job-mark">
-                    {job.marked ? (
-                      <BookmarkSimple size={20} color="#FF7710" weight="fill" />
-                    ) : (
-                      <BookmarkSimple size={20} />
-                    )}
-                  </div>
-                  <div className="update-time">
-                    {calculateDaysDiff(job.postDateTime)}
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
+              ))}
         </div>
         <div ref={jobDetailRef} className="job-detail">
           {state.isLoadingDetail ? (
