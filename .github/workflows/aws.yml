@@ -60,7 +60,7 @@ jobs:
           port: 22
           envs: IMAGE,CONTAINER_NAME
           script: |
-            echo "Deploying $IMAGE"
+            echo "To deploy $IMAGE"
             docker pull $IMAGE
             docker stop $CONTAINER_NAME || true
             docker rm $CONTAINER_NAME || true
