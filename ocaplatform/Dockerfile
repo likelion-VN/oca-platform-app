@@ -1,23 +1,20 @@
-# Sử dụng Node.js phiên bản 20 (LTS)
-FROM node:20.17.0-alpine
-
-# Thiết lập thư mục làm việc
+# Build stage
+FROM node:20.17.0-alpine AS builder
 WORKDIR /app
-
-# Copy file package.json và package-lock.json để cài đặt dependencies
-COPY package.json package-lock.json ./
-
-# Cài đặt dependencies
-RUN npm install
-
-# Copy toàn bộ mã nguồn của ứng dụng vào container
+COPY package*.json ./
+RUN npm ci
 COPY . .
-
-# Build ứng dụng Next.js
 RUN npm run build
 
-# Expose cổng mà ứng dụng sẽ chạy
+# Production stage
+FROM node:20.17.0-alpine
+WORKDIR /app
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/next.config.js ./next.config.js
+
 EXPOSE 3000
 
-# Khởi động ứng dụng
 CMD ["npm", "run", "start"]
