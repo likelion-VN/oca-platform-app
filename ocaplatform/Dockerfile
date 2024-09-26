@@ -9,11 +9,20 @@ RUN npm run build
 # Production stage
 FROM node:20.17.0-alpine
 WORKDIR /app
-COPY --from=builder /app/package*.json ./
+
+# Copy package files
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/package-lock.json ./
+
+# Copy build output
 COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/next.config.mjs ./next.config.mjs
+
+# Copy configuration files
+COPY --from=builder /app/next.config.mjs ./
+COPY --from=builder /app/tsconfig.json ./
+
+# Install production dependencies
+RUN npm ci --only=production
 
 EXPOSE 3000
 
