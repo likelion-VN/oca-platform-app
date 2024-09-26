@@ -23,7 +23,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   handleCancel,
 }) => {
   const [state, setState] = useMergeState({
-    isOpen: true,
     ...defaultData,
   });
 
@@ -47,8 +46,8 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState({ [keyValue]: value });
   };
 
-  const onClickOpenModal = (isOpen: boolean) => {
-    setState({ isOpen });
+  const onClickOpenModal = (isOpenModal: boolean) => {
+    setState({ isOpenModal });
   };
 
   const handleNext = () => {
@@ -58,7 +57,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   return (
     <>
       <ModalComponent
-        open={state.isOpen}
+        open={state.isOpenModal}
         onOk={() => onClickOpenModal(false)}
         onCancel={() => onClickOpenModal(false)}
         centered

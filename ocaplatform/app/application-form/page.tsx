@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import classNames from "classnames";
 import _ from "lodash";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "phosphor-react";
 import { useEffect, useRef } from "react";
+import { CheckIcon } from "../assets/svg";
 import ButtonComponent from "../components/button/button";
 import useMergeState from "../utils/customHook/useMergeState";
 import useUpdateEffect from "../utils/customHook/useUpdateEffect";
@@ -50,6 +53,7 @@ const ApplicationForm = () => {
         workplaceType: null,
         hoursPerWeek: "",
         task: "",
+        isOpenModal: detailJob.isOpenModal,
       },
       step2: {
         resume: [],
@@ -130,11 +134,21 @@ const ApplicationForm = () => {
       </div>
       <div className="content">
         <div className="switch-component switch-background">
-          <div className="switch-item active">
-            <div className="switch-item-index">1</div>
+          <div
+            className={classNames("switch-item", state.step === 1 && "active")}
+          >
+            <div className="switch-item-index">
+              {state.step === 2 ? (
+                <Image src={CheckIcon} alt="check-icon"/>
+              ) : (
+                1
+              )}
+            </div>
             <div className="switch-item-title">Negotiable</div>
           </div>
-          <div className="switch-item">
+          <div
+            className={classNames("switch-item", state.step === 2 && "active")}
+          >
             <div className="switch-item-index">2</div>
             <div className="switch-item-title">Resume</div>
           </div>

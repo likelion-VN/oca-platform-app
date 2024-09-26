@@ -20,7 +20,7 @@ const LoginPage = () => {
     router.push("/create-user");
   };
   return (
-    <div className="background">
+    <div className="background-login">
       <div className="header">
         <Image src={Logo} alt="logo" />
       </div>

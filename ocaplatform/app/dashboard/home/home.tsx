@@ -209,7 +209,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleOnclick = () => {
-    sessionStorage.setItem('detailJob', JSON.stringify(state.jobDetail));
+    sessionStorage.setItem('detailJob', JSON.stringify({...state.jobDetail, isOpenModal: true}));
     router.push("./application-form");
   };
 

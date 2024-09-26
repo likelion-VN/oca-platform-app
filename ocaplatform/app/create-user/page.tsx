@@ -25,7 +25,7 @@ const CreateUser = () => {
     router.push("./dashboard");
   };
   return (
-    <div className="background">
+    <div className="background-create">
       <ModalComponent
         className="modal-confirm"
         open={state.isOpenConfirm}
