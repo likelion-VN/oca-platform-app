@@ -11,26 +11,44 @@ env:
   CONTAINER_NAME: nextjs-app-container
 
 jobs:
-  build-and-deploy:
+  check-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Check for changes in ocaplatform directory
+        id: check_changes
+        run: |
+          git diff --quiet HEAD^ HEAD -- ocaplatform/ && echo "::set-output name=changed::false" || echo "::set-output name=changed::true"
 
       - name: Set up Node.js
+        if: steps.check_changes.outputs.changed == 'true'
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
       - name: Install dependencies
+        if: steps.check_changes.outputs.changed == 'true'
         working-directory: ocaplatform
-        run: npm install
+        run: |
+          npm ci
+
+      - name: Clear Next.js cache
+        if: steps.check_changes.outputs.changed == 'true'
+        working-directory: ocaplatform
+        run: |
+          rm -rf .next
 
       - name: Build Next.js application
+        if: steps.check_changes.outputs.changed == 'true'
         working-directory: ocaplatform
         run: npm run build
 
       - name: Configure AWS credentials
+        if: steps.check_changes.outputs.changed == 'true'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -38,12 +56,14 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
+        if: steps.check_changes.outputs.changed == 'true'
         id: login-ecr
         run: |
           aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin $(aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }} --query 'repositories[0].repositoryUri' --output text)
           echo "::set-output name=registry::$(aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }} --query 'repositories[0].repositoryUri' --output text | cut -d'/' -f1)"
 
       - name: Build, tag, and push image to Amazon ECR
+        if: steps.check_changes.outputs.changed == 'true'
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
@@ -54,6 +74,7 @@ jobs:
           echo "IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Deploy to EC2
+        if: steps.check_changes.outputs.changed == 'true'
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -66,4 +87,5 @@ jobs:
             docker pull $IMAGE
             docker stop $CONTAINER_NAME || true
             docker rm $CONTAINER_NAME || true
-            docker run -d --name $CONTAINER_NAME -p 80:3000 $IMAGE
+            docker run -d --name $CONTAINER_NAME -p 80:3000 -v nextjs_data:/app/data $IMAGE
+            docker system prune -f --volumes
