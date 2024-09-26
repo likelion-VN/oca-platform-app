@@ -6,6 +6,7 @@ import InputPrefix from "@/app/components/input/inputPrefix/inputPrefix";
 import ModalComponent from "@/app/components/modal/modal";
 import { WorkTypeOptions } from "@/app/constants/selectOptions";
 import useMergeState from "@/app/utils/customHook/useMergeState";
+import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
 import { formatDate } from "@/app/utils/formatter";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -22,9 +23,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   handleClick,
   handleCancel,
 }) => {
-  const [state, setState] = useMergeState({
-    ...defaultData,
-  });
+  const [state, setState] = useMergeState({});
 
   const handleInputChange = (
     keyValue: string,
@@ -51,8 +50,12 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   };
 
   const handleNext = () => {
-    handleClick(state, true);
-  }
+    handleClick({ step1: state }, true);
+  };
+
+  useUpdateEffect(() => {
+    setState(defaultData);
+  }, [defaultData]);
 
   return (
     <>
@@ -78,9 +81,10 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           <div className="modal-bottom">
             <div className="title">Negotiate Your Application</div>
             <div className="title-content">
-              Fields marked as &apos;<span style={{color: '#0A5CD8'}}>Negotiable</span>&apos; allow you to revise your offer.
-              Update these fields to customize your application to match your
-              counteroffer needs.
+              Fields marked as &apos;
+              <span style={{ color: "#0A5CD8" }}>Negotiable</span>&apos; allow
+              you to revise your offer. Update these fields to customize your
+              application to match your counteroffer needs.
             </div>
           </div>
         </div>
@@ -103,13 +107,13 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           value={state.jobTitle}
           title="Job Title"
           subTitle="(Negotiable)"
-          valuePrefix={defaultData.currentJobTitle}
+          valuePrefix={state.currentJobTitle}
           type="input"
           onChange={(e) => handleInputChange("jobTitle", e)}
         />
         <InputPrefix
           title="Job Type"
-          valuePrefix={defaultData.currentJobType}
+          valuePrefix={state.currentJobType}
           type="input"
           disabled
         />
@@ -119,7 +123,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="Start working date"
             subTitle="(Negotiable)"
             type="date"
-            valuePrefix={formatDate(defaultData.currentWorkStart)}
+            valuePrefix={formatDate(state.currentWorkStart)}
             onChange={(date) => handleDateChange("startDate", date)}
           />
           <InputPrefix
@@ -137,7 +141,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="Workplace type"
             subTitle="(Negotiable)"
             type="select"
-            valuePrefix={defaultData.currentWorkplaceType}
+            valuePrefix={state.currentWorkplaceType}
             options={WorkTypeOptions}
             onChange={(value) => handleSelectChange("workType", value)}
           />
@@ -145,13 +149,13 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             value={state.hours}
             title="Hours per week"
             subTitle="(Negotiable)"
-            valuePrefix={defaultData.currentHoursPerWeek}
+            valuePrefix={state.currentHoursPerWeek}
             type="input"
             onChange={(e) => handleInputChange("hours", e)}
           />
         </div>
         <InputPrefix
-          value={defaultData.currentDescription}
+          value={state.currentDescription}
           title="About the job"
           disabled
           type="text-area"
@@ -164,7 +168,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           onChange={(e) => handleInputChange("tasks", e)}
         />
         <InputPrefix
-          value={defaultData.currentQualifications}
+          value={state.currentQualifications}
           title="Minimum Qualifications"
           disabled
           type="text-area"

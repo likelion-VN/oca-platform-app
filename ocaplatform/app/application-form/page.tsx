@@ -60,8 +60,8 @@ const ApplicationForm = () => {
         email: "",
         phoneNumber: "",
         portfolio: "",
-        personalWebsite: [],
-        selftIntroduction: "",
+        personalWebsite: [''],
+        selfIntroduction: "",
       },
     });
   };
@@ -72,7 +72,7 @@ const ApplicationForm = () => {
   };
 
   const handleClick = (stepData: any, isClickNext: boolean) => {
-    if (_.isEmpty(stepData)) {
+    if (!_.isEmpty(stepData)) {
       _.merge(newForm.current, stepData);
     }
     if (isClickNext) {

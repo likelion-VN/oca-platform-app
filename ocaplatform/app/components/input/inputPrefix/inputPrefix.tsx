@@ -17,7 +17,6 @@ interface IPropsInputPrefix {
   disabled?: boolean;
   type: string;
   options?: Option[];
-  readOnly?: boolean;
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -58,7 +57,6 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
       case "input":
         return (
           <Input
-            className="custom-number-input"
             value={value}
             onChange={handleInputChange}
             size="large"
@@ -95,6 +93,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               style={{
                 fontFamily: "Inter",
                 fontWeight: 400,
+                fontSize: 14,
                 position: "absolute",
                 left: 10,
                 top: "50%",
@@ -159,7 +158,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   };
 
   return (
-    <div className="input-custom">
+    <div className="input-prefix">
       <div className="title">
         {title}
         <span>

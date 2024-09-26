@@ -2,12 +2,12 @@
 "use client";
 
 import ButtonComponent from "@/app/components/button/button";
-import InputPrefix from "@/app/components/input/inputPrefix/inputPrefix";
-import { WorkTypeOptions } from "@/app/constants/selectOptions";
+import InputDefault from "@/app/components/input/inputDefault/inputDefault";
 import useMergeState from "@/app/utils/customHook/useMergeState";
-import { formatDate } from "@/app/utils/formatter";
-import dayjs from "dayjs";
-import { ArrowLeft } from "phosphor-react";
+import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
+import classNames from "classnames";
+import _ from "lodash";
+import { ArrowLeft, Plus, XCircle } from "phosphor-react";
 import React from "react";
 
 interface ResumeFormProps {
@@ -22,7 +22,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   handleCancel,
 }) => {
   const [state, setState] = useMergeState({
-    ...defaultData,
+    isAddMoreEnabled: false,
   });
 
   const handleInputChange = (
@@ -32,26 +32,49 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     setState({ [keyValue]: e.target.value });
   };
 
-  const handleDateChange = (keyValue: string, date: dayjs.Dayjs | null) => {
-    if (date) {
-      const isoDate = dayjs(date).toISOString();
-      setState({ [keyValue]: isoDate });
-    } else {
-      setState({ [keyValue]: null });
+  const handleMultipleInputChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const personalWebsiteCloned = _.cloneDeep(state.personalWebsite);
+    personalWebsiteCloned[index] = e.target.value;
+    setState({ personalWebsite: personalWebsiteCloned });
+  };
+
+  const handleAddMore = () => {
+    const { personalWebsite } = state;
+    if (personalWebsite.length < 3) {
+      setState({ personalWebsite: [...personalWebsite, ""] });
     }
   };
 
-  const handleSelectChange = (keyValue: string, value: string) => {
-    setState({ [keyValue]: value });
+  const handleDestroy = (index: number) => {
+    const personalWebsite = _.filter(
+      state.personalWebsite,
+      (_, i: number) => i !== index
+    );
+    setState({ personalWebsite });
+  };
+
+  const checkInputsValid = (inputs: string[]) => {
+    return _.every(inputs, (input) => _.trim(input) !== "");
   };
 
   const handleBack = () => {
-    handleClick(state, false);
+    handleClick({step2: state}, false);
   };
 
   const handleApply = () => {
-    handleClick(state, true);
+    handleClick({step2: state}, true);
   };
+
+  useUpdateEffect(() => {
+    setState(defaultData);
+  }, [defaultData]);
+
+  useUpdateEffect(() => {
+    setState({ isAddMoreEnabled: checkInputsValid(state.personalWebsite) });
+  }, [state.personalWebsite]);
 
   return (
     <>
@@ -63,75 +86,74 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         </div>
       </div>
       <div className="form-application">
-        <InputPrefix
-          value={state.jobTitle}
-          title="Job Title"
-          subTitle="(Negotiable)"
-          valuePrefix={defaultData.currentJobTitle}
+        <InputDefault
+          value={state.email}
+          title="Email"
           type="input"
-          onChange={(e) => handleInputChange("jobTitle", e)}
+          placeholder="Enter email"
+          onChange={(e) => handleInputChange("email", e)}
         />
-        <InputPrefix
-          title="Job Type"
-          valuePrefix={defaultData.currentJobType}
+        <InputDefault
+          value={state.phoneNumber}
+          title="Phone number"
           type="input"
-          disabled
+          placeholder="Enter phone number"
+          onChange={(e) => handleInputChange("phoneNumber", e)}
         />
-        <div className="double-input">
-          <InputPrefix
-            value={state.startDate}
-            title="Start working date"
-            subTitle="(Negotiable)"
-            type="date"
-            valuePrefix={formatDate(defaultData.currentWorkStart)}
-            onChange={(date) => handleDateChange("startDate", date)}
-          />
-          <InputPrefix
-            value={state.endDate}
-            title="End working date"
-            subTitle="(Negotiable)"
-            type="date"
-            valuePrefix={formatDate(defaultData.currentWorkEnd)}
-            onChange={(date) => handleDateChange("endDate", date)}
-          />
+        <InputDefault
+          value={state.portfolio}
+          title="Portfolio (Optional)"
+          type="input"
+          addonBefore="http://"
+          optional
+          onChange={(e) => handleInputChange("portfolio", e)}
+        />
+        <div>
+          <div className="multiple-input">
+            {_.map(state.personalWebsite, (item, index: number) => (
+              <div className="multiple-input-row">
+                <InputDefault
+                  value={item}
+                  type="input"
+                  title={
+                    index === 0 ? "Personal website (Optional)" : undefined
+                  }
+                  addonBefore="http://"
+                  optional
+                  onChange={(e) => handleMultipleInputChange(index, e)}
+                />
+                {index !== 0 && (
+                  <span className="detroy-icon">
+                    <XCircle
+                      size={24}
+                      color="#8F8F8F"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDestroy(index)}
+                    />
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+          {state.personalWebsite?.length < 3 && (
+            <ButtonComponent
+              className={classNames("add-btn", !state.isAddMoreEnabled && 'disabled')}
+              title="Add more"
+              type="link"
+              onClick={handleAddMore}
+              icon={<Plus size={24} />}
+              iconPosition="start"
+              disabled={!state.isAddMoreEnabled}
+            />
+          )}
         </div>
-        <div className="double-input">
-          <InputPrefix
-            value={state.workType}
-            title="Workplace type"
-            subTitle="(Negotiable)"
-            type="select"
-            valuePrefix={defaultData.currentWorkplaceType}
-            options={WorkTypeOptions}
-            onChange={(value) => handleSelectChange("workType", value)}
-          />
-          <InputPrefix
-            value={state.hours}
-            title="Hours per week"
-            subTitle="(Negotiable)"
-            valuePrefix={defaultData.currentHoursPerWeek}
-            type="input"
-            onChange={(e) => handleInputChange("hours", e)}
-          />
-        </div>
-        <InputPrefix
-          value={defaultData.currentDescription}
-          title="About the job"
-          disabled
+        <InputDefault
+          value={state.selfIntroduction}
+          title="Self-Introduction (Optional)"
           type="text-area"
-        />
-        <InputPrefix
-          value={state.currentTask}
-          title="Task"
-          subTitle="(Negotiable)"
-          type="text-area"
-          onChange={(e) => handleInputChange("tasks", e)}
-        />
-        <InputPrefix
-          value={defaultData.currentQualifications}
-          title="Minimum Qualifications"
-          disabled
-          type="text-area"
+          optional
+          placeholder="Describe yourself in your own words..."
+          onChange={(e) => handleInputChange("selfIntroduction", e)}
         />
       </div>
       <div className="action">
@@ -148,10 +170,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         <div className="action-right">
           <ButtonComponent title="Cancel" size="large" onClick={handleCancel} />
           <ButtonComponent
-            className="continue-btn"
+            className="apply-btn"
             type="primary"
             size="large"
-            title="Continue"
+            title="Apply"
             onClick={handleApply}
           />
         </div>

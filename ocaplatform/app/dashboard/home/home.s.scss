@@ -237,9 +237,12 @@
         margin-top: 16px;
         .application-btn {
           flex: 1;
-          background-color: $orange !important;
+          background: $orange !important;
           color: $white-smokes;
           height: 40px;
+          &:hover {
+            border-color: $orange !important;
+          }
         }
         .save-btn {
           width: 40px;

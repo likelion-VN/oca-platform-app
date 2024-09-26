@@ -1,12 +1,12 @@
 @import "../../../styles/variable.scss";
 
-.input-custom {
+.input-prefix {
   .title {
     text-align: start;
     font-size: 12px;
     font-weight: 600;
     line-height: 20px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     span {
       margin-left: 2px;
       color: $primary;
