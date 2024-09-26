@@ -111,6 +111,19 @@
           flex: 1;
         }
       }
+      .resume {
+        &-title {
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 16px;
+        }
+        &-subtitle {
+          font-size: 12px;
+          font-weight: 400;
+          color: $grey;
+          margin-top: 6px;
+        }
+      }
       .multiple-input {
         display: flex;
         flex-direction: column;

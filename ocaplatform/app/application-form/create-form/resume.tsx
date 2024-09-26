@@ -61,11 +61,11 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   };
 
   const handleBack = () => {
-    handleClick({step2: state}, false);
+    handleClick({ step2: state }, false);
   };
 
   const handleApply = () => {
-    handleClick({step2: state}, true);
+    handleClick({ step2: state }, true);
   };
 
   useUpdateEffect(() => {
@@ -86,6 +86,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         </div>
       </div>
       <div className="form-application">
+        <div className="resume">
+          <div className="resume-title">Resume</div>
+          <div className="resume-subtitle">Upload at least two tailored resumes to match the specific requirements of each job you apply for.</div>
+        </div>
         <InputDefault
           value={state.email}
           title="Email"
@@ -137,7 +141,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           </div>
           {state.personalWebsite?.length < 3 && (
             <ButtonComponent
-              className={classNames("add-btn", !state.isAddMoreEnabled && 'disabled')}
+              className={classNames(
+                "add-btn",
+                !state.isAddMoreEnabled && "disabled"
+              )}
               title="Add more"
               type="link"
               onClick={handleAddMore}
