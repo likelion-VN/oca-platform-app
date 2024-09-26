@@ -51,6 +51,10 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState({ isOpen });
   };
 
+  const handleNext = () => {
+    handleClick(state, true);
+  }
+
   return (
     <>
       <ModalComponent
@@ -75,7 +79,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           <div className="modal-bottom">
             <div className="title">Negotiate Your Application</div>
             <div className="title-content">
-              Fields marked as '<span style={{color: '#0A5CD8'}}>Negotiable</span>' allow you to revise your offer.
+              Fields marked as &apos;<span style={{color: '#0A5CD8'}}>Negotiable</span>&apos; allow you to revise your offer.
               Update these fields to customize your application to match your
               counteroffer needs.
             </div>
@@ -176,7 +180,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             type="primary"
             size="large"
             title="Continue"
-            onClick={handleCancel}
+            onClick={handleNext}
           />
         </div>
       </div>

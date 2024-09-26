@@ -10,6 +10,7 @@ import useMergeState from "../utils/customHook/useMergeState";
 import useUpdateEffect from "../utils/customHook/useUpdateEffect";
 import "./application-form.s.scss";
 import NegotiableForm from "./create-form/negotiable";
+import ResumeForm from "./create-form/resume";
 
 const ApplicationForm = () => {
   const router = useRouter();
@@ -84,7 +85,13 @@ const ApplicationForm = () => {
   const renderStep = (step: number) => {
     switch (step) {
       case 2: {
-        return <></>;
+        return (
+          <ResumeForm
+            defaultData={newForm.current.step2}
+            handleClick={handleClick}
+            handleCancel={onBackToHome}
+          />
+        );
       }
       default: {
         return (
@@ -103,7 +110,7 @@ const ApplicationForm = () => {
     if (storedDetailJob) {
       setState({ detailJob: JSON.parse(storedDetailJob) });
     }
-  },[]);
+  }, []);
 
   useUpdateEffect(() => {
     createIntitialData();
