@@ -65,7 +65,7 @@ export interface City {
 export interface Option {
   id?: number | number[];
   label: React.ReactNode;
-  value: string;
+  value: string | number;
 }
 
 export interface JobDetail {

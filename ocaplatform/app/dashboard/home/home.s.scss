@@ -258,14 +258,12 @@
         margin-top: 24px;
         .job-detail-duration {
           display: flex;
-          column-gap: 16px;
+          flex-direction: column;
+          row-gap: 16px;
+          margin-top: 24px;
           .apply-duration {
             display: flex;
-            border: 1px solid $neutral;
-            border-radius: 30px;
-            padding: 8px;
             width: 272px;
-            margin-top: 24px;
             &-icon {
               background-color: $white-smokes;
               width: 40px;
@@ -355,6 +353,10 @@
       }
     }
   }
+}
+
+.ant-tooltip-arrow::before {
+  background-color: $matterhorn !important;
 }
 
 .ant-tooltip-inner {

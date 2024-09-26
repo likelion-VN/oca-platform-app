@@ -39,6 +39,7 @@ import { useRouter } from "next/navigation";
 import {
   BookmarkSimple,
   Clock,
+  Laptop,
   MapPin,
   SlidersHorizontal,
   UsersFour,
@@ -208,6 +209,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleOnclick = () => {
+    sessionStorage.setItem('detailJob', JSON.stringify(state.jobDetail));
     router.push("./application-form");
   };
 
@@ -522,8 +524,8 @@ const HomePage: React.FC = () => {
                       <div className="company-info-state">
                         <EnvironmentOutlined className="icon" />
                         {_.compact([
-                          jobDetail.location.country,
                           jobDetail.location.state,
+                          jobDetail.location.country,
                         ]).join(", ")}
                       </div>
                     </div>
@@ -574,6 +576,19 @@ const HomePage: React.FC = () => {
                           {`${formatDate(jobDetail.workStart)} - ${formatDate(
                             jobDetail.workEnd
                           )}`}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="apply-duration">
+                      <div className="apply-duration-icon">
+                        <Laptop size={24} />
+                      </div>
+                      <div className="apply-duration-detail">
+                        <div className="apply-duration-detail-title">
+                          Work Type
+                        </div>
+                        <div className="apply-duration-detail-time">
+                          {jobDetail.workplaceType.name}
                         </div>
                       </div>
                     </div>
@@ -639,8 +654,8 @@ const HomePage: React.FC = () => {
                             <MapPin className="icon" size={18} />
                             <span>
                               {_.compact([
-                                jobDetail.location.country,
                                 jobDetail.location.state,
+                                jobDetail.location.country,
                               ]).join(", ")}
                             </span>
                           </div>

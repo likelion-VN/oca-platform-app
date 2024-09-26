@@ -1,77 +1,135 @@
 @import "../styles/variable.scss";
 
 .background {
-    font-family: "Inter";
+  font-family: "Inter";
   .header {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid $neutral;
     height: 64px;
     .back-btn {
-        display: flex;
-        align-self: center;
-        padding: 18px 24px;
-        color: $neutral-primary;
-        font-size: 14px;
-        line-height: 20px;
-        font-weight: 600;
+      display: flex;
+      align-self: center;
+      padding: 18px 24px;
+      color: $neutral-primary !important;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
     }
   }
   .content {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     height: calc(100vh - 64px);
-    justify-content: center;
     .switch-background {
-        height: 48px;
-        border-radius: 100px;
-        background: $white-smokes;
-        padding: 0 4px;
+      height: 48px;
+      border-radius: 100px;
+      background: $white-smokes;
+      padding: 0 4px;
     }
     .switch-component {
+      display: flex;
+      align-items: center;
+      margin-top: 24px;
+      font-weight: 600;
+      line-height: 16px;
+      font-size: 12px;
+      .switch-item {
+        height: 38px;
         display: flex;
         align-items: center;
-        margin-top:24px;
-        font-weight: 600;
-        line-height: 16px;
-        font-size: 12px;
-        .switch-item {
-            height: 40px;
+        padding: 0 10px;
+        border-radius: 100px;
+        &-index {
+          display: flex;
+          color: $white;
+          background-color: $suva-grey;
+          border-radius: 50%;
+          align-items: center;
+          justify-content: center;
+          height: 24px;
+          width: 24px;
+          margin-right: 6px;
+        }
+        &-title {
+          color: $suva-grey;
+        }
+        &.active {
+          background-color: $white;
+          .switch-item-index {
             display: flex;
+            color: $white;
+            background-color: $neutral-primary;
+            border-radius: 50%;
             align-items: center;
-            padding: 0 10px;
-            border-radius: 100px;
-            &-index {
-                display: flex;
-                color: $white;
-                background-color: $suva-grey;
-                border-radius: 50%;
-                align-items: center;
-                justify-content: center;
-                height: 24px;
-                width: 24px;
-                margin-right: 6px;
-            }
-            &-title {
-                color: $suva-grey;
-            }
-            &.active {
-                background-color: $white;
-                .switch-item-index {
-                    display: flex;
-                    color: $white;
-                    background-color: $neutral-primary;
-                    border-radius: 50%;
-                    align-items: center;
-                    justify-content: center;
-                    height: 24px;
-                    width: 24px;
-                    margin-right: 6px;
-                }
-                .switch-item-title {
-                    color: $neutral-primary;
-                }
-            }
+            justify-content: center;
+            height: 24px;
+            width: 24px;
+            margin-right: 6px;
+          }
+          .switch-item-title {
+            color: $neutral-primary;
+          }
+        }
+      }
+    }
+    &-title {
+        margin: 24px 0;
+        text-align: center;
+        .title-step {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+            margin-bottom: 8px;
+            color: $neutral-primary;
+        }
+        .subtitle-step {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            color: $suva-grey;
         }
     }
-}
+    .form-application {
+      display: flex;
+      flex-direction: column;
+      row-gap: 24px;
+      border: 1px solid $neutral;
+      padding: 32px 40px;
+      border-radius: 12px;
+      width: 656px;
+      height: calc(100vh - 333px);
+      overflow-y: auto;
+      .double-input {
+        display: flex;
+        column-gap: 24px;
+        .input-custom {
+          flex: 1;
+        }
+      }
+    }
+  }
+  .action {
+    display: flex;
+    width: 736px;
+    justify-content: space-between;
+    margin: 20px 0;
+    &-left {
+      display: flex;
+      align-self: center;
+      .go-back-btn {
+        color: $neutral-primary !important;
+        padding-right: 0;
+        padding-left: 0;
+      }
+    }
+    &-right {
+      display: flex;
+      column-gap: 24px;
+      .continue-btn {
+        background: $orange !important;
+      }
+    }
+  }
 }
