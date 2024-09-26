@@ -1,11 +1,11 @@
 "use client";
 
-import { Modal } from "antd";
 import classNames from "classnames";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Company, Congratulation, Individual, Logo } from "../assets/svg";
 import ButtonComponent from "../components/button/button";
+import ModalComponent from "../components/modal/modal";
 import useMergeState from "../utils/customHook/useMergeState";
 import "./create-user.s.scss";
 
@@ -26,7 +26,7 @@ const CreateUser = () => {
   };
   return (
     <div className="background">
-      <Modal
+      <ModalComponent
         className="modal-confirm"
         open={state.isOpenConfirm}
         onCancel={onClickConfirm}
@@ -47,7 +47,7 @@ const CreateUser = () => {
           You registered successfully <br />
           Let’s start finding an O-CA program that fits you.
         </div>
-      </Modal>
+      </ModalComponent>
       <div className="header">
         <Image src={Logo} alt="logo" />
       </div>

@@ -75,21 +75,24 @@
       }
     }
     &-title {
-        margin: 24px 0;
-        text-align: center;
-        .title-step {
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 32px;
-            margin-bottom: 8px;
-            color: $neutral-primary;
+      margin: 24px 0;
+      text-align: center;
+      .title-step {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 32px;
+        margin-bottom: 8px;
+        color: $neutral-primary;
+      }
+      .subtitle-step {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: $suva-grey;
+        .question-btn {
+          margin-left: 5px;
         }
-        .subtitle-step {
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            color: $suva-grey;
-        }
+      }
     }
     .form-application {
       display: flex;
@@ -130,6 +133,59 @@
       .continue-btn {
         background: $orange !important;
       }
+    }
+  }
+}
+
+.ant-modal {
+  .modal-content-custom {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .modal-top {
+    height: 180px;
+    background-image: url("../assets/gif/negotiable.gif");
+    background-size: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow: hidden; 
+  }
+
+  .modal-bottom {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    .title {
+      font-family: "Inter";
+      text-align: center;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 32px;
+      &-content {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: center;
+        color: $suva-grey;
+      }
+    }
+  }
+  .ant-modal-content {
+    padding: 0;
+  }
+  .ant-modal-footer {
+    text-align: center;
+    margin-top: 18px;
+    padding-bottom: 24px;
+    .confirm-btn {
+      background: $orange !important;
+      width: 183px;
+      font-size: 14px;
+      font-family: "Inter";
     }
   }
 }

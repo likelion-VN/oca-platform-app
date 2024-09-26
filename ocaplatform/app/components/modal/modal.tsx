@@ -2,29 +2,34 @@ import { Modal } from "antd";
 import React from "react";
 
 interface IPropsModal {
+  className?: string;
   open: boolean;
   onCancel?: () => void;
   onOk?: () => void;
   footer?: React.ReactNode;
-  content?: React.ReactNode;
+  centered?: boolean;
+  children?: React.ReactNode; 
 }
 
 const ModalComponent: React.FC<IPropsModal> = ({
+  className,
   open,
   onCancel,
   onOk,
   footer,
-  content,
+  centered,
+  children,
 }) => {
   return (
     <Modal
-      className="modal-confirm"
+      className={className}
       open={open}
       onCancel={onCancel}
       footer={footer}
       onOk={onOk}
+      centered={centered}
     >
-      {content}
+      {children}
     </Modal>
   );
 };
