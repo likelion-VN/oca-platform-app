@@ -57,8 +57,8 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState(defaultData);
   }, [defaultData]);
 
-  console.log('test', defaultData)
-
+  console.log('test2', defaultData);
+  console.log('test3', state)
 
   return (
     <>
@@ -126,7 +126,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="Start working date"
             subTitle="(Negotiable)"
             type="date"
-            valuePrefix={formatDate(state.currentWorkStart)}
+            valuePrefix={formatDate(defaultData.currentStartDate)}
             onChange={(date) => handleDateChange("startDate", date)}
           />
           <InputPrefix
@@ -134,7 +134,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="End working date"
             subTitle="(Negotiable)"
             type="date"
-            valuePrefix={formatDate(defaultData.currentWorkEnd)}
+            valuePrefix={formatDate(defaultData.currentEndDate)}
             onChange={(date) => handleDateChange("endDate", date)}
           />
         </div>

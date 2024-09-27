@@ -10,6 +10,7 @@ import { ArrowLeft } from "phosphor-react";
 import { useEffect, useRef } from "react";
 import { CheckIcon } from "../assets/svg";
 import ButtonComponent from "../components/button/button";
+import Loading from "../components/loading/loading";
 import useMergeState from "../utils/customHook/useMergeState";
 import useUpdateEffect from "../utils/customHook/useUpdateEffect";
 import "./application-form.s.scss";
@@ -61,7 +62,7 @@ const ApplicationForm = () => {
         email: "",
         phoneNumber: "",
         portfolio: "",
-        personalWebsite: [''],
+        personalWebsite: [""],
         selfIntroduction: "",
       },
     });
@@ -116,54 +117,61 @@ const ApplicationForm = () => {
       if (storedDetailJob) {
         setState({ detailJob: JSON.parse(storedDetailJob) });
       }
+      setState({ isLoading: false });
     }
-    setState({ isLoading: false});
   }, []);
 
   useUpdateEffect(() => {
-    if (!state.isLoading) {
       createIntitialData();
-    }
   }, [state.detailJob]);
 
+  console.log('test1', newForm.current)
 
   return (
-    <div className="background">
-      <div className="header">
-        <ButtonComponent
-          className="back-btn"
-          title="Application"
-          type="link"
-          onClick={onBackToHome}
-          icon={<ArrowLeft size={24} />}
-          iconPosition="start"
-        />
-      </div>
-      {!state.isLoading ? <span>Loading</span> :
-      <div className="content">
-        <div className="switch-component switch-background">
-          <div
-            className={classNames("switch-item", state.step === 1 && "active")}
-          >
-            <div className="switch-item-index">
-              {state.step === 2 ? (
-                <Image src={CheckIcon} alt="check-icon"/>
-              ) : (
-                1
-              )}
-            </div>
-            <div className="switch-item-title">Negotiable</div>
-          </div>
-          <div
-            className={classNames("switch-item", state.step === 2 && "active")}
-          >
-            <div className="switch-item-index">2</div>
-            <div className="switch-item-title">Resume</div>
-          </div>
+    <>
+      <Loading isLoading={state.isLoading} />
+      <div className="background">
+        <div className="header">
+          <ButtonComponent
+            className="back-btn"
+            title="Application"
+            type="link"
+            onClick={onBackToHome}
+            icon={<ArrowLeft size={24} />}
+            iconPosition="start"
+          />
         </div>
-        {renderStep(state.step)}
-      </div>}
-    </div>
+        <div className="content">
+          <div className="switch-component switch-background">
+            <div
+              className={classNames(
+                "switch-item",
+                state.step === 1 && "active"
+              )}
+            >
+              <div className="switch-item-index">
+                {state.step === 2 ? (
+                  <Image src={CheckIcon} alt="check-icon" />
+                ) : (
+                  1
+                )}
+              </div>
+              <div className="switch-item-title">Negotiable</div>
+            </div>
+            <div
+              className={classNames(
+                "switch-item",
+                state.step === 2 && "active"
+              )}
+            >
+              <div className="switch-item-index">2</div>
+              <div className="switch-item-title">Resume</div>
+            </div>
+          </div>
+          {renderStep(state.step)}
+        </div>
+      </div>
+    </>
   );
 };
 
