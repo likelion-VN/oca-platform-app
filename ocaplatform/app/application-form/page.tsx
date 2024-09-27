@@ -27,7 +27,7 @@ const ApplicationForm = () => {
     step: 1,
     detailJob: {},
     checked: false,
-    isOpenConfirm: false,
+    isLoading: true,
   });
 
   const createIntitialData = () => {
@@ -111,17 +111,21 @@ const ApplicationForm = () => {
   };
 
   useEffect(() => {
-    const storedDetailJob = sessionStorage.getItem("detailJob");
-    if (storedDetailJob) {
-      setState({ detailJob: JSON.parse(storedDetailJob) });
+    if (typeof window !== "undefined") {
+      const storedDetailJob = sessionStorage.getItem("detailJob");
+      if (storedDetailJob) {
+        setState({ detailJob: JSON.parse(storedDetailJob) });
+      }
     }
+    setState({ isLoading: false});
   }, []);
 
-  console.log('test form',  newForm.current)
-
   useUpdateEffect(() => {
-    createIntitialData();
+    if (!state.isLoading) {
+      createIntitialData();
+    }
   }, [state.detailJob]);
+
 
   return (
     <div className="background">
@@ -135,6 +139,7 @@ const ApplicationForm = () => {
           iconPosition="start"
         />
       </div>
+      {!state.isLoading ? <span>Loading</span> :
       <div className="content">
         <div className="switch-component switch-background">
           <div
@@ -156,8 +161,8 @@ const ApplicationForm = () => {
             <div className="switch-item-title">Resume</div>
           </div>
         </div>
-        {!_.isEmpty(state.detailJob) && renderStep(state.step)}
-      </div>
+        {renderStep(state.step)}
+      </div>}
     </div>
   );
 };

@@ -32,45 +32,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     accept: ".doc,.docx,.pdf" ,
     fileList: state.listAttachment,
     beforeUpload: async () => false,
-    // onDrop: (e) => {
-    //   let hasInvalidLength = false;
-    //   let hasInvalidTypeFile = false;
-    //   let hasOversizeFile = false;
-    //   let hasValidFile = false;
-
-    //   const fileList = e.dataTransfer.files;
-    //   if (fileList.length > 5) {
-    //     hasInvalidLength = true;
-    //   }
-
-    //   _.forEach(fileList, (file) => {
-    //     const fileExt = `.${file.name.split('.').pop()}`;
-    //     if (!ACCEPT_FILE_TYPES.includes(fileExt.toLowerCase())) {
-    //       hasInvalidTypeFile = true;
-    //     } else if (file.size > MAX_FILE_SIZE) {
-    //       hasOversizeFile = true;
-    //     } else {
-    //       hasValidFile = true;
-    //     }
-    //   });
-
-    //   if (hasInvalidLength) {
-    //     dropFileErrorMessage.current = 'Chỉ tải lên tối đa 5 file.';
-    //   } else if (hasInvalidTypeFile) {
-    //     dropFileErrorMessage.current = 'Hệ thống không hỗ trợ định dạng này.';
-    //   } else if (hasOversizeFile) {
-    //     dropFileErrorMessage.current = 'Kích thước tối đa cho mỗi file tải lên là 5MB.';
-    //   } else {
-    //     dropFileErrorMessage.current = null;
-    //   }
-
-    //   //* If has any valid file, onChange will be called
-    //   //* If not, show error message
-    //   if (!hasValidFile && dropFileErrorMessage.current) {
-    //     message.error(dropFileErrorMessage.current);
-    //     dropFileErrorMessage.current = null;
-    //   }
-    // },
     // onChange: (info) => {
     //   const {
     //     file,
@@ -88,7 +49,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     //     const fileExt = `.${file.name.split('.').pop()}`;
     //     return !ACCEPT_FILE_TYPES.includes(fileExt.toLowerCase());
     //   });
-    //   const hasOversizeFile = fileList.find((file) => file.size > MAX_FILE_SIZE);
+    //   const hasOversizeFile = fileList.find((file: any) => file.size > MAX_FILE_SIZE);
 
     //   if (fileIndex === fileList.length - 1) {
     //     //* Case: has an invalid file while dropping files
@@ -98,9 +59,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     //       return;
     //     }
 
-    //     if (fileList.length > 5) {
-    //       chosseFileErrorMessage.current = t`Chỉ tải lên tối đa 5 file.`;
-    //     } else if (hasInvalidTypeFile) {
+    //     if (hasInvalidTypeFile) {
     //       chosseFileErrorMessage.current = t`Hệ thống không hỗ trợ định dạng này.`;
     //     } else if (hasOversizeFile) {
     //       chosseFileErrorMessage.current = t`Kích thước tối đa cho mỗi file tải lên là 5MB.`;
