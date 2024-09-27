@@ -84,8 +84,10 @@ jobs:
           envs: IMAGE,CONTAINER_NAME
           script: |
             echo "Deploying $IMAGE"
-            docker pull $IMAGE
             docker stop $CONTAINER_NAME || true
             docker rm $CONTAINER_NAME || true
+            docker system prune -a -f
+            docker volume prune -f
+            docker pull $IMAGE
             docker run -d --name $CONTAINER_NAME -p 80:3000 -v nextjs_data:/app/data $IMAGE
-            docker system prune -f --volumes
+            df -h /
