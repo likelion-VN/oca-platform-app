@@ -5,6 +5,7 @@ import ButtonComponent from "@/app/components/button/button";
 import InputDefault from "@/app/components/input/inputDefault/inputDefault";
 import useMergeState from "@/app/utils/customHook/useMergeState";
 import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
+import { Upload, UploadProps } from "antd";
 import classNames from "classnames";
 import _ from "lodash";
 import { ArrowLeft, Plus, PlusCircle, XCircle } from "phosphor-react";
@@ -24,6 +25,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   const [state, setState] = useMergeState({
     isAddMoreEnabled: false,
   });
+
+  const  uploadProps: UploadProps = {
+    
+  }
 
   const handleInputChange = (
     keyValue: string,
@@ -86,6 +91,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         </div>
       </div>
       <div className="form-application">
+        <Upload {...uploadProps}>
         <div className="resume">
           <div className="resume-title">Resume</div>
           <div className="resume-subtitle">
@@ -106,6 +112,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
             </div>
           </div>
         </div>
+        </Upload >
         <InputDefault
           value={state.email}
           title="Email"

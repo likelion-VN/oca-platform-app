@@ -6,11 +6,10 @@ import InputPrefix from "@/app/components/input/inputPrefix/inputPrefix";
 import ModalComponent from "@/app/components/modal/modal";
 import { WorkTypeOptions } from "@/app/constants/selectOptions";
 import useMergeState from "@/app/utils/customHook/useMergeState";
-import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
 import { formatDate } from "@/app/utils/formatter";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface NegotiableFormProps {
   defaultData: any;
@@ -53,13 +52,11 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     handleClick({ step1: state }, true);
   };
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     setState(defaultData);
   }, [defaultData]);
 
-  useUpdateEffect(() => {
-    console.log('test', state)
-  }, [state])
+
 
   return (
     <>
@@ -108,16 +105,16 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
       </div>
       <div className="form-application">
         <InputPrefix
-          value={String(state.jobTitle)}
+          value={state.jobTitle}
           title="Job Title"
           subTitle="(Negotiable)"
-          valuePrefix={state.currentJobTitle}
+          valuePrefix={defaultData.currentJobTitle}
           type="input"
           onChange={(e) => handleInputChange("jobTitle", e)}
         />
         <InputPrefix
           title="Job Type"
-          valuePrefix={state.currentJobType}
+          valuePrefix={defaultData.currentJobType}
           type="input"
           disabled
         />
