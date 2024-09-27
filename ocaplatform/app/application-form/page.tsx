@@ -117,7 +117,7 @@ const ApplicationForm = () => {
     }
   }, []);
 
-  console.log('test form',  state.detailJob)
+  console.log('test form',  newForm.current)
 
   useUpdateEffect(() => {
     createIntitialData();
@@ -156,7 +156,7 @@ const ApplicationForm = () => {
             <div className="switch-item-title">Resume</div>
           </div>
         </div>
-        {!_.isEmpty(newForm.current) && renderStep(state.step)}
+        {!_.isEmpty(state.detailJob) && renderStep(state.step)}
       </div>
     </div>
   );
