@@ -156,7 +156,7 @@ const ApplicationForm = () => {
             <div className="switch-item-title">Resume</div>
           </div>
         </div>
-        {renderStep(state.step)}
+        {!_.isEmpty(newForm.current) && renderStep(state.step)}
       </div>
     </div>
   );
