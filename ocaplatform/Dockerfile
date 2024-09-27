@@ -22,7 +22,7 @@ COPY --from=builder /app/next.config.mjs ./
 COPY --from=builder /app/tsconfig.json ./
 
 # Install production dependencies
-RUN npm ci --only=production
+RUN npm ci
 
 EXPOSE 3000
 
