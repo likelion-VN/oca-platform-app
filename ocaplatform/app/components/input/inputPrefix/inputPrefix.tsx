@@ -112,8 +112,9 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               format="MM/DD/YYYY"
               style={{
                 width: "100%",
-                paddingLeft: "104px",
+                paddingLeft: "93px",
                 borderRadius: "4px",
+                height: "40px"
               }}
               placeholder=""
               onChange={handleDateChange}

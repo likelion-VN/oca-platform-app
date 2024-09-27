@@ -117,6 +117,8 @@ const ApplicationForm = () => {
     }
   }, []);
 
+  console.log('test form',  state.detailJob)
+
   useUpdateEffect(() => {
     createIntitialData();
   }, [state.detailJob]);

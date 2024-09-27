@@ -34,6 +34,9 @@
     &-input {
       color: $primary;
       font-weight: 400;
+      input {
+        font-size: 14px;
+      }
     }
   }
 }

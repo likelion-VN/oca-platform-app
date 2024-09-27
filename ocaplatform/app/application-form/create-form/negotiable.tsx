@@ -6,10 +6,11 @@ import InputPrefix from "@/app/components/input/inputPrefix/inputPrefix";
 import ModalComponent from "@/app/components/modal/modal";
 import { WorkTypeOptions } from "@/app/constants/selectOptions";
 import useMergeState from "@/app/utils/customHook/useMergeState";
+import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
 import { formatDate } from "@/app/utils/formatter";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import React, { useEffect } from "react";
+import React from "react";
 
 interface NegotiableFormProps {
   defaultData: any;
@@ -52,10 +53,11 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     handleClick({ step1: state }, true);
   };
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     setState(defaultData);
   }, [defaultData]);
 
+  console.log('test', defaultData)
 
 
   return (
