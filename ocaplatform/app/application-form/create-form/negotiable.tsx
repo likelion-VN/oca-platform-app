@@ -57,6 +57,10 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState(defaultData);
   }, [defaultData]);
 
+  useUpdateEffect(() => {
+    console.log('test', state)
+  }, [state])
+
   return (
     <>
       <ModalComponent
@@ -104,7 +108,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
       </div>
       <div className="form-application">
         <InputPrefix
-          value={state.jobTitle}
+          value={String(state.jobTitle)}
           title="Job Title"
           subTitle="(Negotiable)"
           valuePrefix={state.currentJobTitle}

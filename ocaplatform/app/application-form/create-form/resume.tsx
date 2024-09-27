@@ -7,7 +7,7 @@ import useMergeState from "@/app/utils/customHook/useMergeState";
 import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
 import classNames from "classnames";
 import _ from "lodash";
-import { ArrowLeft, Plus, XCircle } from "phosphor-react";
+import { ArrowLeft, Plus, PlusCircle, XCircle } from "phosphor-react";
 import React from "react";
 
 interface ResumeFormProps {
@@ -88,7 +88,23 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
       <div className="form-application">
         <div className="resume">
           <div className="resume-title">Resume</div>
-          <div className="resume-subtitle">Upload at least two tailored resumes to match the specific requirements of each job you apply for.</div>
+          <div className="resume-subtitle">
+            Upload at least two tailored resumes to match the specific
+            requirements of each job you apply for.
+          </div>
+          <div className="upload-btn">
+            <div className="upload-btn-content">
+              <div className="name-btn">
+                <span>
+                  <PlusCircle size={24} color="#ff7710" weight="fill" />
+                </span>
+                Upload Resume
+              </div>
+              <div className="subname-btn">
+                .doc.dox and .pdf files that are less than 2MB in size
+              </div>
+            </div>
+          </div>
         </div>
         <InputDefault
           value={state.email}

@@ -123,6 +123,41 @@
           color: $grey;
           margin-top: 6px;
         }
+        .upload-btn {
+          border: 2px dashed $neutral;
+          border-radius: 4px;
+          background: $white-smokes;
+          margin-top: 12px;
+          &:hover {
+            cursor: pointer;
+          }
+          &-content {
+            display: flex;
+            margin: 17px 0;
+            flex-direction: column;
+            align-items: center;
+            .name-btn {
+              display: flex;
+              align-items: center;
+              color: $orange;
+              font-size: 14px;
+              line-height: 20px;
+              font-weight: 600;
+              margin-bottom: 6px;
+              span {
+                display: flex;
+                align-items: center;
+                margin-right: 4px;
+              }
+            }
+            .subname-btn {
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 16px;
+              color: $suva-grey;
+            }
+          }
+        }
       }
       .multiple-input {
         display: flex;
