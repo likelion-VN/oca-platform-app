@@ -49,6 +49,7 @@ import { RequestHomePageBody } from "../../interface/home";
 import "./home.s.scss";
 
 const HomePage: React.FC = () => {
+  // const dispatch = useDispatch();
   const router = useRouter();
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
@@ -209,6 +210,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleOnclick = () => {
+    // dispatch(setDetailJob(state.jobDetail))
     sessionStorage.setItem('detailJob', JSON.stringify({...state.jobDetail, isOpenModal: true}));
     router.push("./application-form");
   };

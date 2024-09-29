@@ -23,7 +23,10 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   handleClick,
   handleCancel,
 }) => {
-  const [state, setState] = useMergeState({});
+
+  // const detailJob = useSelector((state: any) => state.detailJob )
+  const [state, setState] = useMergeState({
+  });
 
   const handleInputChange = (
     keyValue: string,
@@ -56,9 +59,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   useUpdateEffect(() => {
     setState(defaultData);
   }, [defaultData]);
-
-  console.log('test2', defaultData);
-  console.log('test3', state)
 
   return (
     <>

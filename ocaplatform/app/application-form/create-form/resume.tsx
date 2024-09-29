@@ -3,13 +3,30 @@
 
 import ButtonComponent from "@/app/components/button/button";
 import InputDefault from "@/app/components/input/inputDefault/inputDefault";
+import RadioCustom from "@/app/components/radio/radioCustom";
+import { ACCEPT_FILE_TYPES, MAX_FILE_SIZE } from "@/app/constants";
 import useMergeState from "@/app/utils/customHook/useMergeState";
 import useUpdateEffect from "@/app/utils/customHook/useUpdateEffect";
-import { Upload, UploadProps } from "antd";
+import { formatDate } from "@/app/utils/formatter";
+import {
+  EllipsisOutlined,
+  EyeOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import {
+  Card,
+  Dropdown,
+  List,
+  Menu,
+  MenuProps,
+  message,
+  Upload,
+  UploadProps,
+} from "antd";
 import classNames from "classnames";
 import _ from "lodash";
 import { ArrowLeft, Plus, PlusCircle, XCircle } from "phosphor-react";
-import React from "react";
+import React, { useRef } from "react";
 
 interface ResumeFormProps {
   defaultData: any;
@@ -22,58 +39,38 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   handleClick,
   handleCancel,
 }) => {
+  const dataAttachment = useRef<any[]>([]);
+  const chosseFileErrorMessage = useRef<string | null>(null);
+  const dropFileErrorMessage = useRef<string | null>(null);
   const [state, setState] = useMergeState({
     isAddMoreEnabled: false,
     listAttachment: [],
+    attachments: undefined,
   });
 
-  const  uploadProps: UploadProps = {
-    name: 'file',
-    accept: ".doc,.docx,.pdf" ,
-    fileList: state.listAttachment,
-    beforeUpload: async () => false,
-    // onChange: (info) => {
-    //   const {
-    //     file,
-    //     fileList,
-    //   } = info;
+  const resumes = [
+    {
+      name: "resume_1_2024.pdf",
+      uploaded: "Uploaded on 08/22/2024",
+      isSelected: false,
+    },
+    {
+      name: "resume_2_2023.pdf",
+      uploaded: "Last use on 08/22/2024",
+      isSelected: true,
+    },
+  ];
 
-    //   //* Case: remove file
-    //   if (file.status === 'removed') {
-    //     handleChangeAttachment(fileList);
-    //     return;
-    //   }
-
-    //   const fileIndex = fileList.findIndex((item) => item.uid === file.uid);
-    //   const hasInvalidTypeFile = fileList.find((file) => {
-    //     const fileExt = `.${file.name.split('.').pop()}`;
-    //     return !ACCEPT_FILE_TYPES.includes(fileExt.toLowerCase());
-    //   });
-    //   const hasOversizeFile = fileList.find((file: any) => file.size > MAX_FILE_SIZE);
-
-    //   if (fileIndex === fileList.length - 1) {
-    //     //* Case: has an invalid file while dropping files
-    //     if (dropFileErrorMessage.current) {
-    //       message.error(dropFileErrorMessage.current);
-    //       dropFileErrorMessage.current = null;
-    //       return;
-    //     }
-
-    //     if (hasInvalidTypeFile) {
-    //       chosseFileErrorMessage.current = t`Hệ thống không hỗ trợ định dạng này.`;
-    //     } else if (hasOversizeFile) {
-    //       chosseFileErrorMessage.current = t`Kích thước tối đa cho mỗi file tải lên là 5MB.`;
-    //     }
-
-    //     //* Case: has an invalid file while choosing files
-    //     if (chosseFileErrorMessage.current) {
-    //       message.error(chosseFileErrorMessage.current);
-    //       chosseFileErrorMessage.current = null;
-    //     }
-    //     handleChangeAttachment(fileList, true);
-    //   }
-    // },
-  }
+  const menu = (
+    <Menu className="menu-dropdown">
+      <Menu.Item key="0">
+        <ButtonComponent title="Upload new resume" icon={<UploadOutlined />} />
+      </Menu.Item>
+      <Menu.Item key="1">
+        <ButtonComponent title="View resume" icon={<EyeOutlined />} />
+      </Menu.Item>
+    </Menu>
+  );
 
   const handleInputChange = (
     keyValue: string,
@@ -89,6 +86,118 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     const personalWebsiteCloned = _.cloneDeep(state.personalWebsite);
     personalWebsiteCloned[index] = e.target.value;
     setState({ personalWebsite: personalWebsiteCloned });
+  };
+
+  const handleChangeUpload = (name: string, value: any) => {
+    setState({ [name]: value });
+  };
+
+  const handleChangeAttachment = async (fileList: any, isUploading = false) => {
+    let filesUpload = fileList;
+    if (isUploading) {
+      filesUpload = _.filter(fileList, (file) => {
+        const fileExt = `.${file.name.split(".").pop()?.toLowerCase()}`;
+        return ACCEPT_FILE_TYPES.includes(fileExt) && file.size < MAX_FILE_SIZE;
+      }).slice(0, 2);
+      _.forEach(filesUpload, (file) => {
+        const { originFileObj } = file;
+        dataAttachment.current = [
+          ...dataAttachment.current,
+          {
+            originFileObj,
+            fileName: originFileObj.name,
+          },
+        ];
+      });
+    } else {
+      //* fileList only contains removed file
+      dataAttachment.current = fileList.map((file: any) => {
+        const { originFileObj } = file;
+        return {
+          originFileObj,
+          fileName: originFileObj.name,
+        };
+      });
+    }
+    handleChangeUpload(
+      "listAttachment",
+      _.map(filesUpload, (file) => ({ ...file, isSelected: false }))
+    );
+    const listFileName = _.map(filesUpload, (item) => item.name);
+    const attachments = _.filter(dataAttachment.current, (item) =>
+      listFileName.includes(item.fileName)
+    );
+    handleChangeUpload("attachments", attachments);
+  };
+
+  const uploadProps: UploadProps = {
+    name: "file",
+    accept: ".doc,.docx,.pdf",
+    // fileList: state.listAttachment,
+    beforeUpload: () => false,
+    onDrop: (e) => {
+      let hasInvalidTypeFile = false;
+      let hasOversizeFile = false;
+      let hasValidFile = false;
+
+      const fileList = e.dataTransfer.files;
+
+      _.forEach(fileList, (file) => {
+        const fileExt = `.${file.name.split(".").pop()}`;
+        if (!ACCEPT_FILE_TYPES.includes(fileExt.toLowerCase())) {
+          hasInvalidTypeFile = true;
+        } else if (file.size > MAX_FILE_SIZE) {
+          hasOversizeFile = true;
+        } else {
+          hasValidFile = true;
+        }
+      });
+
+      if (hasInvalidTypeFile) {
+        dropFileErrorMessage.current = "File is not in the correct format!";
+      } else if (hasOversizeFile) {
+        dropFileErrorMessage.current = "Maximum size is 2MB.";
+      } else {
+        dropFileErrorMessage.current = null;
+      }
+
+      if (!hasValidFile && dropFileErrorMessage.current) {
+        message.error(dropFileErrorMessage.current);
+        dropFileErrorMessage.current = null;
+      }
+    },
+    onChange: (info) => {
+      const { file, fileList } = info;
+
+      //* Case: remove file
+      if (file.status === "removed") {
+        handleChangeAttachment(fileList);
+        return;
+      }
+
+      const fileIndex = fileList.findIndex((item) => item.uid === file.uid);
+      const hasInvalidTypeFile = fileList.find((file) => {
+        const fileExt = `.${file.name.split(".").pop()}`;
+        return !ACCEPT_FILE_TYPES.includes(fileExt.toLowerCase());
+      });
+      const hasOversizeFile = fileList.find(
+        (file: any) => file.size > MAX_FILE_SIZE
+      );
+
+      if (fileIndex === fileList.length - 1) {
+        if (hasInvalidTypeFile) {
+          chosseFileErrorMessage.current = "File is not in the correct format!";
+        } else if (hasOversizeFile) {
+          chosseFileErrorMessage.current = "Maximum size is 2MB.";
+        }
+
+        if (chosseFileErrorMessage.current) {
+          message.error(chosseFileErrorMessage.current);
+          chosseFileErrorMessage.current = null;
+        }
+        handleChangeAttachment(fileList, true);
+      }
+    },
   };
 
   const handleAddMore = () => {
@@ -118,6 +227,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     handleClick({ step2: state }, true);
   };
 
+  const onClick: MenuProps["onClick"] = (e) => {
+    console.log("click ", e);
+  };
+
   useUpdateEffect(() => {
     setState(defaultData);
   }, [defaultData]);
@@ -136,28 +249,73 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         </div>
       </div>
       <div className="form-application">
-        <Upload {...uploadProps}>
         <div className="resume">
           <div className="resume-title">Resume</div>
           <div className="resume-subtitle">
             Upload at least two tailored resumes to match the specific
             requirements of each job you apply for.
           </div>
-          <div className="upload-btn">
-            <div className="upload-btn-content">
-              <div className="name-btn">
-                <span>
-                  <PlusCircle size={24} color="#ff7710" weight="fill" />
-                </span>
-                Upload Resume
-              </div>
-              <div className="subname-btn">
-                .doc.dox and .pdf files that are less than 2MB in size
+          <div
+            className={classNames(
+              "resume-list",
+              state.listAttachment.length === 0 && "visible"
+            )}
+          >
+            <List
+              itemLayout="horizontal"
+              dataSource={state.listAttachment}
+              renderItem={(resume: any) => (
+                <List.Item>
+                  <Card className={classNames(resume.isSelected && "active")}>
+                    <div className="resume-item">
+                      <div className="resume-item-left">
+                        <RadioCustom checked={resume.isSelected} />
+                        <div className="resume-description">
+                          <div className="resume-title">{resume.name}</div>
+                          <div className="resume-modified">
+                            {`Uploaded on ${formatDate(
+                              resume.lastModifiedDate
+                            )}`}
+                          </div>
+                        </div>
+                      </div>
+                      <Dropdown
+                        overlay={menu}
+                        trigger={["click"]}
+                        placement="bottomRight"
+                      >
+                        <ButtonComponent
+                          className="more-action-btn"
+                          icon={<EllipsisOutlined />}
+                        />
+                      </Dropdown>
+                    </div>
+                  </Card>
+                </List.Item>
+              )}
+            />
+          </div>
+          <Upload {...uploadProps}>
+            <div
+              className={classNames(
+                "upload-btn",
+                !(state.listAttachment.length < 2) && "visible"
+              )}
+            >
+              <div className="upload-btn-content">
+                <div className="name-btn">
+                  <span>
+                    <PlusCircle size={24} color="#ff7710" weight="fill" />
+                  </span>
+                  Upload Resume
+                </div>
+                <div className="subname-btn">
+                  .doc, .docx and .pdf files that are less than 2MB in size
+                </div>
               </div>
             </div>
-          </div>
+          </Upload>
         </div>
-        </Upload >
         <InputDefault
           value={state.email}
           title="Email"
