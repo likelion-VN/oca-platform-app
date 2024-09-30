@@ -10,7 +10,6 @@ import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import Loading from "../../components/loading/loading";
 import useMergeState from "../../utils/customHook/useMergeState";
-import useUpdateEffect from "../../utils/customHook/useUpdateEffect";
 import "./applicationForm.s.scss";
 import NegotiableForm from "./form/negotiable";
 import ResumeForm from "./form/resume";
@@ -71,6 +70,7 @@ const ApplicationForm = () => {
         selfIntroduction: "",
       },
     });
+    setIsLoading(false);
     console.log('testtest')
   };
 
@@ -121,14 +121,10 @@ const ApplicationForm = () => {
       }
     }
   };
-
+  
   useEffect(() => {
-    setIsLoading(false);
-    console.log('testtesttest')
-  }, [])
-
-  useUpdateEffect(() => {
     createIntitialData();
+    console.log('testtesttest')
   }, [state.detailJob]);
 
   console.log("test1", newForm.current);
