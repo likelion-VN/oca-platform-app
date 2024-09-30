@@ -71,8 +71,8 @@ jobs:
           envs: IMAGE,CONTAINER_NAME
           script: |
             echo "Deploying $IMAGE"
-            # docker stop $CONTAINER_NAME || true
-            # docker rm $CONTAINER_NAME || true
+            docker stop $CONTAINER_NAME || true
+            docker rm $CONTAINER_NAME || true
             docker system prune -a -f
             docker volume prune -f
             docker pull $IMAGE
