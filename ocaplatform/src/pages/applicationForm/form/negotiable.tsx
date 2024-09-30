@@ -14,13 +14,17 @@ import { formatDate } from "../../../utils/formatter";
 interface NegotiableFormProps {
   defaultData: any;
   handleClick: (stepData: any, isClickNext: boolean) => void;
+  handleOpenModal: (isOpenModal: boolean) => void;
   handleCancel: () => void;
+  isOpenModal: boolean;
 }
 
 const NegotiableForm: React.FC<NegotiableFormProps> = ({
   defaultData,
   handleClick,
+  handleOpenModal,
   handleCancel,
+  isOpenModal,
 }) => {
 
   // const detailJob = useSelector((state: any) => state.detailJob )
@@ -47,10 +51,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState({ [keyValue]: value });
   };
 
-  const onClickOpenModal = (isOpenModal: boolean) => {
-    setState({ isOpenModal });
-  };
-
   const handleNext = () => {
     handleClick({ step1: state }, true);
   };
@@ -62,9 +62,9 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   return (
     <>
       <ModalComponent
-        open={state.isOpenModal}
-        onOk={() => onClickOpenModal(false)}
-        onCancel={() => onClickOpenModal(false)}
+        open={isOpenModal}
+        onOk={() => handleOpenModal(false)}
+        onCancel={() => handleOpenModal(false)}
         centered
         footer={
           <div className="modal-footer-custom">
@@ -73,7 +73,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
               title="Got It"
               size="large"
               type="primary"
-              onClick={() => onClickOpenModal(false)}
+              onClick={() => handleOpenModal(false)}
             />
           </div>
         }
@@ -99,7 +99,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           <span className="question-btn">
             <QuestionCircleOutlined
               style={{ color: "#0A5CD8", cursor: "pointer" }}
-              onClick={() => onClickOpenModal(true)}
+              onClick={() => handleOpenModal(true)}
             />
           </span>
         </div>

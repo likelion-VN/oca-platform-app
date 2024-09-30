@@ -29,6 +29,7 @@ const ApplicationForm = () => {
     detailJob: jobDetail,
     checked: false,
     isLoading: true,
+    isOpenModal: true,
   });
 
   console.log("test data", jobDetail, state.detailJob);
@@ -68,7 +69,7 @@ const ApplicationForm = () => {
         selfIntroduction: "",
       },
     });
-    setState({ isLoading: false });
+    console.log('testtest')
   };
 
   const onBackToHome = () => {
@@ -90,6 +91,10 @@ const ApplicationForm = () => {
     }
   };
 
+  const handleOpenModal = (isOpenModal: boolean) => {
+    setState({ isOpenModal });
+  };
+
   const renderStep = (step: number) => {
     switch (step) {
       case 2: {
@@ -105,7 +110,9 @@ const ApplicationForm = () => {
         return (
           <NegotiableForm
             defaultData={newForm.current.step1}
+            isOpenModal={state.isOpenModal}
             handleClick={handleClick}
+            handleOpenModal={handleOpenModal}
             handleCancel={onBackToHome}
           />
         );
@@ -115,6 +122,8 @@ const ApplicationForm = () => {
 
   useUpdateEffect(() => {
     createIntitialData();
+    setState({ isLoading: false });
+    console.log('testtesttest')
   }, [state.detailJob]);
 
   console.log("test1", newForm.current);

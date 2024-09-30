@@ -98,16 +98,15 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         };
       });
     }
-    handleChangeUpload(
-      "listAttachment",
-      _.map(filesUpload, (file) => ({ ...file, isSelected: false }))
-    );
+    handleChangeUpload("listAttachment", filesUpload);
+    setState({ selectedResumeUid: filesUpload[filesUpload.length - 1].uid });
     const listFileName = _.map(filesUpload, (item) => item.name);
     const attachments = _.filter(dataAttachment.current, (item) =>
       listFileName.includes(item.fileName)
     );
     handleChangeUpload("attachments", attachments);
   };
+  console.log("test1", state.selectedResumeUid);
 
   const uploadProps: UploadProps = {
     name: "file",
@@ -227,12 +226,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   };
 
   const handleSelectResume = (uid: string) => {
-    const updatedList = state.listAttachment.map((resume: any) =>
-      resume.uid === uid
-        ? { ...resume, isSelected: true }
-        : { ...resume, isSelected: false }
-    );
-    setState({ listAttachment: updatedList, selectedResumeUid: uid });
+    setState({ selectedResumeUid: uid });
   };
 
   useUpdateEffect(() => {
@@ -271,12 +265,12 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
               renderItem={(resume: any) => (
                 <List.Item>
                   <Card
-                    className={classNames(resume.isSelected && "active")}
+                    className={classNames(resume.uid === state.selectedResumeUid && "active")}
                     onClick={() => handleSelectResume(resume.uid)}
                   >
                     <div className="resume-item">
                       <div className="resume-item-left">
-                        <RadioCustom checked={resume.isSelected} />
+                        <RadioCustom checked={resume.uid === state.selectedResumeUid } />
                         <div className="resume-description">
                           <div className="resume-title">{resume.name}</div>
                           <div className="resume-modified">
