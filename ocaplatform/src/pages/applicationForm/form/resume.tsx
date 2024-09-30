@@ -10,7 +10,6 @@ import {
   Dropdown,
   List,
   Menu,
-  MenuProps,
   message,
   Upload,
   UploadProps,
@@ -46,19 +45,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     listAttachment: [],
     attachments: undefined,
   });
-
-  const resumes = [
-    {
-      name: "resume_1_2024.pdf",
-      uploaded: "Uploaded on 08/22/2024",
-      isSelected: false,
-    },
-    {
-      name: "resume_2_2023.pdf",
-      uploaded: "Last use on 08/22/2024",
-      isSelected: true,
-    },
-  ];
 
   const menu = (
     <Menu className="menu-dropdown">
@@ -234,10 +220,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     setState({ listAttachment: updatedList });
   };
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
-  };
-
   useUpdateEffect(() => {
     setState(defaultData);
   }, [defaultData]);
@@ -297,6 +279,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
                         <ButtonComponent
                           className="more-action-btn"
                           icon={<EllipsisOutlined />}
+                          onClick={(e) => e.stopPropagation()}
                         />
                       </Dropdown>
                     </div>

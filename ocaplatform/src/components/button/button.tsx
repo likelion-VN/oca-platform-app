@@ -2,7 +2,7 @@ import { Button } from "antd";
 import React from "react";
 
 interface IPropsButton {
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
   icon?: React.ReactNode;
   className?: string;
   title?: string;

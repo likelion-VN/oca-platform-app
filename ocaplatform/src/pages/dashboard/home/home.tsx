@@ -2,30 +2,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import {
-    EnvironmentOutlined,
-    ExportOutlined,
-    QuestionCircleOutlined,
-    SearchOutlined,
+  EnvironmentOutlined,
+  ExportOutlined,
+  QuestionCircleOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import {
-    AutoComplete,
-    Badge,
-    Button,
-    Input,
-    Skeleton,
-    Space,
-    Tooltip,
+  AutoComplete,
+  Badge,
+  Button,
+  Input,
+  Skeleton,
+  Space,
+  Tooltip,
 } from "antd";
 
 import classNames from "classnames";
 import _ from "lodash";
 import {
-    BookmarkSimple,
-    Clock,
-    Laptop,
-    MapPin,
-    SlidersHorizontal,
-    UsersFour,
+  BookmarkSimple,
+  Clock,
+  Laptop,
+  MapPin,
+  SlidersHorizontal,
+  UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -33,23 +33,23 @@ import { CalendarDotIcon } from "../../../assets/svg";
 import ButtonComponent from "../../../components/button/button";
 import SelectCustom from "../../../components/selectCustom/selectCustom";
 import {
-    ApplicationTermsOptions,
-    JobTypeOptions,
-    WorkTypeOptions,
+  ApplicationTermsOptions,
+  JobTypeOptions,
+  WorkTypeOptions,
 } from "../../../constants/selectOptions";
 import { RequestHomePageBody } from "../../../interfaces/home";
 import {
-    fetchAutoComplete,
-    fetchDetailJob,
-    fetchListJob,
-    fetchListLocation,
+  fetchAutoComplete,
+  fetchDetailJob,
+  fetchListJob,
+  fetchListLocation,
 } from "../../../services/home";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import useUpdateEffect from "../../../utils/customHook/useUpdateEffect";
 import {
-    calculateDaysDiff,
-    formatDate,
-    keyFormatter,
+  calculateDaysDiff,
+  formatDate,
+  keyFormatter,
 } from "../../../utils/formatter";
 import "./home.s.scss";
 
@@ -227,7 +227,7 @@ const HomePage: React.FC = () => {
     setState({ searchJob: value });
   };
 
-  const onChangeLocation = (value: string, option: any) => {
+  const onChangeLocation = (_value: string, option: any) => {
     setState({ searchLocation: option.id });
   };
 
@@ -432,7 +432,7 @@ const HomePage: React.FC = () => {
           )}
         >
           {state.isLoadingList
-            ? _.map(new Array(5), (item, index) => (
+            ? _.map(new Array(5), (_item, index) => (
                 <div className="job-card" key={index}>
                   <Skeleton active title={false} paragraph={{ rows: 3 }} />
                 </div>
