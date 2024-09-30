@@ -263,7 +263,7 @@ const HomePage: React.FC = () => {
     getListJob();
   }, []);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       const element = divRef.current;
       if (element) {
@@ -315,7 +315,7 @@ const HomePage: React.FC = () => {
     };
   }, []);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     const { jobType, application, workType } = state;
     const clonedFilter = _.cloneDeep(filter.current);
     const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
