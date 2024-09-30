@@ -1,0 +1,80 @@
+name: VITE for US
+
+on:
+  push:
+    branches:
+      - develop-react
+
+env:
+  AWS_REGION: us-east-2
+  ECR_REPOSITORY: oca-temp-fe
+  CONTAINER_NAME: nextjs-app-container
+
+jobs:
+  check-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+          
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ocaplatform
+        run: |
+          npm ci
+
+      - name: Clear Next.js cache
+        working-directory: ocaplatform
+        run: |
+          rm -rf .next
+
+      - name: Build Next.js application
+        working-directory: ocaplatform
+        run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_US }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_US }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        run: |
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin $(aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }} --query 'repositories[0].repositoryUri' --output text)
+          echo "::set-output name=registry::$(aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }} --query 'repositories[0].repositoryUri' --output text | cut -d'/' -f1)"
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        working-directory: ocaplatform
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST_US }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY_US }}
+          port: 22
+          envs: IMAGE,CONTAINER_NAME
+          script: |
+            echo "Deploying $IMAGE"
+            # docker stop $CONTAINER_NAME || true
+            # docker rm $CONTAINER_NAME || true
+            docker system prune -a -f
+            docker volume prune -f
+            docker pull $IMAGE
+            docker run -d --name $CONTAINER_NAME -p 80:3000 -v nextjs_data:/app/data $IMAGE
+            df -h /
