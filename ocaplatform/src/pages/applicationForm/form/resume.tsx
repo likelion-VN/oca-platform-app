@@ -5,17 +5,10 @@ import {
   EyeOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import {
-  Card,
-  Dropdown,
-  List,
-  Menu,
-  message,
-  Upload,
-  UploadProps,
-} from "antd";
+import { Card, Dropdown, List, Menu, message, Upload, UploadProps } from "antd";
 import classNames from "classnames";
 import _ from "lodash";
+import moment from "moment";
 import { ArrowLeft, Plus, PlusCircle, XCircle } from "phosphor-react";
 import React, { useRef } from "react";
 import ButtonComponent from "../../../components/button/button";
@@ -44,18 +37,8 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     isAddMoreEnabled: false,
     listAttachment: [],
     attachments: undefined,
+    selectedResumeUid: null,
   });
-
-  const menu = (
-    <Menu className="menu-dropdown">
-      <Menu.Item key="0">
-        <ButtonComponent title="Upload new resume" icon={<UploadOutlined />} />
-      </Menu.Item>
-      <Menu.Item key="1">
-        <ButtonComponent title="View resume" icon={<EyeOutlined />} />
-      </Menu.Item>
-    </Menu>
-  );
 
   const handleInputChange = (
     keyValue: string,
@@ -75,6 +58,17 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
 
   const handleChangeUpload = (name: string, value: any) => {
     setState({ [name]: value });
+  };
+
+  const handleFileUpload = (file: any) => {
+    if (!state.selectedResumeUid) return;
+
+    const updatedList = state.listAttachment.map((resume: any) =>
+      resume.uid === state.selectedResumeUid
+        ? { name: file.name, lastModifiedDate: moment() } // Replace the file name and date
+        : resume
+    );
+    setState({ listAttachment: updatedList, selectedResumeUid: null });
   };
 
   const handleChangeAttachment = async (fileList: any, isUploading = false) => {
@@ -118,7 +112,11 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   const uploadProps: UploadProps = {
     name: "file",
     accept: ".doc,.docx,.pdf",
-    beforeUpload: () => false,
+    beforeUpload: (file) => {
+      handleFileUpload(file);
+      return false;
+    },
+    showUploadList: false,
     onDrop: (e) => {
       let hasInvalidTypeFile = false;
       let hasOversizeFile = false;
@@ -184,6 +182,23 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     },
   };
 
+  const menu = (resumeUid: string) => (
+    <Menu className="menu-dropdown">
+      <Menu.Item key="0">
+        <Upload {...uploadProps}>
+          <ButtonComponent
+            title="Upload new resume"
+            icon={<UploadOutlined />}
+            onClick={() => handleSelectResume(resumeUid)}
+          />
+        </Upload>
+      </Menu.Item>
+      <Menu.Item key="1">
+        <ButtonComponent title="View resume" icon={<EyeOutlined />} />
+      </Menu.Item>
+    </Menu>
+  );
+
   const handleAddMore = () => {
     const { personalWebsite } = state;
     if (personalWebsite.length < 3) {
@@ -217,7 +232,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         ? { ...resume, isSelected: true }
         : { ...resume, isSelected: false }
     );
-    setState({ listAttachment: updatedList });
+    setState({ listAttachment: updatedList, selectedResumeUid: uid });
   };
 
   useUpdateEffect(() => {
@@ -272,7 +287,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
                         </div>
                       </div>
                       <Dropdown
-                        overlay={menu}
+                        overlay={menu(resume.uid)}
                         trigger={["click"]}
                         placement="bottomRight"
                       >
@@ -291,7 +306,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           <Upload
             {...uploadProps}
             className={classNames(
-              state.listAttachment.length !== 0 && "visible"
+              !(state.listAttachment.length < 2) && "visible"
             )}
           >
             <div

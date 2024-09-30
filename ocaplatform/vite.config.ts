@@ -22,5 +22,13 @@ export default defineConfig({
       },
     },
     chunkSizeWarningLimit: 1000, // Set this to your preferred chunk size limit in KB
+    minify: "terser",
+    terserOptions: {
+      keep_classnames: true,
+      keep_fnames: true,
+    },
+  },
+  ssr: {
+    noExternal: ['react', 'react-dom']
   },
 });
