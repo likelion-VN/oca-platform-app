@@ -1,0 +1,366 @@
+@import "../../styles/variables.scss";
+
+.background {
+  font-family: "Inter";
+  .header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $neutral;
+    height: 64px;
+    .back-btn {
+      display: flex;
+      align-self: center;
+      padding: 18px 24px;
+      color: $neutral-primary !important;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: calc(100vh - 64px);
+    .switch-background {
+      height: 48px;
+      border-radius: 100px;
+      background: $white-smokes;
+      padding: 0 4px;
+    }
+    .switch-component {
+      display: flex;
+      align-items: center;
+      margin-top: 24px;
+      font-weight: 600;
+      line-height: 16px;
+      font-size: 12px;
+      .switch-item {
+        height: 38px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        border-radius: 100px;
+        font-size: 14px;
+        &-index {
+          display: flex;
+          color: $white;
+          background-color: $suva-grey;
+          border-radius: 50%;
+          align-items: center;
+          justify-content: center;
+          height: 24px;
+          width: 24px;
+          margin-right: 6px;
+        }
+        &-title {
+          color: $suva-grey;
+        }
+        &.active {
+          background-color: $white;
+          .switch-item-index {
+            display: flex;
+            color: $white;
+            background-color: $neutral-primary;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            width: 24px;
+            margin-right: 6px;
+          }
+          .switch-item-title {
+            color: $neutral-primary;
+          }
+        }
+      }
+    }
+    &-title {
+      margin: 24px 0;
+      text-align: center;
+      .title-step {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 32px;
+        margin-bottom: 8px;
+        color: $neutral-primary;
+      }
+      .subtitle-step {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: $suva-grey;
+        .question-btn {
+          margin-left: 5px;
+        }
+      }
+    }
+    .form-application {
+      display: flex;
+      flex-direction: column;
+      row-gap: 24px;
+      border: 1px solid $neutral;
+      padding: 32px 40px;
+      border-radius: 12px;
+      width: 656px;
+      height: calc(100vh - 333px);
+      overflow-y: auto;
+      .double-input {
+        display: flex;
+        column-gap: 24px;
+        .input-prefix {
+          flex: 1;
+        }
+      }
+      .resume {
+        &-title {
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 16px;
+        }
+        &-subtitle {
+          font-size: 12px;
+          font-weight: 400;
+          color: $grey;
+          margin-top: 6px;
+        }
+        .resume-list {
+          display: flex;
+          margin-top: 12px;
+          .ant-list {
+            width: 100%;
+            .ant-list-items {
+              display: flex;
+              flex-direction: column;
+              row-gap: 12px;
+              .ant-list-item {
+                border-bottom: none;
+                padding: 0;
+                cursor: pointer;
+                .ant-card {
+                  border-color: $neutral;
+                  width: 100%;
+                  border-radius: 4px !important;
+                  &:hover {
+                    border-color: $orange;
+                  }
+                  .ant-card-body {
+                    padding: 12px 14px;
+                    .resume-item {
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                      &-left {
+                        display: flex;
+                        align-items: center;
+                        .resume-description {
+                          margin-left: 6px;
+                          .resume-title {
+                            font-size: 14px;
+                            font-weight: 600;
+                            line-height: 20px;
+                          }
+                          .resume-modified {
+                            font-size: 12px;
+                            font-weight: 400;
+                            line-height: 16px;
+                            color: $suva-grey;
+                          }
+                        }
+                      }
+                      .more-action-btn {
+                        height: 14px;
+                        border-color: transparent !important;
+                        box-shadow: unset;
+                        background: transparent;
+                        .ant-wave {
+                          color: transparent;
+                        }
+                      }
+                    }
+                  }
+                  &.active {
+                    background: $pale-orange;
+                    border-color: $orange;
+                  }
+                }
+
+            
+              }
+            }
+          }
+        }
+        .ant-upload {
+          width: 100%;
+          .upload-btn {
+            border: 2px dashed $neutral;
+            border-radius: 4px;
+            background: $white-smokes;
+            margin-top: 12px;
+            &:hover {
+              cursor: pointer;
+            }
+            &-content {
+              display: flex;
+              margin: 17px 0;
+              flex-direction: column;
+              align-items: center;
+              .name-btn {
+                display: flex;
+                align-items: center;
+                color: $orange;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 600;
+                margin-bottom: 6px;
+                span {
+                  display: flex;
+                  align-items: center;
+                  margin-right: 4px;
+                }
+              }
+              .subname-btn {
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 16px;
+                color: $suva-grey;
+              }
+            }
+          }
+        }
+      }
+      .multiple-input {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+        &-row {
+          display: flex;
+          column-gap: 16px;
+          .input-default {
+            flex: 1;
+          }
+          .detroy-icon {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+      .add-btn {
+        color: $orange;
+        width: fit-content;
+        text-align: start;
+        padding: 0;
+        font-weight: 600;
+        margin-top: 12px;
+      }
+      .disabled {
+        opacity: 0.4;
+      }
+    }
+  }
+  .action {
+    display: flex;
+    width: 736px;
+    justify-content: space-between;
+    margin: 20px 0;
+    &-left {
+      display: flex;
+      align-self: center;
+      .go-back-btn {
+        color: $neutral-primary !important;
+        padding-right: 0;
+        padding-left: 0;
+      }
+    }
+    &-right {
+      display: flex;
+      column-gap: 24px;
+      .continue-btn,
+      .apply-btn {
+        background: $orange !important;
+      }
+    }
+  }
+}
+
+.ant-modal {
+  .modal-content-custom {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .modal-top {
+    height: 180px;
+    background-image: url("../../assets/gif/negotiable.gif");
+    background-size: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow: hidden;
+  }
+
+  .modal-bottom {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    .title {
+      font-family: "Inter";
+      text-align: center;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 32px;
+      &-content {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: center;
+        color: $suva-grey;
+      }
+    }
+  }
+  .ant-modal-content {
+    padding: 0;
+  }
+  .ant-modal-footer {
+    text-align: center;
+    margin-top: 18px;
+    padding-bottom: 24px;
+    .confirm-btn {
+      background: $orange !important;
+      width: 183px;
+      font-size: 14px;
+      font-family: "Inter";
+    }
+  }
+}
+
+.visible {
+  display: none !important;
+}
+
+.ant-dropdown {
+  &-menu {
+    padding: 0 !important;
+    &-item {
+      padding: 0 !important;
+    }
+    &-title-content {
+      button {
+        width: 100%;
+        border-color: transparent;
+        justify-content: flex-start;
+        border-radius: 0 !important;
+        .ant-wave {
+          color: transparent;
+        }
+        &:hover {
+        border-color: transparent !important;
+        color: unset !important;
+        background-color: $white-smoke !important;
+        }
+      }
+    }
+  }
+}

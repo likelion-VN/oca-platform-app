@@ -1,0 +1,36 @@
+@import "../../styles/variables.scss";
+
+.custom-radio {
+  .ant-radio-inner {
+    width: 18px;
+    height: 18px;
+  }
+
+  .ant-radio-checked {
+    .ant-radio-inner {
+      border-color: $orange !important;
+      background-color: $white !important;
+      &::after {
+        background-color: $orange;
+      }
+    }
+  }
+
+  &:hover {
+    .ant-radio-inner {
+      border-color: $orange !important;
+    }
+  }
+}
+
+.ant-radio-wrapper-checked {
+  &::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background-color: $orange;
+    border-radius: 50%;
+    transform: translate(50%, 50%);
+  }
+}

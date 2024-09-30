@@ -1,0 +1,180 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { AutoComplete, DatePicker, Input, Tooltip } from "antd";
+import { RangePickerProps } from "antd/es/date-picker";
+import TextArea from "antd/es/input/TextArea";
+import _ from "lodash";
+import moment, { Moment } from "moment";
+import React from "react";
+import { Option } from "../../../interfaces";
+import "./inputPrefix.s.scss";
+
+interface IPropsInputPrefix {
+  value?: any;
+  title: string;
+  subTitle?: string;
+  onChange?: (e: any) => void;
+  valuePrefix?: string;
+  disabled?: boolean;
+  type: string;
+  options?: Option[];
+}
+
+const InputPrefix: React.FC<IPropsInputPrefix> = ({
+  value,
+  title,
+  subTitle = "",
+  onChange,
+  valuePrefix,
+  disabled = false,
+  type,
+  options,
+}) => {
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    return current && current < moment().endOf("day");
+  };
+
+  const handleInputChange = (e: any) => {
+    if (onChange) {
+      onChange(e);
+    }
+  };
+
+  const handleDateChange = (date: Moment | null) => {
+    if (onChange) {
+      onChange(date);
+    }
+  };
+
+  const handleSelectChange = (value: string | null) => {
+    if (onChange) {
+      onChange(value);
+    }
+  };
+
+  const renderInput = (type: string) => {
+    switch (type) {
+      case "input":
+        return (
+          <Input
+            value={value}
+            onChange={handleInputChange}
+            size="large"
+            disabled={disabled}
+            allowClear
+            prefix={
+              <span
+                style={{
+                  textDecoration: value && "line-through",
+                  color: value && "#B42318",
+                }}
+              >
+                {valuePrefix}
+              </span>
+            }
+          />
+        );
+      case "text-area":
+        return (
+          <TextArea
+            value={
+              _.isArray(value)
+                ? _.map(value, (item) => item.description).join("\n")
+                : value
+            }
+            onChange={handleInputChange}
+            autoSize={{ minRows: 2, maxRows: 3 }}
+            disabled={disabled}
+          />
+        );
+      case "date":
+        return (
+          <div style={{ position: "relative", width: "100%" }}>
+            {/* Prefix */}
+            <span
+              style={{
+                fontFamily: "Inter",
+                fontWeight: 400,
+                fontSize: 14,
+                position: "absolute",
+                left: 10,
+                top: "50%",
+                transform: "translateY(-50%)",
+                textDecoration: value && "line-through",
+                color: value && "#B42318",
+                zIndex: 2,
+              }}
+            >
+              {valuePrefix}
+            </span>
+            {/* DatePicker */}
+            <DatePicker
+              disabledDate={disabledDate}
+              size="large"
+              format="MM/DD/YYYY"
+              style={{
+                width: "100%",
+                paddingLeft: "93px",
+                borderRadius: "4px",
+                height: "40px",
+              }}
+              placeholder=""
+              onChange={handleDateChange}
+            />
+          </div>
+        );
+      case "select":
+        return (
+          <AutoComplete
+            className="auto-completed-custom"
+            style={{ width: "100%", fontWeight: 400 }}
+            onSelect={handleSelectChange}
+            options={_.map(options, (option) => ({
+              label: option.label,
+              value: option.label,
+              disabled: valuePrefix === option.label,
+            }))}
+            value={value}
+            allowClear
+            onClear={() => handleSelectChange(null)}
+            size="large"
+          >
+            <Input
+              size="large"
+              placeholder=""
+              prefix={
+                <span
+                  style={{
+                    textDecoration: value && "line-through",
+                    color: value && "#B42318",
+                  }}
+                >
+                  {valuePrefix}
+                </span>
+              }
+            />
+          </AutoComplete>
+        );
+      default:
+        return <></>;
+    }
+  };
+
+  return (
+    <div className="input-prefix">
+      <div className="title">
+        {title}
+        <span>
+          <Tooltip
+            title="If you want to make a revised offer, please make adjustments here."
+            placement="right"
+          >
+            {subTitle}
+          </Tooltip>
+        </span>
+      </div>
+      {renderInput(type)}
+    </div>
+  );
+};
+
+export default InputPrefix;

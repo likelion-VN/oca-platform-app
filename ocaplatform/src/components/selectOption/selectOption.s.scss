@@ -1,0 +1,9 @@
+.ant-select {
+  font-family: "Inter";
+  &-selector {
+    border-radius: 4px !important;
+    .ant-select-selection-item {
+      font-weight: 600;
+    }
+  }
+}

@@ -1,0 +1,67 @@
+@import "../../styles/variables.scss";
+
+.ant-menu-inline-collapsed {
+  width: 80px;
+  .ant-menu-item {
+    display: flex;
+    padding-inline: calc(50% - 24px);
+    margin-inline: 0;
+    margin-block: 0;
+    border-radius: 4px;
+    width: 48px;
+    height: 44px;
+    color: #666666;
+    &:first-child {
+      margin: 16px 16px 8px 16px;
+    }
+    &:last-child {
+      margin: 8px 16px 16px 16px;
+      align-items: center;
+      .ant-menu-item-icon {
+        min-width: 16px;
+      }
+    }
+    &:not(:first-child):not(:last-child) {
+      margin: 0 16px 8px 16px;
+    }
+    &-selected {
+      color: $orange;
+      background-color: $pale-orange;
+    }
+  }
+}
+
+.ant-menu-inline {
+  width: 312px;
+  font-family: "Inter";
+  font-weight: 500;
+  .ant-menu-item {
+    margin-inline: 0;
+    margin-block: 0;
+    width: calc(100% - 32px);
+    border-radius: 4px;
+    padding-left: 16px !important;
+    height: 44px;
+    color: $grey;
+    &:first-child {
+      margin: 16px 16px 8px 16px;
+    }
+    &:last-child {
+      margin: 8px 16px 16px 16px;
+    }
+    &:not(:first-child):not(:last-child) {
+      margin: 0 16px 8px 16px;
+    }
+    &-selected {
+      color: $orange;
+      background-color: $pale-orange;
+    }
+    .ant-menu-title-content {
+      margin-inline-start: 32px;
+    }
+  }
+}
+
+.ant-menu-vertical {
+  border-inline-end: 1px solid $neutral !important;
+}
