@@ -215,12 +215,8 @@ const HomePage: React.FC = () => {
   };
 
   const handleOnclick = () => {
-    // dispatch(setDetailJob(state.jobDetail))
-    sessionStorage.setItem(
-      "detailJob",
-      JSON.stringify({ ...state.jobDetail, isOpenModal: true })
-    );
-    navigate("/application-form");
+    const { jobDetail } = state;
+    navigate("/application-form", { state: { jobDetail } });
   };
 
   const onChangeJob = (value: string) => {

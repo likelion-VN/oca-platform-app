@@ -4,8 +4,8 @@
 import classNames from "classnames";
 import _ from "lodash";
 import { ArrowLeft } from "phosphor-react";
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import Loading from "../../components/loading/loading";
@@ -16,6 +16,8 @@ import NegotiableForm from "./form/negotiable";
 import ResumeForm from "./form/resume";
 
 const ApplicationForm = () => {
+  const location = useLocation();
+  const { jobDetail } = location.state || {};
   const navigate = useNavigate();
   const newForm = useRef({
     step1: {},
@@ -24,10 +26,12 @@ const ApplicationForm = () => {
 
   const [state, setState] = useMergeState({
     step: 1,
-    detailJob: {},
+    detailJob: jobDetail,
     checked: false,
     isLoading: true,
   });
+
+  console.log("test data", jobDetail, state.detailJob);
 
   const createIntitialData = () => {
     const { detailJob } = state;
@@ -64,10 +68,11 @@ const ApplicationForm = () => {
         selfIntroduction: "",
       },
     });
+    setState({ isLoading: false });
   };
 
   const onBackToHome = () => {
-    navigate("/dashboard");
+    navigate("/");
   };
 
   const handleClick = (stepData: any, isClickNext: boolean) => {
@@ -107,16 +112,6 @@ const ApplicationForm = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedDetailJob = sessionStorage.getItem("detailJob");
-      if (storedDetailJob) {
-        setState({ detailJob: JSON.parse(storedDetailJob) });
-      }
-      setState({ isLoading: false });
-    }
-  }, []);
 
   useUpdateEffect(() => {
     createIntitialData();
