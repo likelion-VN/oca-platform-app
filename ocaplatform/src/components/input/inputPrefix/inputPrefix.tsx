@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AutoComplete, DatePicker, Input, Tooltip } from "antd";
-import { RangePickerProps } from "antd/es/date-picker";
+import { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
 import TextArea from "antd/es/input/TextArea";
+import dayjs from "dayjs";
 import _ from "lodash";
-import moment, { Moment } from "moment";
 import React from "react";
 import { Option } from "../../../interfaces";
 import "./inputPrefix.s.scss";
 
 interface IPropsInputPrefix {
   value?: any;
+  defaultValue?: any;
   title: string;
   subTitle?: string;
   onChange?: (e: any) => void;
@@ -21,6 +22,7 @@ interface IPropsInputPrefix {
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
   value,
+  defaultValue,
   title,
   subTitle = "",
   onChange,
@@ -30,7 +32,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   options,
 }) => {
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
-    return current && current < moment().endOf("day");
+    return current && current < dayjs().endOf("day");
   };
 
   const handleInputChange = (e: any) => {
@@ -39,7 +41,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
     }
   };
 
-  const handleDateChange = (date: Moment | null) => {
+  const handleDateChange: DatePickerProps['onChange'] = (date) => {
     if (onChange) {
       onChange(date);
     }
@@ -84,6 +86,9 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             onChange={handleInputChange}
             autoSize={{ minRows: 2, maxRows: 3 }}
             disabled={disabled}
+            defaultValue={ _.isArray(defaultValue)
+              ? _.map(defaultValue, (item) => item.description).join("\n")
+              : defaultValue}
           />
         );
       case "date":
@@ -117,6 +122,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 borderRadius: "4px",
                 height: "40px",
               }}
+              value={value ? dayjs(value) : null}
               placeholder=""
               onChange={handleDateChange}
             />

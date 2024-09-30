@@ -4,7 +4,7 @@
 import classNames from "classnames";
 import _ from "lodash";
 import { ArrowLeft } from "phosphor-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
@@ -26,14 +26,9 @@ const ApplicationForm = () => {
   const [state, setState] = useMergeState({
     step: 1,
     detailJob: jobDetail,
-    checked: false,
-    // isLoading: true,
+    isLoading: true,
     isOpenModal: true,
   });
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  console.log("test data", jobDetail, state.detailJob);
 
   const createIntitialData = () => {
     const { detailJob } = state;
@@ -58,7 +53,7 @@ const ApplicationForm = () => {
         endDate: null,
         workplaceType: null,
         hoursPerWeek: "",
-        task: "",
+        tasks: "",
         isOpenModal: detailJob.isOpenModal,
       },
       step2: {
@@ -70,8 +65,7 @@ const ApplicationForm = () => {
         selfIntroduction: "",
       },
     });
-    setIsLoading(false);
-    console.log('testtest')
+    setState({ isLoading: false });
   };
 
   const onBackToHome = () => {
@@ -121,17 +115,14 @@ const ApplicationForm = () => {
       }
     }
   };
-  
+
   useEffect(() => {
     createIntitialData();
-    console.log('testtesttest')
   }, [state.detailJob]);
-
-  console.log("test1", newForm.current);
 
   return (
     <>
-      <Loading isLoading={isLoading} />
+      <Loading isLoading={state.isLoading} />
       <div className="background">
         <div className="header">
           <ButtonComponent

@@ -1,23 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {
-  EllipsisOutlined,
-  EyeOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
-import { Card, Dropdown, List, Menu, message, Upload, UploadProps } from "antd";
+import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { Card, List, message, Upload, UploadProps } from "antd";
 import classNames from "classnames";
+import dayjs from "dayjs";
 import _ from "lodash";
-import moment from "moment";
 import { ArrowLeft, Plus, PlusCircle, XCircle } from "phosphor-react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ButtonComponent from "../../../components/button/button";
 import InputDefault from "../../../components/input/inputDefault/inputDefault";
+import ModalComponent from "../../../components/modal/modal";
 import RadioCustom from "../../../components/radio/radio";
 import { ACCEPT_FILE_TYPES, MAX_FILE_SIZE } from "../../../constants";
+import { handleUploadFile } from "../../../services/applicationForm";
 import useMergeState from "../../../utils/customHook/useMergeState";
-import useUpdateEffect from "../../../utils/customHook/useUpdateEffect";
-import { formatDate } from "../../../utils/formatter";
 
 interface ResumeFormProps {
   defaultData: any;
@@ -36,8 +32,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   const [state, setState] = useMergeState({
     isAddMoreEnabled: false,
     listAttachment: [],
-    attachments: undefined,
     selectedResumeUid: null,
+    isOpenRemoveModal: false,
+    isOpenApplyModal: false,
+    uidRemove: null,
   });
 
   const handleInputChange = (
@@ -60,59 +58,30 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     setState({ [name]: value });
   };
 
-  const handleFileUpload = (file: any) => {
-    if (!state.selectedResumeUid) return;
-
-    const updatedList = state.listAttachment.map((resume: any) =>
-      resume.uid === state.selectedResumeUid
-        ? { name: file.name, lastModifiedDate: moment() } // Replace the file name and date
-        : resume
-    );
-    setState({ listAttachment: updatedList, selectedResumeUid: null });
-  };
-
   const handleChangeAttachment = async (fileList: any, isUploading = false) => {
     let filesUpload = fileList;
+    const { listAttachment } = state;
     if (isUploading) {
       filesUpload = _.filter(fileList, (file) => {
         const fileExt = `.${file.name.split(".").pop()?.toLowerCase()}`;
         return ACCEPT_FILE_TYPES.includes(fileExt) && file.size < MAX_FILE_SIZE;
-      }).slice(0, 2);
-      _.forEach(filesUpload, (file) => {
-        const { originFileObj } = file;
-        dataAttachment.current = [
-          ...dataAttachment.current,
-          {
-            originFileObj,
-            fileName: originFileObj.name,
-          },
-        ];
-      });
-    } else {
-      //* fileList only contains removed file
-      dataAttachment.current = fileList.map((file: any) => {
-        const { originFileObj } = file;
-        return {
-          originFileObj,
-          fileName: originFileObj.name,
-        };
       });
     }
-    handleChangeUpload("listAttachment", filesUpload);
+    handleChangeUpload("listAttachment", [
+      ...listAttachment,
+      filesUpload[filesUpload.length - 1],
+    ]);
     setState({ selectedResumeUid: filesUpload[filesUpload.length - 1].uid });
-    const listFileName = _.map(filesUpload, (item) => item.name);
-    const attachments = _.filter(dataAttachment.current, (item) =>
-      listFileName.includes(item.fileName)
-    );
-    handleChangeUpload("attachments", attachments);
   };
-  console.log("test1", state.selectedResumeUid);
 
   const uploadProps: UploadProps = {
     name: "file",
     accept: ".doc,.docx,.pdf",
-    beforeUpload: (file) => {
-      handleFileUpload(file);
+    beforeUpload: async (file) => {
+      const id = await handleUploadFile(file);
+      if (id) {
+        dataAttachment.current = [...dataAttachment.current, { id, ...file }];
+      }
       return false;
     },
     showUploadList: false,
@@ -181,22 +150,18 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     },
   };
 
-  const menu = (resumeUid: string) => (
-    <Menu className="menu-dropdown">
-      <Menu.Item key="0">
-        <Upload {...uploadProps}>
-          <ButtonComponent
-            title="Upload new resume"
-            icon={<UploadOutlined />}
-            onClick={() => handleSelectResume(resumeUid)}
-          />
-        </Upload>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <ButtonComponent title="View resume" icon={<EyeOutlined />} />
-      </Menu.Item>
-    </Menu>
-  );
+  const handleRemoveResume = () => {
+    const { listAttachment, uidRemove } = state;
+    const newListAttachment = _.filter(
+      listAttachment,
+      (resume) => resume.uid !== uidRemove
+    );
+    setState({
+      listAttachment: newListAttachment,
+      selectedResumeUid: newListAttachment[0]?.uid || null,
+      isOpenRemoveModal: false,
+    });
+  };
 
   const handleAddMore = () => {
     const { personalWebsite } = state;
@@ -221,24 +186,108 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     handleClick({ step2: state }, false);
   };
 
-  const handleApply = () => {
-    handleClick({ step2: state }, true);
-  };
-
   const handleSelectResume = (uid: string) => {
     setState({ selectedResumeUid: uid });
   };
 
-  useUpdateEffect(() => {
+  const handleOpenRemoveModal = (isOpenRemoveModal: boolean) => {
+    setState({ isOpenRemoveModal });
+  };
+
+  const handleOpenApplyModal = (isOpenApplyModal: boolean) => {
+    setState({ isOpenApplyModal });
+  };
+
+  const handleApply = () => {
+    const { listAttachment, selectedResumeUid } = state;
+    const attachmentCurrent = _.filter(dataAttachment.current, (item) =>
+      _.some(listAttachment, { uid: item.uid })
+    );
+    const attachmentId = _.find(
+      attachmentCurrent,
+      (attachment) => attachment.uid === selectedResumeUid
+    )?.id;
+
+    handleClick({ step2: { ...state, resume: [attachmentId] } }, true);
+    handleOpenApplyModal(false);
+  };
+
+  useEffect(() => {
     setState(defaultData);
   }, [defaultData]);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     setState({ isAddMoreEnabled: checkInputsValid(state.personalWebsite) });
   }, [state.personalWebsite]);
 
   return (
     <>
+      <ModalComponent
+        className="modal-remove"
+        open={state.isOpenRemoveModal}
+        onCancel={() => handleOpenRemoveModal(false)}
+        centered
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="remove-btn"
+              title="Delete resume"
+              size="large"
+              type="primary"
+              onClick={handleRemoveResume}
+            />
+            <ButtonComponent
+              className="cancel-btn"
+              title="Cancel"
+              size="large"
+              type="default"
+              onClick={() => handleOpenRemoveModal(false)}
+            />
+          </div>
+        }
+      >
+        <div className="modal-content-custom">
+          <div className="title">Remove this resume?</div>
+          <div className="title-content">
+            Are you sure you want to remove this resume?
+            <br />
+            This action is permanent and cannot be undone
+          </div>
+        </div>
+      </ModalComponent>
+      <ModalComponent
+        className="modal-apply"
+        open={state.isOpenApplyModal}
+        onCancel={() => handleOpenApplyModal(false)}
+        centered
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="submit-btn"
+              title="Submit"
+              size="large"
+              type="primary"
+              onClick={handleApply}
+            />
+            <ButtonComponent
+              className="cancel-btn"
+              title="Go Back to Review"
+              size="large"
+              type="default"
+              onClick={() => handleOpenApplyModal(false)}
+            />
+          </div>
+        }
+      >
+        <div className="modal-content-custom">
+          <div className="title">Review Your Application</div>
+          <div className="title-content">
+            Please review your application carefully before final submission.
+            <br />
+            This is your last chance to make any changes.
+          </div>
+        </div>
+      </ModalComponent>
       <div className="content-title">
         <div className="title-step">Resume</div>
         <div className="subtitle-step">
@@ -265,32 +314,39 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
               renderItem={(resume: any) => (
                 <List.Item>
                   <Card
-                    className={classNames(resume.uid === state.selectedResumeUid && "active")}
+                    className={classNames(
+                      resume.uid === state.selectedResumeUid && "active"
+                    )}
                     onClick={() => handleSelectResume(resume.uid)}
                   >
                     <div className="resume-item">
                       <div className="resume-item-left">
-                        <RadioCustom checked={resume.uid === state.selectedResumeUid } />
+                        <RadioCustom
+                          checked={resume.uid === state.selectedResumeUid}
+                        />
                         <div className="resume-description">
                           <div className="resume-title">{resume.name}</div>
                           <div className="resume-modified">
-                            {`Uploaded on ${formatDate(
-                              resume.lastModifiedDate
-                            )}`}
+                            {`Uploaded on ${dayjs().format("MM/DD/YYYY")}`}
                           </div>
                         </div>
                       </div>
-                      <Dropdown
-                        overlay={menu(resume.uid)}
-                        trigger={["click"]}
-                        placement="bottomRight"
-                      >
+                      <div className="resume-item-right">
                         <ButtonComponent
-                          className="more-action-btn"
-                          icon={<EllipsisOutlined />}
+                          className="review-btn"
+                          icon={<EyeOutlined />}
                           onClick={(e) => e.stopPropagation()}
                         />
-                      </Dropdown>
+                        <ButtonComponent
+                          className="remove-btn"
+                          icon={<DeleteOutlined />}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenRemoveModal(true);
+                            setState({ uidRemove: resume.uid });
+                          }}
+                        />
+                      </div>
                     </div>
                   </Card>
                 </List.Item>
@@ -414,7 +470,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
             type="primary"
             size="large"
             title="Apply"
-            onClick={handleApply}
+            onClick={() => handleOpenApplyModal(true)}
           />
         </div>
       </div>

@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import moment, { Moment } from "moment";
-import React from "react";
+import dayjs from "dayjs";
+import React, { useEffect } from "react";
 import ButtonComponent from "../../../components/button/button";
 import InputPrefix from "../../../components/input/inputPrefix/inputPrefix";
 import ModalComponent from "../../../components/modal/modal";
 import { WorkTypeOptions } from "../../../constants/selectOptions";
 import useMergeState from "../../../utils/customHook/useMergeState";
-import useUpdateEffect from "../../../utils/customHook/useUpdateEffect";
 import { formatDate } from "../../../utils/formatter";
 
 interface NegotiableFormProps {
@@ -33,14 +32,14 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 
   const handleInputChange = (
     keyValue: string,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setState({ [keyValue]: e.target.value });
   };
 
-  const handleDateChange = (keyValue: string, date: Moment | null) => {
+  const handleDateChange = (keyValue: string, date: dayjs.Dayjs | null) => {
     if (date) {
-      const isoDate = moment(date).toISOString();
+      const isoDate = dayjs(date).toISOString();
       setState({ [keyValue]: isoDate });
     } else {
       setState({ [keyValue]: null });
@@ -54,14 +53,15 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   const handleNext = () => {
     handleClick({ step1: state }, true);
   };
-
-  useUpdateEffect(() => {
+  
+  useEffect(() => {
     setState(defaultData);
   }, [defaultData]);
 
   return (
     <>
       <ModalComponent
+        className="modal-confirm"
         open={isOpenModal}
         onOk={() => handleOpenModal(false)}
         onCancel={() => handleOpenModal(false)}
@@ -109,7 +109,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           value={state.jobTitle}
           title="Job Title"
           subTitle="(Negotiable)"
-          valuePrefix={defaultData.currentJobTitle}
+          valuePrefix={state.currentJobTitle}
           type="input"
           onChange={(e) => handleInputChange("jobTitle", e)}
         />
@@ -125,7 +125,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="Start working date"
             subTitle="(Negotiable)"
             type="date"
-            valuePrefix={formatDate(defaultData.currentStartDate)}
+            valuePrefix={formatDate(state.currentStartDate)}
             onChange={(date) => handleDateChange("startDate", date)}
           />
           <InputPrefix
@@ -133,7 +133,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="End working date"
             subTitle="(Negotiable)"
             type="date"
-            valuePrefix={formatDate(defaultData.currentEndDate)}
+            valuePrefix={formatDate(state.currentEndDate)}
             onChange={(date) => handleDateChange("endDate", date)}
           />
         </div>
@@ -163,7 +163,8 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           type="text-area"
         />
         <InputPrefix
-          value={state.currentTask}
+          value={state.tasks}
+          defaultValue={state.currentTask}
           title="Task"
           subTitle="(Negotiable)"
           type="text-area"
