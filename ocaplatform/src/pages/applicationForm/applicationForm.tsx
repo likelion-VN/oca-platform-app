@@ -4,7 +4,7 @@
 import classNames from "classnames";
 import _ from "lodash";
 import { ArrowLeft } from "phosphor-react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
@@ -28,9 +28,11 @@ const ApplicationForm = () => {
     step: 1,
     detailJob: jobDetail,
     checked: false,
-    isLoading: true,
+    // isLoading: true,
     isOpenModal: true,
   });
+
+  const [isLoading, setIsLoading] = useState(true);
 
   console.log("test data", jobDetail, state.detailJob);
 
@@ -120,17 +122,20 @@ const ApplicationForm = () => {
     }
   };
 
+  useEffect(() => {
+    setIsLoading(false);
+    console.log('testtesttest')
+  }, [])
+
   useUpdateEffect(() => {
     createIntitialData();
-    setState({ isLoading: false });
-    console.log('testtesttest')
   }, [state.detailJob]);
 
   console.log("test1", newForm.current);
 
   return (
     <>
-      <Loading isLoading={state.isLoading} />
+      <Loading isLoading={isLoading} />
       <div className="background">
         <div className="header">
           <ButtonComponent
