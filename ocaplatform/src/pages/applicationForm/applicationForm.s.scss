@@ -303,7 +303,7 @@
   }
 
   .modal-bottom {
-    padding: 22px;
+    padding: 22px 22px 8px 22px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -328,7 +328,6 @@
   }
   .ant-modal-footer {
     text-align: center;
-    margin-top: 18px;
     padding-bottom: 24px;
     .confirm-btn {
       background: $orange !important;
@@ -339,11 +338,17 @@
   }
 }
 
-.modal-remove, .modal-apply {
+.modal-remove,
+.modal-apply,
+.modal-success {
   .modal-content-custom {
     display: flex;
     flex-direction: column;
     margin-top: 24px;
+    img {
+      width: 80px;
+      align-self: center;
+    }
     .title {
       font-size: 24px;
       font-weight: 700;
@@ -362,6 +367,7 @@
     display: flex;
     flex-direction: row;
     text-align: center;
+    justify-content: center;
     margin-top: 40px;
     column-gap: 24px;
     .remove-btn,
@@ -370,12 +376,18 @@
       flex: 1;
       font-size: 14px;
       font-family: "Inter";
+      height: 48px;
     }
     .remove-btn {
       background: $red-shade !important;
     }
     .submit-btn {
       background: $orange !important;
+    }
+    .confirm-btn {
+      background: $orange !important;
+      width: 180px;
+      height: 48px;
     }
   }
 }

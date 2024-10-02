@@ -10,11 +10,10 @@ import {
 import {
   AutoComplete,
   Badge,
-  Button,
   Input,
   Skeleton,
   Space,
-  Tooltip,
+  Tooltip
 } from "antd";
 
 import classNames from "classnames";
@@ -24,8 +23,7 @@ import {
   Clock,
   Laptop,
   MapPin,
-  SlidersHorizontal,
-  UsersFour,
+  UsersFour
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -94,6 +92,7 @@ const HomePage: React.FC = () => {
     hasShadowBottom: true,
     isLoadingList: false,
     isLoadingDetail: false,
+    visible: false,
   });
 
   const renderValue = (
@@ -186,6 +185,104 @@ const HomePage: React.FC = () => {
       });
     }
   };
+
+  // const menu = (
+  //   <Menu className="menu-filter">
+  //     <Menu.Item className="menu-filter-header">Filter</Menu.Item>
+  //     <Menu.Item className="menu-filter-jobType">
+  //       <div className="menu-title">
+  //         <div className="title-filter">O-CA Program</div>
+  //         <ButtonComponent
+  //           type="link"
+  //           size="small"
+  //           title="Clear"
+  //           // onClick={clearPrograms}
+  //         />
+  //       </div>
+  //       <div className="menu-options">
+  //         <Checkbox.Group
+  //           options={JobTypeOptions}
+  //           // value={checkedPrograms}
+  //           // onChange={handleProgramChange}
+  //         />
+  //       </div>
+  //     </Menu.Item>
+
+  //     <Menu.Item className="menu-filter-application">
+  //       <Row justify="space-between" align="middle" style={{ marginBottom: 8 }}>
+  //         <Col>
+  //           <div style={{ fontWeight: 500 }}>Application Terms</div>
+  //         </Col>
+  //         <Col>
+  //           <Button
+  //             type="link"
+  //             size="small"
+  //             // onClick={clearTerms}
+  //           >
+  //             Clear
+  //           </Button>
+  //         </Col>
+  //       </Row>
+  //       <Radio.Group
+  //       // onChange={handleTermsChange}
+  //       // value={applicationTerms}
+  //       >
+  //         <Space direction="vertical">
+  //           <Radio className="radio-custom" value="Non-negotiable">
+  //             Non-negotiable
+  //           </Radio>
+  //           <Radio className="radio-custom" value="Negotiable">
+  //             Negotiable
+  //           </Radio>
+  //         </Space>
+  //       </Radio.Group>
+  //     </Menu.Item>
+
+  //     <Menu.Item className="menu-filter-workplace">
+  //       <Row justify="space-between" align="middle" style={{ marginBottom: 8 }}>
+  //         <Col>
+  //           <div style={{ fontWeight: 500 }}>Work Type</div>
+  //         </Col>
+  //         <Col>
+  //           <Button
+  //             type="link"
+  //             size="small"
+  //             // onClick={clearWorkType}
+  //           >
+  //             Clear
+  //           </Button>
+  //         </Col>
+  //       </Row>
+  //       <Checkbox.Group
+  //         options={WorkTypeOptions}
+  //         // value={workType}
+  //         // onChange={handleWorkTypeChange}
+  //       />
+  //     </Menu.Item>
+
+  //     <Menu.Item key="footer">
+  //       <div style={{ textAlign: "center" }}>
+  //         <Button
+  //           type="primary"
+  //           // onClick={handleApplyFilters}
+  //           style={{ width: "80%", marginBottom: 10 }}
+  //         >
+  //           Apply filters
+  //         </Button>
+  //         <Button
+  //           // onClick={handleReset}
+  //           style={{ width: "80%" }}
+  //         >
+  //           Reset
+  //         </Button>
+  //       </div>
+  //     </Menu.Item>
+  //   </Menu>
+  // );
+
+  // const handleVisibleChange = (flag: boolean) => {
+  //   setState({ visible: flag });
+  // };
 
   const handleChangeJobType = (values: string[]) => {
     setState({
@@ -405,9 +502,20 @@ const HomePage: React.FC = () => {
           </Space>
         </div>
         <div className="filter-right">
-          <Button className="filter-btn" icon={<SlidersHorizontal size={20} />}>
-            All filter
-          </Button>
+          {/* <Dropdown
+            overlay={menu}
+            trigger={["click"]}
+            visible={state.visible}
+            onVisibleChange={handleVisibleChange}
+            placement="bottomRight"
+          >
+            <Button
+              className="filter-btn"
+              icon={<SlidersHorizontal size={20} />}
+            >
+              All filter
+            </Button>
+          </Dropdown> */}
         </div>
       </div>
       {/* <div className="count-jobs">

@@ -1,6 +1,6 @@
 interface JobTitle {
   update: boolean;
-  delta: {
+  delta?: {
     company: string;
     candidate: string;
   };
@@ -8,15 +8,15 @@ interface JobTitle {
 
 interface WorkplaceType {
   update: boolean;
-  delta: {
-    company: number;
-    candidate: number;
+  delta?: {
+    company?: number;
+    candidate?: number;
   };
 }
 
 interface WorkingPeriod {
   update: boolean;
-  delta: {
+  delta?: {
     company: string;
     candidate: string;
   };
@@ -24,7 +24,7 @@ interface WorkingPeriod {
 
 interface WorkHoursPerWeek {
   update: boolean;
-  delta: {
+  delta?: {
     company: number;
     candidate: number;
   };
@@ -32,14 +32,14 @@ interface WorkHoursPerWeek {
 
 interface Task {
   update: boolean;
-  delta: {
+  delta?: {
     company: {
-      id: number;
-      description: string;
+      id: number | null;
+      description?: string;
     };
     candidate: {
-      id: number;
-      description: string;
+      id: number | null;
+      description?: string;
     };
   };
 }

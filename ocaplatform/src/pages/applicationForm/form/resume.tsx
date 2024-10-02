@@ -7,8 +7,11 @@ import dayjs from "dayjs";
 import _ from "lodash";
 import { ArrowLeft, Plus, PlusCircle, XCircle } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { SuccessIconGif } from "../../../assets/gif";
 import ButtonComponent from "../../../components/button/button";
 import InputDefault from "../../../components/input/inputDefault/inputDefault";
+import Loading from "../../../components/loading/loading";
 import ModalComponent from "../../../components/modal/modal";
 import RadioCustom from "../../../components/radio/radio";
 import { ACCEPT_FILE_TYPES, MAX_FILE_SIZE } from "../../../constants";
@@ -19,13 +22,18 @@ interface ResumeFormProps {
   defaultData: any;
   handleClick: (stepData: any, isClickNext: boolean) => void;
   handleCancel: () => void;
+  isSuccess: boolean;
+  isLoading: boolean;
 }
 
 const ResumeForm: React.FC<ResumeFormProps> = ({
   defaultData,
   handleClick,
   handleCancel,
+  isSuccess,
+  isLoading,
 }) => {
+  const navigate = useNavigate();
   const dataAttachment = useRef<any[]>([]);
   const chosseFileErrorMessage = useRef<string | null>(null);
   const dropFileErrorMessage = useRef<string | null>(null);
@@ -36,6 +44,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     isOpenRemoveModal: false,
     isOpenApplyModal: false,
     uidRemove: null,
+    isLoadingUpload: false,
   });
 
   const handleInputChange = (
@@ -71,17 +80,22 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
       ...listAttachment,
       filesUpload[filesUpload.length - 1],
     ]);
-    setState({ selectedResumeUid: filesUpload[filesUpload.length - 1].uid });
+    setState({
+      selectedResumeUid: filesUpload[filesUpload.length - 1].uid || null,
+    });
   };
 
   const uploadProps: UploadProps = {
     name: "file",
     accept: ".doc,.docx,.pdf",
     beforeUpload: async (file) => {
+      setState({ isLoadingUpload: true });
       const id = await handleUploadFile(file);
       if (id) {
         dataAttachment.current = [...dataAttachment.current, { id, ...file }];
       }
+      setState({ isLoadingUpload: false });
+
       return false;
     },
     showUploadList: false,
@@ -212,6 +226,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     handleOpenApplyModal(false);
   };
 
+  const handleConfirm = () => {
+    navigate('/');
+  }
+
   useEffect(() => {
     setState(defaultData);
   }, [defaultData]);
@@ -256,6 +274,32 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         </div>
       </ModalComponent>
       <ModalComponent
+        className="modal-success"
+        open={isSuccess}
+        onCancel={handleConfirm}
+        centered
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="confirm-btn"
+              title="OK"
+              size="large"
+              type="primary"
+              onClick={handleConfirm}
+            />
+          </div>
+        }
+      >
+        <div className="modal-content-custom">
+          <img src={SuccessIconGif} alt="success" />
+          <div className="title">Your application was successfully</div>
+          <div className="title-content">
+            You can keep track of your application on the 'Application' page on
+            the left or the 'Notice' tab at the top right.
+          </div>
+        </div>
+      </ModalComponent>
+      <ModalComponent
         className="modal-apply"
         open={state.isOpenApplyModal}
         onCancel={() => handleOpenApplyModal(false)}
@@ -288,6 +332,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           </div>
         </div>
       </ModalComponent>
+      <Loading isLoading={state.isLoadingUpload || isLoading} />
       <div className="content-title">
         <div className="title-step">Resume</div>
         <div className="subtitle-step">

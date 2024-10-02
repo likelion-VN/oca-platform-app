@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import classNames from "classnames";
+import dayjs from "dayjs";
 import _ from "lodash";
 import { ArrowLeft } from "phosphor-react";
 import { useEffect, useRef } from "react";
@@ -9,7 +10,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import Loading from "../../components/loading/loading";
+import { putLApplicationForm } from "../../services/applicationForm";
 import useMergeState from "../../utils/customHook/useMergeState";
+import { newFormDataFormatter } from "./applicationForm.h";
 import "./applicationForm.s.scss";
 import NegotiableForm from "./form/negotiable";
 import ResumeForm from "./form/resume";
@@ -28,6 +31,7 @@ const ApplicationForm = () => {
     detailJob: jobDetail,
     isLoading: true,
     isOpenModal: true,
+    isSuccess: false,
   });
 
   const createIntitialData = () => {
@@ -36,14 +40,16 @@ const ApplicationForm = () => {
       step1: {
         currentJobTitle: detailJob.title,
         currentJobType: detailJob.jobType.name,
-        currentStartDate: detailJob.workStart,
-        currentStartEnd: detailJob.workEnd,
+        currentStartDate: dayjs(detailJob.workStart).toISOString(),
+        currentEndDate: dayjs(detailJob.workEnd).toISOString(),
         currentWorkplaceType: detailJob.workplaceType.name,
         currentHoursPerWeek: detailJob.hoursPerWeek,
         currentDescription: detailJob.description,
-        currentTask: _.map(detailJob.tasks, (task) => task.description).join(
-          "\n"
-        ),
+        currentTasks: _.map(detailJob.tasks, (task) => ({
+          ...task,
+          newTask: "",
+          isRemove: false,
+        })),
         currentQualifications: _.map(
           detailJob.qualifications,
           (qualification) => qualification.description
@@ -53,7 +59,6 @@ const ApplicationForm = () => {
         endDate: null,
         workplaceType: null,
         hoursPerWeek: "",
-        tasks: "",
         isOpenModal: detailJob.isOpenModal,
       },
       step2: {
@@ -64,6 +69,8 @@ const ApplicationForm = () => {
         personalWebsite: [""],
         selfIntroduction: "",
       },
+      jobId: detailJob.id,
+      jobTypeId: detailJob.jobType.id,
     });
     setState({ isLoading: false });
   };
@@ -72,7 +79,7 @@ const ApplicationForm = () => {
     navigate("/");
   };
 
-  const handleClick = (stepData: any, isClickNext: boolean) => {
+  const handleClick = async (stepData: any, isClickNext: boolean) => {
     if (!_.isEmpty(stepData)) {
       _.merge(newForm.current, stepData);
     }
@@ -80,7 +87,14 @@ const ApplicationForm = () => {
       if (state.step < 2) {
         setState({ step: state.step + 1 });
       } else {
-        console.log("finish form", newForm.current);
+        setState({ isLoading: true });
+        const formData = newFormDataFormatter(newForm.current);
+        try {
+          const isAppliedSuccess = await putLApplicationForm(formData);
+          setState({ isSuccess: isAppliedSuccess, isLoading: false });
+        } catch (error) {
+          setState({ isLoading: false });
+        }
       }
     } else {
       setState({ step: state.step - 1 });
@@ -99,6 +113,8 @@ const ApplicationForm = () => {
             defaultData={newForm.current.step2}
             handleClick={handleClick}
             handleCancel={onBackToHome}
+            isSuccess={state.isSuccess}
+            isLoading={state.isLoading}
           />
         );
       }

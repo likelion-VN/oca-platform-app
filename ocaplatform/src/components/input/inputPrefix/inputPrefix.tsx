@@ -10,10 +10,11 @@ import "./inputPrefix.s.scss";
 
 interface IPropsInputPrefix {
   value?: any;
-  defaultValue?: any;
   title: string;
   subTitle?: string;
   onChange?: (e: any) => void;
+  onChangeMultiple?: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void;
+  onKeyDown?: (e: any, index: number) => void;
   valuePrefix?: string;
   disabled?: boolean;
   type: string;
@@ -22,10 +23,11 @@ interface IPropsInputPrefix {
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
   value,
-  defaultValue,
   title,
   subTitle = "",
   onChange,
+  onChangeMultiple,
+  onKeyDown,
   valuePrefix,
   disabled = false,
   type,
@@ -35,13 +37,31 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
     return current && current < dayjs().endOf("day");
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (onChange) {
       onChange(e);
     }
   };
 
-  const handleDateChange: DatePickerProps['onChange'] = (date) => {
+  const handleInputChangeMutiple = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (onChangeMultiple) {
+      onChangeMultiple(e, index);
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (onKeyDown) {
+      onKeyDown(e, index);
+    }
+  };
+
+  const handleDateChange: DatePickerProps["onChange"] = (date) => {
     if (onChange) {
       onChange(date);
     }
@@ -86,10 +106,39 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             onChange={handleInputChange}
             autoSize={{ minRows: 2, maxRows: 3 }}
             disabled={disabled}
-            defaultValue={ _.isArray(defaultValue)
-              ? _.map(defaultValue, (item) => item.description).join("\n")
-              : defaultValue}
           />
+        );
+      case "text-area-input":
+        return (
+          <div className="text-area-input">
+            {_.map(value, (item) => (
+              // <ProtectedDefaultQuill 
+              //   id={item.id}
+              //   value={item.description}
+              //   newValue={item.newTask}
+              //   isRemove={item.isRemove}
+              //   onContentChange={onChangeMultiple}
+              // />
+              <Input
+                allowClear
+                value={item.newTask}
+                placeholder=""
+                onChange={(e) => handleInputChangeMutiple(e, item.id)}
+                onKeyDown={(e) => handleKeyDown(e, item.id)}
+                prefix={
+                  <span
+                    style={{
+                      textDecoration:
+                        (item.isRemove || item.newTask) && "line-through",
+                      color: (item.isRemove || item.newTask) && "#B42318",
+                    }}
+                  >
+                    {item.description}
+                  </span>
+                }
+              />
+            ))}
+          </div>
         );
       case "date":
         return (

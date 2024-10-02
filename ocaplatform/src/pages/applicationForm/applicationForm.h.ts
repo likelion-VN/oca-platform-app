@@ -1,60 +1,65 @@
+import _ from "lodash";
+import { WorkTypeOptions } from "../../constants/selectOptions";
 import { RequestApplicationForm } from "../../interfaces/applicationForm";
 
-const newFormDataFormatter = async (newFormData: any) => {
-  const { step1, step2 } = newFormData;
+const newFormDataFormatter = (newFormData: any) => {
+  const { jobId, jobTypeId, step1, step2 } = newFormData;
+  const newListTask = _.filter(step1.currentTasks, task => !_.isNil(task.description) && !_.isNil(task.newTask));
   const formDataFormatted: RequestApplicationForm = {
-    jobId: 0,
-    jobTypeId: 0,
+    jobId,
+    jobTypeId,
     jobTitle: {
-      update: true,
-      delta: {
-        company: step1.currentJobTitle,
-        candidate: step1.jobTitle,
-      },
+      update: !!step1.jobTitle,
+      delta: !!step1.jobTitle
+        ? {
+            company: step1.currentJobTitle,
+            candidate: step1.jobTitle,
+          }
+        : undefined,
     },
     workplaceType: {
-      update: true,
-      delta: {
-        company: 0,
-        candidate: 0,
-      },
+      update: !!step1.workplaceType,
+      delta: !step1.workplaceType
+        ? {
+            company: _.find(WorkTypeOptions, item => item.label === step1.currentWorkplaceType)?.value,
+            candidate: _.find(WorkTypeOptions, item => item.label === step1.workplaceType)?.value,
+          }
+        : undefined,
     },
     workingPeriodStart: {
-      update: true,
-      delta: {
-        company: "2024-09-30T07:01:19.907Z",
-        candidate: "2024-09-30T07:01:19.907Z",
-      },
+      update: !!step1.startDate,
+      delta: !!step1.startDate ? {
+        company: step1.currentStartDate,
+        candidate: step1.startDate,
+      } : undefined,
     },
     workingPeriodEnd: {
-      update: true,
-      delta: {
-        company: "2024-09-30T07:01:19.907Z",
-        candidate: "2024-09-30T07:01:19.907Z",
-      },
+      update: !!step1.endDate,
+      delta: !!step1.endDate ? {
+        company: step1.currentEndDate,
+        candidate: step1.endDate,
+      } : undefined,
     },
     workHoursPerWeek: {
-      update: true,
-      delta: {
+      update: !!step1.hoursPerWeek,
+      delta: !!step1.hoursPerWeek ? {
         company: step1.currentHoursPerWeek,
-        candidate: step1.hoursPerWeek,
-      },
+        candidate: Number(step1.hoursPerWeek),
+      } : undefined,
     },
-    tasks: [
-      {
-        update: true,
-        delta: {
+    tasks: _.map(newListTask, task => ({
+        update: !!task.newTask.trim() || task.isRemove,
+        delta: (!!task.newTask.trim() || task.isRemove) ? {
           company: {
-            id: 0,
-            description: "string",
+            id: _.isNumber(task.id) ? task.id : null,
+            description: task.description,
           },
           candidate: {
-            id: 0,
-            description: "string",
+            id: _.isNumber(task.id) ? task.id : null,
+            description: task.newTask.trim(),
           },
-        },
-      },
-    ],
+      } : undefined
+    })),
     portfolio: step2.portfolio,
     email: step2.email,
     phoneNumber: step2.phoneNumber,

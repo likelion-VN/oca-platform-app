@@ -7,27 +7,26 @@
   min-width: fit-content !important;
 
   .custom-radio-list {
-    .ant-radio {
-      .ant-checkbox-inner::after {
-        width: 8px;
-        height: 8px;
-        transition: none;
+    .custom-radio {
+      .ant-radio-inner {
+        width: 18px;
+        height: 18px;
       }
-      &.ant-radio-checked {
+    
+      .ant-radio-checked {
         .ant-radio-inner {
+          border-color: $orange !important;
           background-color: $white !important;
           &::after {
-            height: 8px;
-            width: 8px;
-            top: 50%;
-            transform: translate(50%, 50%);
-            background: $orange;
-            transition: none;
+            background-color: $orange;
           }
         }
       }
-      .ant-radio-inner::before {
-        content: none;
+    
+      &:hover {
+        .ant-radio-inner {
+          border-color: $orange !important;
+        }
       }
     }
     
@@ -42,12 +41,6 @@
         line-height: 20px;
         &:last-child {
           padding-bottom: 0;
-        }
-        .ant-radio-checked {
-          .ant-radio-inner {
-            background-color: $orange;
-            border-color: $orange;
-          }
         }
       }
     }
@@ -88,3 +81,9 @@
    font-weight: 600;
  }
 }
+
+// .ant-radio-wrapper-checked {
+//   &::after {
+//     transform: translate(50%, 57%);
+//   }
+// }

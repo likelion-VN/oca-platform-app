@@ -2,7 +2,9 @@
 
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import React, { useEffect } from "react";
+import _ from "lodash";
+import React, { useCallback, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import ButtonComponent from "../../../components/button/button";
 import InputPrefix from "../../../components/input/inputPrefix/inputPrefix";
 import ModalComponent from "../../../components/modal/modal";
@@ -25,16 +27,26 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   handleCancel,
   isOpenModal,
 }) => {
-
-  // const detailJob = useSelector((state: any) => state.detailJob )
-  const [state, setState] = useMergeState({
-  });
+  const [state, setState] = useMergeState({});
 
   const handleInputChange = (
     keyValue: string,
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setState({ [keyValue]: e.target.value });
+  };
+
+  const handleTaskChange = (
+    id: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { currentTasks } = state;
+    const updatedTasks = _.map(currentTasks, (task) =>
+      task.id === id
+        ? { ...task, newTask: e.target.value, isRemove: false }
+        : task
+    );
+    setState({ currentTasks: updatedTasks });
   };
 
   const handleDateChange = (keyValue: string, date: dayjs.Dayjs | null) => {
@@ -50,10 +62,59 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState({ [keyValue]: value });
   };
 
+  const handleAddTaskBelow = useCallback(
+    (id: number | string) => {
+      const newId = uuidv4();
+      const newTask = {
+        id: newId,
+        description: "",
+        newTask: "",
+        isRemove: false,
+      };
+
+      const currentIndex = _.findIndex(state.currentTasks, { id });
+
+      if (currentIndex !== -1) {
+        const updatedTasks = _.cloneDeep(state.currentTasks);
+        updatedTasks.splice(currentIndex + 1, 0, newTask);
+        setState({ currentTasks: updatedTasks });
+      }
+    },
+    [state.currentTasks, setState]
+  );
+
+  const handleKeyDown = useCallback(
+    (id: number | string, e: React.KeyboardEvent<HTMLInputElement>) => {
+      const { currentTasks } = state;
+      if (e.key === "Delete" || e.key === "Backspace") {
+        const task = _.find(currentTasks, (item) => item.id === id);
+        if (task) {
+          if (task.description.trim() !== "" && task.newTask.trim() === "") {
+            const updatedTasks = _.map(currentTasks, (t) =>
+              t.id === id ? { ...t, isRemove: true } : t
+            );
+            setState({ currentTasks: updatedTasks });
+          } else if (
+            task.description.trim() === "" &&
+            task.newTask.trim() === ""
+          ) {
+            const updatedTasks = _.filter(currentTasks, (t) => t.id !== id);
+            setState({ currentTasks: updatedTasks });
+          }
+        }
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAddTaskBelow(id);
+      }
+    },
+    [state, setState, handleAddTaskBelow]
+  );
+
   const handleNext = () => {
     handleClick({ step1: state }, true);
   };
-  
+
   useEffect(() => {
     setState(defaultData);
   }, [defaultData]);
@@ -115,7 +176,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         />
         <InputPrefix
           title="Job Type"
-          valuePrefix={defaultData.currentJobType}
+          valuePrefix={state.currentJobType}
           type="input"
           disabled
         />
@@ -139,21 +200,21 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         </div>
         <div className="double-input">
           <InputPrefix
-            value={state.workType}
+            value={state.workplaceType}
             title="Workplace type"
             subTitle="(Negotiable)"
             type="select"
             valuePrefix={state.currentWorkplaceType}
             options={WorkTypeOptions}
-            onChange={(value) => handleSelectChange("workType", value)}
+            onChange={(value) => handleSelectChange("workplaceType", value)}
           />
           <InputPrefix
-            value={state.hours}
+            value={state.hoursPerWeek}
             title="Hours per week"
             subTitle="(Negotiable)"
             valuePrefix={state.currentHoursPerWeek}
             type="input"
-            onChange={(e) => handleInputChange("hours", e)}
+            onChange={(e) => handleInputChange("hoursPerWeek", e)}
           />
         </div>
         <InputPrefix
@@ -163,12 +224,12 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           type="text-area"
         />
         <InputPrefix
-          value={state.tasks}
-          defaultValue={state.currentTask}
+          value={state.currentTasks}
           title="Task"
           subTitle="(Negotiable)"
-          type="text-area"
-          onChange={(e) => handleInputChange("tasks", e)}
+          type="text-area-input"
+          onChangeMultiple={(e, id) => handleTaskChange(id, e)}
+          onKeyDown={(e, id) => handleKeyDown(id, e)}
         />
         <InputPrefix
           value={state.currentQualifications}

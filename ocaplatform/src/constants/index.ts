@@ -1,4 +1,4 @@
-const apiServiceUrl = "https://be.oca.classlionvn.net/";
+const apiServiceUrl = "https://be.lion-up.net/";
 
 const ACCEPT_FILE_TYPES = ".doc,.docx,.pdf";
 
