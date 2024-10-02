@@ -68,6 +68,7 @@ export interface JobDetail {
   location: {
     country: string;
     state: string;
+    city: string;
   };
   keywords: {
     name: string;

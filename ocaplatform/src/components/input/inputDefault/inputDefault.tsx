@@ -15,6 +15,7 @@ interface IPropsInputDefault {
   optional?: boolean;
   placeholder?: string;
   addonBefore?: string;
+  errorMsg?: string;
 }
 
 const InputDefault: React.FC<IPropsInputDefault> = ({
@@ -26,6 +27,7 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
   type,
   placeholder,
   addonBefore,
+  errorMsg,
 }) => {
   const handleInputChange = (e: any) => {
     if (onChange) {
@@ -37,15 +39,19 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
     switch (type) {
       case "input":
         return (
-          <Input
-            addonBefore={addonBefore}
-            value={value}
-            onChange={handleInputChange}
-            size="large"
-            disabled={disabled}
-            allowClear
-            placeholder={placeholder}
-          />
+          <>
+            <Input
+              addonBefore={addonBefore}
+              value={value}
+              onChange={handleInputChange}
+              size="large"
+              disabled={disabled}
+              allowClear
+              placeholder={placeholder}
+              status={errorMsg && "error"}
+            />
+            {errorMsg && <span className="msg-error">{errorMsg}</span>}
+          </>
         );
       case "text-area":
         return (

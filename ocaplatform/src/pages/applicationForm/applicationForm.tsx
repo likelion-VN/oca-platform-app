@@ -105,6 +105,10 @@ const ApplicationForm = () => {
     setState({ isOpenModal });
   };
 
+  const handleOpenSuccessModal = (isSuccess: boolean) => {
+    setState({ isSuccess })
+  }
+
   const renderStep = (step: number) => {
     switch (step) {
       case 2: {
@@ -115,6 +119,7 @@ const ApplicationForm = () => {
             handleCancel={onBackToHome}
             isSuccess={state.isSuccess}
             isLoading={state.isLoading}
+            handleOpenSuccessModal={handleOpenSuccessModal}
           />
         );
       }

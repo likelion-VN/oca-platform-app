@@ -19,7 +19,7 @@ const newFormDataFormatter = (newFormData: any) => {
     },
     workplaceType: {
       update: !!step1.workplaceType,
-      delta: !step1.workplaceType
+      delta: !!step1.workplaceType
         ? {
             company: _.find(WorkTypeOptions, item => item.label === step1.currentWorkplaceType)?.value,
             candidate: _.find(WorkTypeOptions, item => item.label === step1.workplaceType)?.value,

@@ -638,6 +638,7 @@ const HomePage: React.FC = () => {
                       <div className="company-info-state">
                         <EnvironmentOutlined className="icon" />
                         {_.compact([
+                          jobDetail.location.city,
                           jobDetail.location.state,
                           jobDetail.location.country,
                         ]).join(", ")}

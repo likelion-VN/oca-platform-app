@@ -231,6 +231,12 @@
             }
           }
         }
+        .msg-error {
+          font-size: 12px;
+          font-weight: 500;
+          color: $red-shade;
+          margin-top: 5px;
+        }
       }
       .multiple-input {
         display: flex;

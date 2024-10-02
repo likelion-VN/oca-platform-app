@@ -15,12 +15,17 @@ import Loading from "../../../components/loading/loading";
 import ModalComponent from "../../../components/modal/modal";
 import RadioCustom from "../../../components/radio/radio";
 import { ACCEPT_FILE_TYPES, MAX_FILE_SIZE } from "../../../constants";
-import { handleUploadFile } from "../../../services/applicationForm";
+import {
+  handleDownloadFile,
+  handleUploadFile,
+} from "../../../services/applicationForm";
 import useMergeState from "../../../utils/customHook/useMergeState";
+import { validateEmail } from "../../../utils/validation";
 
 interface ResumeFormProps {
   defaultData: any;
   handleClick: (stepData: any, isClickNext: boolean) => void;
+  handleOpenSuccessModal: (isSuccess: boolean) => void;
   handleCancel: () => void;
   isSuccess: boolean;
   isLoading: boolean;
@@ -29,6 +34,7 @@ interface ResumeFormProps {
 const ResumeForm: React.FC<ResumeFormProps> = ({
   defaultData,
   handleClick,
+  handleOpenSuccessModal,
   handleCancel,
   isSuccess,
   isLoading,
@@ -45,13 +51,14 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     isOpenApplyModal: false,
     uidRemove: null,
     isLoadingUpload: false,
+    errors: {},
   });
 
   const handleInputChange = (
     keyValue: string,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setState({ [keyValue]: e.target.value });
+    setState({ [keyValue]: e.target.value, errors: {...state.errors, [keyValue]: ''} });
   };
 
   const handleMultipleInputChange = (
@@ -64,7 +71,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   };
 
   const handleChangeUpload = (name: string, value: any) => {
-    setState({ [name]: value });
+    setState({ [name]: value,  errors: {...state.errors, resume: ''} });
   };
 
   const handleChangeAttachment = async (fileList: any, isUploading = false) => {
@@ -212,23 +219,66 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     setState({ isOpenApplyModal });
   };
 
-  const handleApply = () => {
-    const { listAttachment, selectedResumeUid } = state;
-    const attachmentCurrent = _.filter(dataAttachment.current, (item) =>
-      _.some(listAttachment, { uid: item.uid })
-    );
-    const attachmentId = _.find(
-      attachmentCurrent,
-      (attachment) => attachment.uid === selectedResumeUid
-    )?.id;
+  const validates = () => {
+    const { errors } = state;
+    if (_.isEmpty(state.listAttachment)) {
+      _.assign(errors, { resume: "Field is required." });
+    } else {
+      _.unset(errors, "resume");
+    }
+    if (state.email) {
+      if (!validateEmail(state.email)) {
+        _.assign(errors, { email: "Email is valid." });
+      } else {
+        _.unset(errors, "email");
+      }
+    } else {
+      _.assign(errors, { email: "Field is required." });
+    }
+    if (state.phoneNumber) {
+      _.unset(errors, "phoneNumber");
+    } else {
+      _.assign(errors, { phoneNumber: "Field is required." });
+    }
+    setState({ errors });
+  };
 
-    handleClick({ step2: { ...state, resume: [attachmentId] } }, true);
+  const handleApply = () => {
+    validates();
+    if (_.isEmpty(state.errors)) {
+      const { listAttachment, selectedResumeUid } = state;
+      const attachmentCurrent = _.filter(dataAttachment.current, (item) =>
+        _.some(listAttachment, { uid: item.uid })
+      );
+      const attachmentId = _.find(
+        attachmentCurrent,
+        (attachment) => attachment.uid === selectedResumeUid
+      )?.id;
+
+      handleClick({ step2: { ...state, resume: [attachmentId] } }, true);
+    }
     handleOpenApplyModal(false);
   };
 
   const handleConfirm = () => {
-    navigate('/');
-  }
+    handleOpenSuccessModal(false);
+    navigate("/");
+  };
+
+  useEffect(() => {
+    const { listAttachment } = state;
+    const listUid = dataAttachment.current;
+    const newListAttachment = _.map(listAttachment, (file) => {
+      const matched = _.find(listUid, { uid: file.uid });
+
+      if (matched) {
+        return { ...file, id: matched.id };
+      }
+
+      return file;
+    });
+    setState({ listAttachment: newListAttachment });
+  }, [dataAttachment.current]);
 
   useEffect(() => {
     setState(defaultData);
@@ -380,7 +430,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
                         <ButtonComponent
                           className="review-btn"
                           icon={<EyeOutlined />}
-                          onClick={(e) => e.stopPropagation()}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDownloadFile(resume.id);
+                          }}
                         />
                         <ButtonComponent
                           className="remove-btn"
@@ -423,6 +476,9 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
               </div>
             </div>
           </Upload>
+          {state.errors.resume && (
+            <div className="msg-error">{state.errors.resume}</div>
+          )}
         </div>
         <InputDefault
           value={state.email}
@@ -430,6 +486,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           type="input"
           placeholder="Enter email"
           onChange={(e) => handleInputChange("email", e)}
+          errorMsg={state.errors.email}
         />
         <InputDefault
           value={state.phoneNumber}
@@ -437,6 +494,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           type="input"
           placeholder="Enter phone number"
           onChange={(e) => handleInputChange("phoneNumber", e)}
+          errorMsg={state.errors.phoneNumber}
         />
         <InputDefault
           value={state.portfolio}
