@@ -13,6 +13,5 @@ export default function useUpdateEffect(
       effect();
     }
     return cleanup;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, dependencies);
+  }, [effect, ...dependencies]);
 }

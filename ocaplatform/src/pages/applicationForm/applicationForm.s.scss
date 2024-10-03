@@ -169,11 +169,8 @@
                         }
                       }
                       &-right {
-                        display: flex;
-                        column-gap: 10px;
-                        .review-btn,
-                        .remove-btn {
-                          width: unset;
+                        .more-action-btn {
+                          height: 14px;
                           border-color: transparent !important;
                           box-shadow: unset;
                           background: transparent;

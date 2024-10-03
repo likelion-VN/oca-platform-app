@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { Card, List, message, Upload, UploadProps } from "antd";
+import {
+  DeleteOutlined,
+  EllipsisOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
+import { Card, Dropdown, List, Menu, message, Upload, UploadProps } from "antd";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import _ from "lodash";
@@ -49,9 +53,9 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     selectedResumeId: null,
     isOpenRemoveModal: false,
     isOpenApplyModal: false,
-    idRemove: null,
     isLoadingUpload: false,
     errors: {},
+    clickedId: null,
   });
 
   const handleInputChange = (
@@ -175,10 +179,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   };
 
   const handleRemoveResume = () => {
-    const { listAttachment, idRemove } = state;
+    const { listAttachment, clickedId } = state;
     const newListAttachment = _.filter(
       listAttachment,
-      (resume) => resume.id !== idRemove
+      (resume) => resume.id !== clickedId
     );
     setState({
       listAttachment: newListAttachment,
@@ -262,6 +266,25 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     }
     handleOpenApplyModal(false);
   };
+
+  const menu = (
+    <Menu className="menu-dropdown">
+      <Menu.Item>
+        <ButtonComponent
+          title="View resume"
+          icon={<EyeOutlined />}
+          onClick={() => handleDownloadFile(state.clickedId)}
+        />
+      </Menu.Item>
+      <Menu.Item>
+        <ButtonComponent
+          title="Remove resume"
+          icon={<DeleteOutlined />}
+          onClick={() => handleOpenRemoveModal(true)}
+        />
+      </Menu.Item>
+    </Menu>
+  );
 
   const handleConfirm = () => {
     handleOpenSuccessModal(false);
@@ -433,23 +456,20 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
                         </div>
                       </div>
                       <div className="resume-item-right">
-                        <ButtonComponent
-                          className="review-btn"
-                          icon={<EyeOutlined />}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDownloadFile(resume.id);
-                          }}
-                        />
-                        <ButtonComponent
-                          className="remove-btn"
-                          icon={<DeleteOutlined />}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenRemoveModal(true);
-                            setState({ idRemove: resume.id });
-                          }}
-                        />
+                        <Dropdown
+                          overlay={menu}
+                          trigger={["click"]}
+                          placement="bottomRight"
+                        >
+                          <ButtonComponent
+                            className="more-action-btn"
+                            icon={<EllipsisOutlined />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setState({ clickedId: resume.id });
+                            }}
+                          />
+                        </Dropdown>
                       </div>
                     </div>
                   </Card>

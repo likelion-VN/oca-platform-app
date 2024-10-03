@@ -27,7 +27,7 @@ const ButtonComponent: React.FC<IPropsButton> = ({
   return (
     <Button
       className={className}
-      style={{ borderRadius: 4 }}
+      style={{ borderRadius: 4, height: "40px" }}
       icon={icon}
       onClick={onClick}
       iconPosition={iconPosition}
