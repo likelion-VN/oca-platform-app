@@ -18,6 +18,7 @@ interface NegotiableFormProps {
   handleOpenModal: (isOpenModal: boolean) => void;
   handleCancel: () => void;
   isOpenModal: boolean;
+  isLoading: boolean;
 }
 
 const NegotiableForm: React.FC<NegotiableFormProps> = ({
@@ -26,6 +27,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   handleOpenModal,
   handleCancel,
   isOpenModal,
+  isLoading,
 }) => {
   const [state, setState] = useMergeState({});
 
@@ -123,7 +125,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     <>
       <ModalComponent
         className="modal-confirm"
-        open={isOpenModal}
+        open={!isLoading ? isOpenModal : false}
         onOk={() => handleOpenModal(false)}
         onCancel={() => handleOpenModal(false)}
         centered

@@ -152,6 +152,7 @@ const ApplicationForm = () => {
             handleClick={handleClick}
             handleOpenModal={handleOpenModal}
             handleCancel={onBackToHome}
+            isLoading={state.isLoading}
           />
         );
       }

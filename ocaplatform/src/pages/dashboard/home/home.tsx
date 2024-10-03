@@ -7,7 +7,7 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { AutoComplete, Input, Skeleton, Space, Tooltip } from "antd";
+import { AutoComplete, Input, message, Skeleton, Space, Tooltip } from "antd";
 
 import classNames from "classnames";
 import _ from "lodash";
@@ -49,12 +49,12 @@ interface IPropsHome {
 }
 
 const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
   const pageCurrent = useRef(1);
+  const totalElements = useRef(20);
   const filter = useRef<RequestHomePageBody>({
     jobTitle: "",
     jobTypeId: 0,
@@ -149,29 +149,34 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   };
 
   const getListJob = async (isLoadMore: boolean = false) => {
-    setState({ isLoadingList: true, isLoadingDetail: true });
     try {
       const page = pageCurrent.current;
       const newPage = isLoadMore ? page + 1 : page;
-      const data = await fetchListJob(0, 10 * newPage, filter.current);
-      const newState = {};
-      if (data && !_.isEmpty(data.content)) {
-        if (isLoadMore) {
-          _.assign(newState, { listJob: data.content });
+      if (newPage * 10 <= totalElements.current) {
+        const data = await fetchListJob(0, 10 * newPage, filter.current);
+        const newState = {};
+        if (data && !_.isEmpty(data.content)) {
+          if (isLoadMore) {
+            _.assign(newState, { listJob: data.content });
+          } else {
+            const dataDetail = await fetchDetailJob(data.content[0].jobId);
+            _.assign(newState, {
+              listJob: data.content,
+              jobs: data,
+              jobDetail: dataDetail,
+              isLoadingList: false,
+              isLoadingDetail: false,
+            });
+            totalElements.current = data.totalElements
+          }
         } else {
-          const dataDetail = await fetchDetailJob(data.content[0].jobId);
-          _.assign(newState, {
-            listJob: data.content,
-            jobs: data,
-            jobDetail: dataDetail,
-          });
+          _.assign(newState, { listJob: [], jobDetail: {} });
         }
+        pageCurrent.current = newPage;
+        setState(newState);
       } else {
-        _.assign(newState, { listJob: [], jobDetail: {} });
+        message.warning('Work is over!')
       }
-      _.assign(newState, { isLoadingList: false, isLoadingDetail: false });
-      pageCurrent.current = newPage;
-      setState(newState);
     } catch (error) {
       console.log("error", { error });
       setState({
@@ -354,6 +359,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   };
 
   useEffect(() => {
+    setState({ isLoadingList: true, isLoadingDetail: true });
     getListJob();
   }, [isActive]);
 
