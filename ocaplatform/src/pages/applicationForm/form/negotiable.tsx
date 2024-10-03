@@ -169,8 +169,9 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         <InputPrefix
           value={state.jobTitle}
           title="Job Title"
-          subTitle="(Negotiable)"
+          subTitle={state.negotiable && "(Negotiable)"}
           valuePrefix={state.currentJobTitle}
+          readOnly={!state.negotiable}
           type="input"
           onChange={(e) => handleInputChange("jobTitle", e)}
         />
@@ -184,16 +185,18 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           <InputPrefix
             value={state.startDate}
             title="Start working date"
-            subTitle="(Negotiable)"
+            subTitle={state.negotiable && "(Negotiable)"}
             type="date"
+            readOnly={!state.negotiable}
             valuePrefix={formatDate(state.currentStartDate)}
             onChange={(date) => handleDateChange("startDate", date)}
           />
           <InputPrefix
             value={state.endDate}
             title="End working date"
-            subTitle="(Negotiable)"
+            subTitle={state.negotiable && "(Negotiable)"}
             type="date"
+            readOnly={!state.negotiable}
             valuePrefix={formatDate(state.currentEndDate)}
             onChange={(date) => handleDateChange("endDate", date)}
           />
@@ -202,8 +205,9 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           <InputPrefix
             value={state.workplaceType}
             title="Workplace type"
-            subTitle="(Negotiable)"
+            subTitle={state.negotiable && "(Negotiable)"}
             type="select"
+            readOnly={!state.negotiable}
             valuePrefix={state.currentWorkplaceType}
             options={WorkTypeOptions}
             onChange={(value) => handleSelectChange("workplaceType", value)}
@@ -211,8 +215,9 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           <InputPrefix
             value={state.hoursPerWeek}
             title="Hours per week"
-            subTitle="(Negotiable)"
+            subTitle={state.negotiable && "(Negotiable)"}
             valuePrefix={state.currentHoursPerWeek}
+            readOnly={!state.negotiable}
             type="input"
             onChange={(e) => handleInputChange("hoursPerWeek", e)}
           />
@@ -226,8 +231,9 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         <InputPrefix
           value={state.currentTasks}
           title="Task"
-          subTitle="(Negotiable)"
+          subTitle={state.negotiable && "(Negotiable)"}
           type="text-area-input"
+          readOnly={!state.negotiable}
           onChangeMultiple={(e, id) => handleTaskChange(id, e)}
           onKeyDown={(e, id) => handleKeyDown(id, e)}
         />

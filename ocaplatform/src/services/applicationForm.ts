@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { apiServiceUrl } from "../constants";
-import { RequestApplicationForm } from "../interfaces/applicationForm";
+import { RequestApplicationForm, ResponseAttachments } from "../interfaces/applicationForm";
 
 const putLApplicationForm = async (
   requestBody: RequestApplicationForm
@@ -77,4 +77,15 @@ const handleDownloadFile = async (id: number) => {
   }
 };
 
-export { handleDownloadFile, handleUploadFile, putLApplicationForm };
+const getListAttachments = async ():Promise<ResponseAttachments[] | void> => {
+  try {
+    const response: AxiosResponse<ResponseAttachments[]> = await axios.get(
+      `${apiServiceUrl}users/get-attachments`);
+    return response.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export { getListAttachments, handleDownloadFile, handleUploadFile, putLApplicationForm };
+

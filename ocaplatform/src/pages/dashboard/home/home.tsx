@@ -7,14 +7,7 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import {
-  AutoComplete,
-  Badge,
-  Input,
-  Skeleton,
-  Space,
-  Tooltip
-} from "antd";
+import { AutoComplete, Input, Skeleton, Space, Tooltip } from "antd";
 
 import classNames from "classnames";
 import _ from "lodash";
@@ -23,11 +16,12 @@ import {
   Clock,
   Laptop,
   MapPin,
-  UsersFour
+  UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CalendarDotIcon } from "../../../assets/svg";
+import Badge from "../../../components/badge/badge";
 import ButtonComponent from "../../../components/button/button";
 import SelectCustom from "../../../components/selectCustom/selectCustom";
 import {
@@ -51,7 +45,11 @@ import {
 } from "../../../utils/formatter";
 import "./home.s.scss";
 
-const HomePage: React.FC = () => {
+interface IPropsHome {
+  isActive: boolean;
+}
+
+const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   // const dispatch = useDispatch();
   const navigate = useNavigate();
   const divRef = useRef<HTMLDivElement>(null);
@@ -358,9 +356,9 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     getListJob();
-  }, []);
+  }, [isActive]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     const handleScroll = () => {
       const element = divRef.current;
       if (element) {
@@ -392,25 +390,25 @@ const HomePage: React.FC = () => {
     };
   }, []);
 
-  useUpdateEffect(() => {
-    const handleScroll = () => {
-      if (topButtonRef.current) {
-        const rect = topButtonRef.current.getBoundingClientRect();
-        if (rect.top < 0) {
-          setState({ showBottomButton: true });
-        } else {
-          setState({ showBottomButton: false });
-        }
-      }
-    };
+  // useUpdateEffect(() => {
+  //   const handleScroll = () => {
+  //     if (topButtonRef.current) {
+  //       const rect = topButtonRef.current.getBoundingClientRect();
+  //       if (rect.top < 0) {
+  //         setState({ showBottomButton: true });
+  //       } else {
+  //         setState({ showBottomButton: false });
+  //       }
+  //     }
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
+  //   window.addEventListener("scroll", handleScroll);
+  //   handleScroll();
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const { jobType, application, workType } = state;
@@ -619,17 +617,19 @@ const HomePage: React.FC = () => {
                     <div className="title">
                       {jobDetail.title}
                       {jobDetail.negotiable && (
-                        <span className="title-sub">(Negotiable)</span>
+                        <>
+                          <span className="title-sub">(Negotiable)</span>
+                          <Tooltip
+                            className="tooltip"
+                            placement="bottom"
+                            title="This indicates that the company is willing to negotiate and adjust the job duties, working hours, duration, and location through discussion"
+                          >
+                            <QuestionCircleOutlined
+                              style={{ fontSize: 16, color: "#0A5CD8" }}
+                            />
+                          </Tooltip>
+                        </>
                       )}
-                      <Tooltip
-                        className="tooltip"
-                        placement="bottom"
-                        title="This indicates that the company is willing to negotiate and adjust the job duties, working hours, duration, and location through discussion"
-                      >
-                        <QuestionCircleOutlined
-                          style={{ fontSize: 16, color: "#0A5CD8" }}
-                        />
-                      </Tooltip>
                     </div>
                     <div className="company-info">
                       <div className="company-info-name">
@@ -769,6 +769,7 @@ const HomePage: React.FC = () => {
                             <MapPin className="icon" size={18} />
                             <span>
                               {_.compact([
+                                jobDetail.location.city,
                                 jobDetail.location.state,
                                 jobDetail.location.country,
                               ]).join(", ")}

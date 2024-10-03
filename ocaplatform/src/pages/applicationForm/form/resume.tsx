@@ -46,10 +46,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   const [state, setState] = useMergeState({
     isAddMoreEnabled: false,
     listAttachment: [],
-    selectedResumeUid: null,
+    selectedResumeId: null,
     isOpenRemoveModal: false,
     isOpenApplyModal: false,
-    uidRemove: null,
+    idRemove: null,
     isLoadingUpload: false,
     errors: {},
   });
@@ -58,7 +58,10 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     keyValue: string,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setState({ [keyValue]: e.target.value, errors: {...state.errors, [keyValue]: ''} });
+    setState({
+      [keyValue]: e.target.value,
+      errors: { ...state.errors, [keyValue]: "" },
+    });
   };
 
   const handleMultipleInputChange = (
@@ -71,7 +74,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   };
 
   const handleChangeUpload = (name: string, value: any) => {
-    setState({ [name]: value,  errors: {...state.errors, resume: ''} });
+    setState({ [name]: value, errors: { ...state.errors, resume: "" } });
   };
 
   const handleChangeAttachment = async (fileList: any, isUploading = false) => {
@@ -88,7 +91,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
       filesUpload[filesUpload.length - 1],
     ]);
     setState({
-      selectedResumeUid: filesUpload[filesUpload.length - 1].uid || null,
+      selectedResumeId: filesUpload[filesUpload.length - 1].id || null,
     });
   };
 
@@ -172,14 +175,14 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   };
 
   const handleRemoveResume = () => {
-    const { listAttachment, uidRemove } = state;
+    const { listAttachment, idRemove } = state;
     const newListAttachment = _.filter(
       listAttachment,
-      (resume) => resume.uid !== uidRemove
+      (resume) => resume.id !== idRemove
     );
     setState({
       listAttachment: newListAttachment,
-      selectedResumeUid: newListAttachment[0]?.uid || null,
+      selectedResumeId: newListAttachment[0]?.id || null,
       isOpenRemoveModal: false,
     });
   };
@@ -207,8 +210,8 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     handleClick({ step2: state }, false);
   };
 
-  const handleSelectResume = (uid: string) => {
-    setState({ selectedResumeUid: uid });
+  const handleSelectResume = (id: string) => {
+    setState({ selectedResumeId: id });
   };
 
   const handleOpenRemoveModal = (isOpenRemoveModal: boolean) => {
@@ -246,13 +249,13 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   const handleApply = () => {
     validates();
     if (_.isEmpty(state.errors)) {
-      const { listAttachment, selectedResumeUid } = state;
+      const { listAttachment, selectedResumeId } = state;
       const attachmentCurrent = _.filter(dataAttachment.current, (item) =>
-        _.some(listAttachment, { uid: item.uid })
+        _.some(listAttachment, { id: item.id })
       );
       const attachmentId = _.find(
         attachmentCurrent,
-        (attachment) => attachment.uid === selectedResumeUid
+        (attachment) => attachment.id === selectedResumeId
       )?.id;
 
       handleClick({ step2: { ...state, resume: [attachmentId] } }, true);
@@ -267,11 +270,12 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
 
   useEffect(() => {
     const { listAttachment } = state;
-    const listUid = dataAttachment.current;
+    const listId = dataAttachment.current;
     const newListAttachment = _.map(listAttachment, (file) => {
-      const matched = _.find(listUid, { uid: file.uid });
+      const matched = _.find(listId, { uid: file.uid });
 
       if (matched) {
+        setState({ selectedResumeId: matched.id });
         return { ...file, id: matched.id };
       }
 
@@ -410,19 +414,21 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
                 <List.Item>
                   <Card
                     className={classNames(
-                      resume.uid === state.selectedResumeUid && "active"
+                      resume.id === state.selectedResumeId && "active"
                     )}
-                    onClick={() => handleSelectResume(resume.uid)}
+                    onClick={() => handleSelectResume(resume.id)}
                   >
                     <div className="resume-item">
                       <div className="resume-item-left">
                         <RadioCustom
-                          checked={resume.uid === state.selectedResumeUid}
+                          checked={resume.id === state.selectedResumeId}
                         />
                         <div className="resume-description">
                           <div className="resume-title">{resume.name}</div>
                           <div className="resume-modified">
-                            {`Uploaded on ${dayjs().format("MM/DD/YYYY")}`}
+                            {`Uploaded on ${dayjs(resume.uploadDate).format(
+                              "MM/DD/YYYY"
+                            )}`}
                           </div>
                         </div>
                       </div>
@@ -441,7 +447,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
                           onClick={(e) => {
                             e.stopPropagation();
                             handleOpenRemoveModal(true);
-                            setState({ uidRemove: resume.uid });
+                            setState({ idRemove: resume.id });
                           }}
                         />
                       </div>

@@ -60,3 +60,18 @@ export interface RequestApplicationForm {
   introduction: string;
   attachmentIds: number[];
 }
+
+export interface ResponseAttachments {
+  id: number;
+  md5: null;
+  name: string;
+  format: string;
+  size: number;
+  uploadUser: {
+    userId: number;
+    name: string;
+    email: string;
+  };
+  uploadDate: string;
+  downloadLink: string;
+}

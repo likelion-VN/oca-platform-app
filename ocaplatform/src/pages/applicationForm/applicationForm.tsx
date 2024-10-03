@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { message } from "antd";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import _ from "lodash";
@@ -10,7 +11,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import Loading from "../../components/loading/loading";
-import { putLApplicationForm } from "../../services/applicationForm";
+import {
+  getListAttachments,
+  putLApplicationForm,
+} from "../../services/applicationForm";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { newFormDataFormatter } from "./applicationForm.h";
 import "./applicationForm.s.scss";
@@ -34,8 +38,22 @@ const ApplicationForm = () => {
     isSuccess: false,
   });
 
-  const createIntitialData = () => {
+  const getAttachments = async () => {
+    try {
+      const listAttachment = await getListAttachments();
+      if (_.isArray(listAttachment) && !_.isEmpty(listAttachment)) {
+        return listAttachment.slice(-2);
+      } else {
+        return [];
+      }
+    } catch (error) {
+      message.error(`${error}`);
+    }
+  };
+
+  const createIntitialData = async () => {
     const { detailJob } = state;
+    const listAttachment = await getAttachments();
     _.assign(newForm.current, {
       step1: {
         currentJobTitle: detailJob.title,
@@ -60,14 +78,17 @@ const ApplicationForm = () => {
         workplaceType: null,
         hoursPerWeek: "",
         isOpenModal: detailJob.isOpenModal,
+        negotiable: detailJob.negotiable,
       },
       step2: {
-        resume: [],
+        resume: !_.isEmpty(listAttachment) ? [listAttachment?.[0].id] : [],
         email: "",
         phoneNumber: "",
         portfolio: "",
         personalWebsite: [""],
         selfIntroduction: "",
+        listAttachment,
+        selectedResumeId: !_.isEmpty(listAttachment) ? listAttachment?.[0].id : null,
       },
       jobId: detailJob.id,
       jobTypeId: detailJob.jobType.id,
@@ -106,8 +127,8 @@ const ApplicationForm = () => {
   };
 
   const handleOpenSuccessModal = (isSuccess: boolean) => {
-    setState({ isSuccess })
-  }
+    setState({ isSuccess });
+  };
 
   const renderStep = (step: number) => {
     switch (step) {

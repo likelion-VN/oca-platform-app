@@ -11,7 +11,7 @@ import "./inputPrefix.s.scss";
 interface IPropsInputPrefix {
   value?: any;
   title: string;
-  subTitle?: string;
+  subTitle?: any;
   onChange?: (e: any) => void;
   onChangeMultiple?: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void;
   onKeyDown?: (e: any, index: number) => void;
@@ -19,6 +19,7 @@ interface IPropsInputPrefix {
   disabled?: boolean;
   type: string;
   options?: Option[];
+  readOnly?: boolean; 
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -32,6 +33,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   disabled = false,
   type,
   options,
+  readOnly = false,
 }) => {
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < dayjs().endOf("day");
@@ -83,6 +85,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             size="large"
             disabled={disabled}
             allowClear
+            readOnly={readOnly}
             prefix={
               <span
                 style={{
@@ -125,6 +128,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 placeholder=""
                 onChange={(e) => handleInputChangeMutiple(e, item.id)}
                 onKeyDown={(e) => handleKeyDown(e, item.id)}
+                readOnly={readOnly}
                 prefix={
                   <span
                     style={{
@@ -165,6 +169,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               disabledDate={disabledDate}
               size="large"
               format="MM/DD/YYYY"
+              disabled={readOnly}
               style={{
                 width: "100%",
                 paddingLeft: "93px",
@@ -188,6 +193,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               value: option.label,
               disabled: valuePrefix === option.label,
             }))}
+            disabled={readOnly}
             value={value}
             allowClear
             onClear={() => handleSelectChange(null)}
