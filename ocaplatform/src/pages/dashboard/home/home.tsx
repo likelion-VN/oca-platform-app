@@ -55,6 +55,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
+  const pageCurrent = useRef(1);
   const filter = useRef<RequestHomePageBody>({
     jobTitle: "",
     jobTypeId: 0,
@@ -80,8 +81,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     listJob: [],
     listState: [],
     markSave: false,
-    page: 1,
-    pageSize: 10,
     jobs: undefined,
     indexActive: 0,
     jobDetail: undefined,
@@ -153,10 +152,10 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const getListJob = async (isLoadMore: boolean = false) => {
     setState({ isLoadingList: true, isLoadingDetail: true });
     try {
-      const { page, pageSize } = state;
+      const page = pageCurrent.current;
       const newPage = isLoadMore ? page + 1 : page;
-      const data = await fetchListJob(0, pageSize * newPage, filter.current);
-      const newState = { page: newPage };
+      const data = await fetchListJob(0, 10 * newPage, filter.current);
+      const newState = {};
       if (data && !_.isEmpty(data.content)) {
         if (isLoadMore) {
           _.assign(newState, { listJob: data.content });
@@ -172,6 +171,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         _.assign(newState, { listJob: [], jobDetail: {} });
       }
       _.assign(newState, { isLoadingList: false, isLoadingDetail: false });
+      pageCurrent.current = newPage;
       setState(newState);
     } catch (error) {
       console.log("error", { error });
@@ -410,7 +410,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   //   };
   // }, []);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     const { jobType, application, workType } = state;
     const clonedFilter = _.cloneDeep(filter.current);
     const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
