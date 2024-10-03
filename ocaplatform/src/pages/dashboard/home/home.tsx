@@ -37,7 +37,6 @@ import {
   fetchListLocation,
 } from "../../../services/home";
 import useMergeState from "../../../utils/customHook/useMergeState";
-import useUpdateEffect from "../../../utils/customHook/useUpdateEffect";
 import {
   calculateDaysDiff,
   formatDate,
@@ -358,7 +357,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     getListJob();
   }, [isActive]);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       const element = divRef.current;
       if (element) {
@@ -410,7 +409,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   //   };
   // }, []);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     const { jobType, application, workType } = state;
     const clonedFilter = _.cloneDeep(filter.current);
     const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
@@ -809,4 +808,4 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   );
 };
 
-export default HomePage;
+export default React.memo(HomePage);
