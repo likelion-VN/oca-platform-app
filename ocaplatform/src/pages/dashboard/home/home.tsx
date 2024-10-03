@@ -428,6 +428,9 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
       workplaceTypeIds,
     };
     filter.current = newFilter;
+    pageCurrent.current = 1;
+    totalElements.current = 20;
+    setState({ isLoadingList: true, isLoadingDetail: true });
     getListJob();
   }, [state.jobType, state.application, state.workType]);
 
