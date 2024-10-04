@@ -15,4 +15,19 @@ const WorkTypeOptions = [
   { value: 3, label: "Onsite" },
 ];
 
-export { ApplicationTermsOptions, JobTypeOptions, WorkTypeOptions };
+const ApplicationTab = [
+  { value: "all", label: "All" },
+  { value: "interested", label: "Interested" },
+  { value: "applied", label: "Applied" },
+  { value: "inProgress", label: "In Progress" },
+  { value: "accepted", label: "Accepted" },
+  { value: "closed", label: "Closed" },
+];
+
+export {
+  ApplicationTab,
+  ApplicationTermsOptions,
+  JobTypeOptions,
+  WorkTypeOptions
+};
+

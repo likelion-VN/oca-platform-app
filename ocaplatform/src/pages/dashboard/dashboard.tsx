@@ -4,6 +4,7 @@ import { MenuProps, Result } from "antd";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
 import { useSetState } from "../../utils/customHook/useSetState";
+import ApplicationPage from "./application/application";
 import "./dashboard.s.scss";
 import HomePage from "./home/home";
 
@@ -24,9 +25,7 @@ export default function Dashboard() {
   const renderPage = (key: string) => {
     switch (key) {
       case "2": {
-        return (
-          <Result status="403" subTitle="This page will be updated soon!" />
-        );
+        return <ApplicationPage isActive />;
       }
       case "3": {
         return (

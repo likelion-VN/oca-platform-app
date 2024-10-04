@@ -369,6 +369,10 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     });
   };
 
+  const handleViewCompany = () => {
+    console.log('You are clicking View Company')
+  }
+
   useEffect(() => {
     setState({ isLoadingList: true, isLoadingDetail: true });
     getListJob();
@@ -813,7 +817,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                           className="view-btn"
                           iconPosition="end"
                           type="link"
-                          onClick={onSearch}
+                          onClick={handleViewCompany}
                         />
                       </div>
                     </div>

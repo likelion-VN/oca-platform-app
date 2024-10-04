@@ -75,15 +75,3 @@
 .ant-picker-cell-hover .ant-picker-cell-inner {
   border-radius: 50% !important;
 }
-
-.ant-tooltip-arrow::before {
-    background-color: $matterhorn !important;
-}
-
-.ant-tooltip-inner {
-    font-family: "Inter";
-    align-self: stretch;
-    font-size: 12px;
-    font-weight: 400;
-    background-color: $matterhorn !important;
-  }

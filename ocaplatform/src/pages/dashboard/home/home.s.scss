@@ -321,6 +321,7 @@
               width: 64px;
               border-radius: 8px;
               align-self: center;
+              object-fit: contain;
             }
             .company-info {
               align-self: center;
@@ -365,18 +366,6 @@
       }
     }
   }
-}
-
-.ant-tooltip-arrow::before {
-  background-color: $matterhorn !important;
-}
-
-.ant-tooltip-inner {
-  font-family: "Inter";
-  align-self: stretch;
-  font-size: 12px;
-  font-weight: 400;
-  background-color: $matterhorn !important;
 }
 
 // .menu-filter {

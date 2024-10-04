@@ -166,7 +166,7 @@ const ApplicationForm = () => {
   return (
     <>
       <Loading isLoading={state.isLoading} />
-      <div className="background">
+      <div className="background-application-form">
         <div className="header">
           <ButtonComponent
             className="back-btn"

@@ -1,7 +1,6 @@
 @import "../../styles/variables.scss";
 
-.background {
-  font-family: "Inter";
+.background-application-form {
   .header {
     display: flex;
     justify-content: space-between;
@@ -174,9 +173,6 @@
                           border-color: transparent !important;
                           box-shadow: unset;
                           background: transparent;
-                          .ant-wave {
-                            color: transparent;
-                          }
                         }
                       }
                     }
@@ -395,10 +391,6 @@
   }
 }
 
-.visible {
-  display: none !important;
-}
-
 .ant-dropdown {
   &-menu {
     padding: 0 !important;
@@ -411,9 +403,6 @@
         border-color: transparent;
         justify-content: flex-start;
         // border-radius: 0 !important;
-        .ant-wave {
-          color: transparent;
-        }
         &:hover {
           border-color: transparent !important;
           color: unset !important;
@@ -422,4 +411,8 @@
       }
     }
   }
+}
+
+.visible {
+  display: none !important;
 }

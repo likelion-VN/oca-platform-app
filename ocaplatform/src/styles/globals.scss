@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 html,
 body {
   padding: 0;
@@ -11,4 +13,20 @@ body {
   font-family: "Inter", sans-serif;
   font-style: normal;
   font-optical-sizing: auto;
+}
+
+.ant-wave {
+  color: transparent;
+}
+
+.ant-tooltip-arrow::before {
+  background-color: $matterhorn !important;
+}
+
+.ant-tooltip-inner {
+  font-family: "Inter";
+  align-self: stretch;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: $matterhorn !important;
 }
