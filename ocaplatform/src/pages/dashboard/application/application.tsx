@@ -50,7 +50,6 @@ import "./application.s.scss";
   }
   
   const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
-    // const dispatch = useDispatch();
     const navigate = useNavigate();
     const divRef = useRef<HTMLDivElement>(null);
     const topButtonRef = useRef<HTMLDivElement>(null);

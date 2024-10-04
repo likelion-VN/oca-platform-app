@@ -38,6 +38,14 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState({ [keyValue]: e.target.value });
   };
 
+  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const validInput = /^[0-9]*$/.test(value);
+    if (validInput) {
+      setState({ hoursPerWeek: value });
+    }
+  };
+
   const handleTaskChange = (
     id: number,
     e: React.ChangeEvent<HTMLInputElement>
@@ -221,7 +229,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             valuePrefix={state.currentHoursPerWeek}
             readOnly={!state.negotiable}
             type="input"
-            onChange={(e) => handleInputChange("hoursPerWeek", e)}
+            onChange={handleNumberChange}
           />
         </div>
         <InputPrefix

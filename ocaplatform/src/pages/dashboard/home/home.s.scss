@@ -125,6 +125,7 @@
               width: 40px;
               height: 40px;
               border-radius: 8px;
+              object-fit: contain;
             }
             &-info {
               margin-left: 12px;
@@ -167,7 +168,7 @@
         }
       }
     }
-    .job-detail {
+    .job-detail { 
       border: 1px solid $neutral;
       border-radius: 4px;
       padding: 16px;
@@ -196,6 +197,7 @@
           width: 84px;
           border-radius: 8px;
           align-self: center;
+          object-fit: contain;
         }
         .job-title {
           margin-left: 12px;

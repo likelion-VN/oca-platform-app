@@ -3,4 +3,10 @@ const validateEmail = (email: string) => {
   return emailRegex.test(email);
 };
 
-export { validateEmail };
+const validatePhoneNumber = (phoneNumber: string) => {
+  const phoneRegex = /^\+?[0-9]{10,15}$/;
+  
+  return phoneRegex.test(phoneNumber);
+};
+
+export { validateEmail, validatePhoneNumber };

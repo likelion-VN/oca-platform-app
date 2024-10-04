@@ -167,15 +167,20 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               isLoadingList: false,
               isLoadingDetail: false,
             });
-            totalElements.current = data.totalElements
+            totalElements.current = data.totalElements;
           }
         } else {
-          _.assign(newState, { listJob: [], jobDetail: {} });
+          _.assign(newState, {
+            listJob: [],
+            jobDetail: {},
+            isLoadingList: false,
+            isLoadingDetail: false,
+          });
         }
         pageCurrent.current = newPage;
         setState(newState);
       } else {
-        message.warning('Work is over!')
+        message.warning("Work is over!");
       }
     } catch (error) {
       console.log("error", { error });

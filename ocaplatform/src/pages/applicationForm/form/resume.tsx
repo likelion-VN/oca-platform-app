@@ -24,7 +24,7 @@ import {
   handleUploadFile,
 } from "../../../services/applicationForm";
 import useMergeState from "../../../utils/customHook/useMergeState";
-import { validateEmail } from "../../../utils/validation";
+import { validateEmail, validatePhoneNumber } from "../../../utils/validation";
 
 interface ResumeFormProps {
   defaultData: any;
@@ -66,6 +66,17 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
       [keyValue]: e.target.value,
       errors: { ...state.errors, [keyValue]: "" },
     });
+  };
+
+  const handleNumberPhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const validInput = /^[0-9+]*$/.test(value);
+    if (validInput) {
+      setState({
+        phoneNumber: value,
+        errors: { ...state.errors, phoneNumber: "" },
+      });
+    }
   };
 
   const handleMultipleInputChange = (
@@ -229,7 +240,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   const validates = () => {
     const { errors } = state;
     if (_.isEmpty(state.listAttachment)) {
-      _.assign(errors, { resume: "Field is required." });
+      _.assign(errors, { resume: "Please upload your resume." });
     } else {
       _.unset(errors, "resume");
     }
@@ -243,7 +254,11 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
       _.assign(errors, { email: "Field is required." });
     }
     if (state.phoneNumber) {
-      _.unset(errors, "phoneNumber");
+      if (!validatePhoneNumber(state.phoneNumber)) {
+        _.assign(errors, { phoneNumber: "Phone number is valid." });
+      } else {
+        _.unset(errors, "phoneNumber");
+      }
     } else {
       _.assign(errors, { phoneNumber: "Field is required." });
     }
@@ -519,7 +534,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           title="Phone number"
           type="input"
           placeholder="Enter phone number"
-          onChange={(e) => handleInputChange("phoneNumber", e)}
+          onChange={handleNumberPhoneChange}
           errorMsg={state.errors.phoneNumber}
         />
         <InputDefault
