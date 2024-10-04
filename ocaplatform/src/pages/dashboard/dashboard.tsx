@@ -25,7 +25,10 @@ export default function Dashboard() {
   const renderPage = (key: string) => {
     switch (key) {
       case "2": {
-        return <ApplicationPage isActive />;
+        // return (
+        //   <Result status="403" subTitle="This page will be updated soon!" />
+        // );
+        return <ApplicationPage isActive={state.selectedKey === "2"}/>;
       }
       case "3": {
         return (
@@ -38,7 +41,7 @@ export default function Dashboard() {
         );
       }
       default: {
-        return <HomePage isActive />;
+        return <HomePage isActive={state.selectedKey === "1"} />;
       }
     }
   };

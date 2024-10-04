@@ -43,6 +43,6 @@ export const handleDownloadFile = async (id: number) => {
       window.URL.revokeObjectURL(url);
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error:", error);
   }
 };

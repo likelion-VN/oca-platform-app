@@ -67,13 +67,6 @@
     font-size: 12px;
     margin-bottom: 16px;
   }
-  .empty-layout {
-    height: 70%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
   .jobs {
     display: grid;
     grid-template-columns: 435px 1fr;
@@ -175,7 +168,7 @@
         }
       }
     }
-    .job-detail { 
+    .job-detail {
       border: 1px solid $neutral;
       border-radius: 4px;
       padding: 16px;

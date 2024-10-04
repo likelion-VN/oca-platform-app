@@ -12,6 +12,6 @@ export const handleUploadFile = async (file: any) => {
     });
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("Error:", error);
   }
 };

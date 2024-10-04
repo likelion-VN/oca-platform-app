@@ -187,22 +187,6 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
     };
   }, []);
 
-  useEffect(() => {
-    const { jobType, application, workType } = state;
-    const clonedFilter = _.cloneDeep(filter.current);
-    const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
-    const negotiable = !!application ? application === "negotiable" : null;
-    const workplaceTypeIds = !_.isEmpty(workType) ? workType : [];
-    const newFilter = {
-      ...clonedFilter,
-      jobTypeId,
-      negotiable,
-      workplaceTypeIds,
-    };
-    filter.current = newFilter;
-    getListJob();
-  }, [state.jobType, state.application, state.workType]);
-
   const { jobDetail } = state || {};
 
   return (
@@ -223,7 +207,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
       <div className="count-jobs">
         <strong>50</strong> application statuses were updated.
       </div>
-      <div className="jobs">
+      <div className="application-jobs">
         <div
           ref={divRef}
           className={classNames(

@@ -19,6 +19,7 @@ import Loading from "../../../components/loading/loading";
 import ModalComponent from "../../../components/modal/modal";
 import RadioCustom from "../../../components/radio/radio";
 import { ACCEPT_FILE_TYPES, MAX_FILE_SIZE } from "../../../constants";
+import { handleDeleteFile } from "../../../services/handleDeleteFile";
 import { handleDownloadFile } from "../../../services/handleDownloadFile";
 import { handleUploadFile } from "../../../services/handleUploadFile";
 import useMergeState from "../../../utils/customHook/useMergeState";
@@ -187,17 +188,23 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     },
   };
 
-  const handleRemoveResume = () => {
+  const handleRemoveResume = async () => {
+    setState({ isLoadingUpload: true });
     const { listAttachment, clickedId } = state;
-    const newListAttachment = _.filter(
-      listAttachment,
-      (resume) => resume.id !== clickedId
-    );
-    setState({
-      listAttachment: newListAttachment,
-      selectedResumeId: newListAttachment[0]?.id || null,
-      isOpenRemoveModal: false,
-    });
+    const isRemoved = await handleDeleteFile(clickedId);
+    if (isRemoved) {
+      const newListAttachment = _.filter(
+        listAttachment,
+        (resume) => resume.id !== clickedId
+      );
+      setState({
+        listAttachment: newListAttachment,
+        selectedResumeId: newListAttachment[0]?.id || null,
+        isOpenRemoveModal: false,
+      });
+      message.success('Resume is removed succesfully!')
+    }
+    setState({ isLoadingUpload: false });
   };
 
   const handleAddMore = () => {

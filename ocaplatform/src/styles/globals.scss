@@ -30,3 +30,12 @@ body {
   font-weight: 400;
   background-color: $matterhorn !important;
 }
+
+.empty-layout {
+  margin-block: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
