@@ -589,7 +589,10 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                     <div className="company-info">
                       <div className="company-info-name">{job.companyName}</div>
                       <div className="company-info-state">
-                        {job.countryName}
+                      {_.compact([
+                          job.cityName,
+                          job.countryName,
+                        ]).join(", ")}
                       </div>
                     </div>
                   </div>
@@ -656,7 +659,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                       <EnvironmentOutlined className="icon" />
                       {_.compact([
                         jobDetail.location.city,
-                        jobDetail.location.state,
+                        // jobDetail.location.state,
                         jobDetail.location.country,
                       ]).join(", ")}
                     </div>
@@ -783,7 +786,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                           <span>
                             {_.compact([
                               jobDetail.location.city,
-                              jobDetail.location.state,
+                              // jobDetail.location.state,
                               jobDetail.location.country,
                             ]).join(", ")}
                           </span>

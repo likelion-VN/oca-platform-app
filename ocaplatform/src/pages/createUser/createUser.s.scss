@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     height: 64px;
-    border-bottom: 1px solid $neutral;
+    border-bottom: 1px solid $neutral-grey;
     img {
       margin-left: 56px;
     }
@@ -27,7 +27,7 @@
         font-size: 16px;
         font-weight: 400;
         line-height: 24px;
-        color: $grey;
+        color: $charcoal-grey;
       }
       &-part {
         position: relative;
@@ -40,10 +40,10 @@
           width: 56px;
           height: 28px;
           border-radius: 0 0 75px 75px;
-          background-color: $orange;
+          background-color: $bright-orange;
           position: relative;
           &-active {
-            background-color: $pale-orange;
+            background-color: $light-peach;
           }
         }
         .left-active::before {
@@ -53,7 +53,7 @@
           left: 0;
           width: 50%;
           height: 100%;
-          background-color: $orange;
+          background-color: $bright-orange;
           border-bottom-left-radius: 75px;
           clip-path: polygon(0% 0%, 0% 90%, 50% 100%, 100% 0%);
         }
@@ -64,7 +64,7 @@
           right: 0;
           width: 50%;
           height: 100%;
-          background-color: $orange;
+          background-color: $bright-orange;
           border-bottom-right-radius: 75px;
           clip-path: polygon(100% 0%, 100% 90%, 50% 100%, 0% 0%);
         }
@@ -74,7 +74,7 @@
         column-gap: 24px;
         justify-content: center;
         .type-card {
-          border: 2px solid $neutral;
+          border: 2px solid $neutral-grey;
           border-radius: 12px;
           padding: 32px;
           width: fit-content;
@@ -91,21 +91,21 @@
             font-size: 14px;
             font-weight: 400;
             line-height: 20px;
-            color: $grey;
+            color: $charcoal-grey;
           }
           &:hover {
             cursor: pointer;
             transform: scale(1.01);
           }
           &-active {
-            border-color: $orange;
+            border-color: $bright-orange;
             background-color: $floral-white;
           }
         }
       }
       .create-btn {
-        background: $neutral-primary;
-        color: $white-smokes;
+        background: $dark-navy-blue;
+        color: $off-white;
         margin-top: 48px;
         height: 48px;
         span {
@@ -131,8 +131,8 @@
     margin-top: 32px;
   }
   .confirm-btn {
-    background: $orange !important;
-    color: $white-smokes !important;
+    background: $bright-orange !important;
+    color: $off-white !important;
     width: 162px;
     height: 48px;
   }

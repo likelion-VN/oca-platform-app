@@ -15,17 +15,17 @@
     
       .ant-radio-checked {
         .ant-radio-inner {
-          border-color: $orange !important;
-          background-color: $white !important;
+          border-color: $bright-orange !important;
+          background-color: $pure-white !important;
           &::after {
-            background-color: $orange;
+            background-color: $bright-orange;
           }
         }
       }
     
       &:hover {
         .ant-radio-inner {
-          border-color: $orange !important;
+          border-color: $bright-orange !important;
         }
       }
     }
@@ -66,8 +66,8 @@
         }
         .ant-checkbox-checked {
           .ant-checkbox-inner {
-            background-color: $orange;
-            border-color: $orange;
+            background-color: $bright-orange;
+            border-color: $bright-orange;
           }
         }
       }
@@ -76,7 +76,7 @@
 }
 
 .has-value > .ant-select-selector {
- background: $pale-orange !important;
+ background: $light-peach !important;
  .ant-select-selection-item {
    font-weight: 600;
  }

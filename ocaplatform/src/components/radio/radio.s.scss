@@ -8,17 +8,17 @@
 
   .ant-radio-checked {
     .ant-radio-inner {
-      border-color: $orange !important;
-      background-color: $white !important;
+      border-color: $bright-orange !important;
+      background-color: $pure-white !important;
       &::after {
-        background-color: $orange;
+        background-color: $bright-orange;
       }
     }
   }
 
   &:hover {
     .ant-radio-inner {
-      border-color: $orange !important;
+      border-color: $bright-orange !important;
     }
   }
 }
@@ -29,7 +29,7 @@
     position: absolute;
     width: 9px;
     height: 9px;
-    background-color: $orange;
+    background-color: $bright-orange;
     border-radius: 50%;
     transform: translate(50%, 50%);
   }

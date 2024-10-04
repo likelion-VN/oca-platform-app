@@ -4,13 +4,13 @@
   .header {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid $neutral;
+    border-bottom: 1px solid $neutral-grey;
     height: 64px;
     .back-btn {
       display: flex;
       align-self: center;
       padding: 18px 24px;
-      color: $neutral-primary !important;
+      color: $dark-navy-blue !important;
       font-size: 14px;
       line-height: 20px;
       font-weight: 600;
@@ -24,7 +24,7 @@
     .switch-background {
       height: 44px;
       border-radius: 40px;
-      background: $white-smokes;
+      background: $off-white;
       padding: 4px;
     }
     .switch-component {
@@ -43,8 +43,8 @@
         font-size: 14px;
         &-index {
           display: flex;
-          color: $white;
-          background-color: $suva-grey;
+          color: $pure-white;
+          background-color: $silver-grey;
           border-radius: 50%;
           align-items: center;
           justify-content: center;
@@ -53,14 +53,14 @@
           margin-right: 6px;
         }
         &-title {
-          color: $suva-grey;
+          color: $silver-grey;
         }
         &.active {
-          background-color: $white;
+          background-color: $pure-white;
           .switch-item-index {
             display: flex;
-            color: $white;
-            background-color: $neutral-primary;
+            color: $pure-white;
+            background-color: $dark-navy-blue;
             border-radius: 50%;
             align-items: center;
             justify-content: center;
@@ -69,7 +69,7 @@
             margin-right: 6px;
           }
           .switch-item-title {
-            color: $neutral-primary;
+            color: $dark-navy-blue;
           }
         }
       }
@@ -82,13 +82,13 @@
         font-weight: 700;
         line-height: 32px;
         margin-bottom: 8px;
-        color: $neutral-primary;
+        color: $dark-navy-blue;
       }
       .subtitle-step {
         font-size: 14px;
         font-weight: 400;
         line-height: 20px;
-        color: $suva-grey;
+        color: $silver-grey;
         .question-btn {
           margin-left: 5px;
         }
@@ -98,7 +98,7 @@
       display: flex;
       flex-direction: column;
       row-gap: 24px;
-      border: 1px solid $neutral;
+      border: 1px solid $neutral-grey;
       padding: 32px 40px;
       border-radius: 12px;
       width: 656px;
@@ -120,7 +120,7 @@
         &-subtitle {
           font-size: 12px;
           font-weight: 400;
-          color: $grey;
+          color: $charcoal-grey;
           margin-top: 6px;
         }
         .resume-list {
@@ -137,11 +137,11 @@
                 padding: 0;
                 cursor: pointer;
                 .ant-card {
-                  border-color: $neutral;
+                  border-color: $neutral-grey;
                   width: 100%;
                   border-radius: 4px !important;
                   &:hover {
-                    border-color: $orange;
+                    border-color: $bright-orange;
                   }
                   .ant-card-body {
                     padding: 12px 14px;
@@ -163,7 +163,7 @@
                             font-size: 12px;
                             font-weight: 400;
                             line-height: 16px;
-                            color: $suva-grey;
+                            color: $silver-grey;
                           }
                         }
                       }
@@ -178,8 +178,8 @@
                     }
                   }
                   &.active {
-                    background: $pale-orange;
-                    border-color: $orange;
+                    background: $light-peach;
+                    border-color: $bright-orange;
                   }
                 }
               }
@@ -189,9 +189,9 @@
         .ant-upload {
           width: 100%;
           .upload-btn {
-            border: 2px dashed $neutral;
+            border: 2px dashed $neutral-grey;
             border-radius: 4px;
-            background: $white-smokes;
+            background: $off-white;
             margin-top: 12px;
             &:hover {
               cursor: pointer;
@@ -204,7 +204,7 @@
               .name-btn {
                 display: flex;
                 align-items: center;
-                color: $orange;
+                color: $bright-orange;
                 font-size: 14px;
                 line-height: 20px;
                 font-weight: 600;
@@ -219,7 +219,7 @@
                 font-size: 12px;
                 font-weight: 400;
                 line-height: 16px;
-                color: $suva-grey;
+                color: $silver-grey;
               }
             }
           }
@@ -227,7 +227,7 @@
         .msg-error {
           font-size: 12px;
           font-weight: 500;
-          color: $red-shade;
+          color: $crimson-red;
           margin-top: 5px;
         }
       }
@@ -248,7 +248,7 @@
         }
       }
       .add-btn {
-        color: $orange;
+        color: $bright-orange;
         width: fit-content;
         text-align: start;
         padding: 0;
@@ -269,7 +269,7 @@
       display: flex;
       align-self: center;
       .go-back-btn {
-        color: $neutral-primary !important;
+        color: $dark-navy-blue !important;
         padding-right: 0;
         padding-left: 0;
       }
@@ -279,7 +279,7 @@
       column-gap: 24px;
       .continue-btn,
       .apply-btn {
-        background: $orange !important;
+        background: $bright-orange !important;
       }
     }
   }
@@ -318,7 +318,7 @@
         font-weight: 400;
         line-height: 20px;
         text-align: center;
-        color: $suva-grey;
+        color: $silver-grey;
       }
     }
   }
@@ -329,7 +329,7 @@
     text-align: center;
     padding-bottom: 24px;
     .confirm-btn {
-      background: $orange !important;
+      background: $bright-orange !important;
       width: 183px;
       font-size: 14px;
       font-family: "Inter";
@@ -378,13 +378,13 @@
       height: 48px;
     }
     .remove-btn {
-      background: $red-shade !important;
+      background: $crimson-red !important;
     }
     .submit-btn {
-      background: $orange !important;
+      background: $bright-orange !important;
     }
     .confirm-btn {
-      background: $orange !important;
+      background: $bright-orange !important;
       width: 180px;
       height: 48px;
     }
@@ -406,7 +406,7 @@
         &:hover {
           border-color: transparent !important;
           color: unset !important;
-          background-color: $white-smoke !important;
+          background-color: $smoke-white !important;
         }
       }
     }

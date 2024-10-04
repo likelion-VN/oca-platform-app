@@ -1,18 +1,42 @@
-$neutral: #dbdbdb;
-$neutral-primary: #0f172a;
+// Group color Grey
+$matterhorn-grey: #525252;
+$mid-grey: #5e616e;
+$charcoal-grey: #666666;
+$silver-grey: #8f8f8f;
+$cool-grey: #a3a3a3;
+$soft-grey: #d9d9d9;
+$neutral-grey: #dbdbdb;
+
+// Group color White
+$smoke-white: #f1f1f1;
 $ghost-white: #f4f4f6;
-$white-smoke: #f1f1f1;
-$white-smokes: #f5f5f5;
-$mid-gray: #5e616e;
-$orange: #ff7710;
-$light-orange: #ffad70;
-$pale-orange: #fff3eb;
-$suva-grey: #8f8f8f;
-$grey: #666666;
-$primary: #0a5cd8;
-$matterhorn: #525252;
-$dark-grey: #a3a3a3;
-$light-grey: #d9d9d9;
-$white: #ffffff;
+$off-white: #f5f5f5;
 $floral-white: #fff8f3;
-$red-shade: #d92d20;
+$pure-white: #ffffff;
+
+// Group color Blue
+$dark-navy-blue: #0f172a;
+$bright-blue: #0a5cd8;
+$sky-blue: #e0f2fe;
+
+// Group color Orange
+$deep-orange: #df8600;
+$light-grey-orange: #efeeed;
+$bright-orange: #ff7710;
+$soft-orange: #ffad70;
+$light-peach: #fff3eb;
+
+// Group color Red
+$dark-crimson: #b42318;
+$crimson-red: #d92d20;
+$bright-red: #fb4040;
+
+// Group color Pink
+$pastel-pink: #fee4e2;
+
+// Group color Yellow
+$pale-yellow: #ffebb2;
+
+// Group color Green
+$forest-green: #039855;
+$mint-green: #d1fadf;

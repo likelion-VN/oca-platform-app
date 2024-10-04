@@ -2,14 +2,14 @@
 
 .home-page {
   font-family: "Inter";
-  color: $neutral-primary;
+  color: $dark-navy-blue;
   height: calc(100vh - 89px);
   .search {
     display: flex;
     justify-content: center;
     column-gap: 4px;
     .ant-input-affix-wrapper {
-      background-color: $white-smokes;
+      background-color: $off-white;
       border-radius: 4px;
       height: 40px;
       .ant-input {
@@ -23,11 +23,11 @@
       font-weight: 400;
     }
     &-btn {
-      background-color: $orange !important;
-      color: $white-smokes;
+      background-color: $bright-orange !important;
+      color: $off-white;
       border-radius: 4px;
       &:hover {
-        background: $orange;
+        background: $bright-orange;
       }
     }
   }
@@ -40,7 +40,7 @@
         border-radius: 4px;
       }
       .ant-select-selection-placeholder {
-        color: $neutral-primary !important;
+        color: $dark-navy-blue !important;
         font-size: 14px;
         font-weight: 600;
         font-family: "Inter";
@@ -96,7 +96,7 @@
       }
       .job-card {
         display: flex;
-        border: 1px solid $neutral;
+        border: 1px solid $neutral-grey;
         border-radius: 4px;
         padding: 16px;
         justify-content: space-between;
@@ -112,7 +112,7 @@
               font-size: 20px;
               &-sub {
                 font-weight: 600;
-                color: $primary;
+                color: $bright-blue;
                 font-size: 14px;
                 margin-left: 4px;
               }
@@ -158,18 +158,18 @@
           }
           .update-time {
             font-size: 12px;
-            color: $suva-grey;
+            color: $silver-grey;
             text-align: right;
           }
         }
         &-active {
-          border-color: $orange;
+          border-color: $bright-orange;
           border-left-width: 5px;
         }
       }
     }
     .job-detail {
-      border: 1px solid $neutral;
+      border: 1px solid $neutral-grey;
       border-radius: 4px;
       padding: 16px;
       height: 95.5%;
@@ -208,7 +208,7 @@
             line-height: 32px;
             &-sub {
               font-weight: 600;
-              color: $primary;
+              color: $bright-blue;
               font-size: 14px;
               margin-left: 4px;
             }
@@ -218,11 +218,11 @@
           }
           .company-info {
             display: flex;
-            color: $grey;
+            color: $charcoal-grey;
             font-size: 14px;
             font-weight: 400;
             &-name {
-              border-right: 1px solid $white-smokes;
+              border-right: 1px solid $off-white;
               padding-right: 8px;
             }
             &-state {
@@ -239,18 +239,18 @@
         margin-top: 16px;
         .application-btn {
           flex: 1;
-          background: $orange !important;
-          color: $white-smokes;
+          background: $bright-orange !important;
+          color: $off-white;
           height: 40px;
           &:hover {
-            border-color: $orange !important;
+            border-color: $bright-orange !important;
           }
         }
         .save-btn {
           width: 40px;
           height: 40px;
           margin-left: 16px;
-          background-color: $white-smokes;
+          background-color: $off-white;
           border-color: transparent;
         }
       }
@@ -270,7 +270,7 @@
             display: flex;
             width: 272px;
             &-icon {
-              background-color: $white-smokes;
+              background-color: $off-white;
               width: 40px;
               height: 40px;
               border-radius: 50%;
@@ -287,13 +287,13 @@
                 font-size: 12px;
                 font-weight: 600;
                 line-height: 16px;
-                color: $grey;
+                color: $charcoal-grey;
               }
               &-time {
                 font-size: 14px;
                 font-weight: 400;
                 line-height: 20px;
-                color: $neutral-primary;
+                color: $dark-navy-blue;
               }
             }
           }
@@ -302,7 +302,7 @@
       &-company {
         margin-top: 17px;
         padding-top: 17px;
-        border-top: 1px solid $neutral;
+        border-top: 1px solid $neutral-grey;
         &-intro {
           display: flex;
           justify-content: space-between;
@@ -327,7 +327,7 @@
               }
               &-detail {
                 display: flex;
-                color: $grey;
+                color: $charcoal-grey;
                 font-size: 14px;
                 font-weight: 400;
                 line-height: 20px;
@@ -350,7 +350,7 @@
           &-right {
             .view-btn {
               font-family: "Inter";
-              color: $orange;
+              color: $bright-orange;
               border-color: transparent;
               box-shadow: unset;
             }
@@ -363,7 +363,7 @@
 
 // .menu-filter {
 //   &-header {
-//     border-bottom: 1px solid $neutral;
+//     border-bottom: 1px solid $neutral-grey;
 //     padding: 14px 24px !important;
 //     font-size: 14px !important;
 //     font-weight: 600 !important;

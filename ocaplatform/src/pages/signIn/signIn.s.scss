@@ -10,8 +10,8 @@
     display: flex;
     align-items: center;
     height: 64px;
-    border-bottom: 1px solid $neutral;
-    background-color: $white;
+    border-bottom: 1px solid $neutral-grey;
+    background-color: $pure-white;
     img {
       margin-left: 56px;
     }
@@ -29,7 +29,7 @@
       line-height: 48px;
     }
     &-subtitle {
-      color: $grey;
+      color: $charcoal-grey;
       font-size: 16px;
       font-weight: 400;
       line-height: 24px;
@@ -42,8 +42,8 @@
       height: 56px;
       font-size: 14px;
       font-weight: 600;
-      background: $neutral-primary !important;
-      color: $white;
+      background: $dark-navy-blue !important;
+      color: $pure-white;
     }
     &-space {
       display: flex;
@@ -54,7 +54,7 @@
       &::after {
         content: "";
         flex: 1;
-        border-bottom: 1px solid $light-grey;
+        border-bottom: 1px solid $soft-grey;
       }
       span {
         font-size: 14px;

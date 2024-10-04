@@ -25,8 +25,8 @@
       margin: 0 16px 8px 16px;
     }
     &-selected {
-      color: $orange;
-      background-color: $pale-orange;
+      color: $bright-orange;
+      background-color: $light-peach;
     }
   }
 }
@@ -42,7 +42,7 @@
     border-radius: 4px;
     padding-left: 16px !important;
     height: 44px;
-    color: $grey;
+    color: $charcoal-grey;
     &:first-child {
       margin: 16px 16px 8px 16px;
     }
@@ -53,8 +53,8 @@
       margin: 0 16px 8px 16px;
     }
     &-selected {
-      color: $orange;
-      background-color: $pale-orange;
+      color: $bright-orange;
+      background-color: $light-peach;
     }
     .ant-menu-title-content {
       margin-inline-start: 32px;
@@ -63,5 +63,5 @@
 }
 
 .ant-menu-vertical {
-  border-inline-end: 1px solid $neutral !important;
+  border-inline-end: 1px solid $neutral-grey !important;
 }

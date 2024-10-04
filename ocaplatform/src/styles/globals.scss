@@ -20,7 +20,7 @@ body {
 }
 
 .ant-tooltip-arrow::before {
-  background-color: $matterhorn !important;
+  background-color: $matterhorn-grey !important;
 }
 
 .ant-tooltip-inner {
@@ -28,7 +28,7 @@ body {
   align-self: stretch;
   font-size: 12px;
   font-weight: 400;
-  background-color: $matterhorn !important;
+  background-color: $matterhorn-grey !important;
 }
 
 .empty-layout {

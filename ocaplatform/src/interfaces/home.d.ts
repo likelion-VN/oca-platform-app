@@ -15,6 +15,7 @@ export interface Job {
   companyName: string;
   countryName: string;
   stateName: string;
+  cityName: string;
   keywords: string;
   negotiable: string;
   postDateTime: string;

@@ -9,7 +9,7 @@
     margin-bottom: 4px;
     span {
       margin-left: 2px;
-      color: $primary;
+      color: $bright-blue;
     }
   }
   .ant-input {
@@ -26,13 +26,13 @@
       font-weight: 400;
     }
     .ant-input {
-      color: $primary;
+      color: $bright-blue;
       font-weight: 400;
     }
   }
   .ant-picker {
     &-input {
-      color: $primary;
+      color: $bright-blue;
       font-weight: 400;
       input {
         font-size: 14px;
@@ -40,7 +40,7 @@
     }
   }
   .text-area-input {
-    border: 1px solid $neutral;
+    border: 1px solid $neutral-grey;
     border-radius: 4px;
     height: 76px;
     overflow-y: scroll;
@@ -63,7 +63,7 @@
 
 .ant-picker-cell-selected .ant-picker-cell-inner {
   border-radius: 50% !important;
-  background-color: $orange !important;
+  background-color: $bright-orange !important;
 }
 .ant-picker-footer {
   display: none;

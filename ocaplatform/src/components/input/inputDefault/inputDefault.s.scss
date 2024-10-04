@@ -9,7 +9,7 @@
     margin-bottom: 4px;
   }
   .optional {
-    color: $grey;
+    color: $charcoal-grey;
   }
   .ant-input {
     border-radius: 4px;
@@ -33,12 +33,12 @@
     }
     .ant-input {
       font-weight: 400;
-      color: $neutral-primary;
+      color: $dark-navy-blue;
     }
   }
   .msg-error {
     font-size: 12px;
     font-weight: 500;
-    color: $red-shade;
+    color: $crimson-red;
   }
 }
