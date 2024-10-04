@@ -11,10 +11,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import Loading from "../../components/loading/loading";
-import {
-  getListAttachments,
-  putLApplicationForm,
-} from "../../services/applicationForm";
+import { fetchListAttachments } from "../../services/fetchListAttachment";
+import { handleSubmitLApplicationForm } from "../../services/handleSubmitApplicationForm";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { newFormDataFormatter } from "./applicationForm.h";
 import "./applicationForm.s.scss";
@@ -40,7 +38,7 @@ const ApplicationForm = () => {
 
   const getAttachments = async () => {
     try {
-      const listAttachment = await getListAttachments();
+      const listAttachment = await fetchListAttachments();
       if (_.isArray(listAttachment) && !_.isEmpty(listAttachment)) {
         return listAttachment.slice(-2);
       } else {
@@ -88,7 +86,9 @@ const ApplicationForm = () => {
         personalWebsite: [""],
         selfIntroduction: "",
         listAttachment,
-        selectedResumeId: !_.isEmpty(listAttachment) ? listAttachment?.[0].id : null,
+        selectedResumeId: !_.isEmpty(listAttachment)
+          ? listAttachment?.[0].id
+          : null,
       },
       jobId: detailJob.id,
       jobTypeId: detailJob.jobType.id,
@@ -111,7 +111,7 @@ const ApplicationForm = () => {
         setState({ isLoading: true });
         const formData = newFormDataFormatter(newForm.current);
         try {
-          const isAppliedSuccess = await putLApplicationForm(formData);
+          const isAppliedSuccess = await handleSubmitLApplicationForm(formData);
           setState({ isSuccess: isAppliedSuccess, isLoading: false });
         } catch (error) {
           setState({ isLoading: false });

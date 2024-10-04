@@ -19,10 +19,8 @@ import Loading from "../../../components/loading/loading";
 import ModalComponent from "../../../components/modal/modal";
 import RadioCustom from "../../../components/radio/radio";
 import { ACCEPT_FILE_TYPES, MAX_FILE_SIZE } from "../../../constants";
-import {
-  handleDownloadFile,
-  handleUploadFile,
-} from "../../../services/applicationForm";
+import { handleDownloadFile } from "../../../services/handleDownloadFile";
+import { handleUploadFile } from "../../../services/handleUploadFile";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import { validateEmail, validatePhoneNumber } from "../../../utils/validation";
 

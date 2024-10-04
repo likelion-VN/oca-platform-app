@@ -30,12 +30,10 @@ import {
   WorkTypeOptions,
 } from "../../../constants/selectOptions";
 import { RequestHomePageBody } from "../../../interfaces/home";
-import {
-  fetchAutoComplete,
-  fetchDetailJob,
-  fetchListJob,
-  fetchListLocation,
-} from "../../../services/home";
+import { fetchDetailJob } from "../../../services/fetchDetailJob";
+import { fetchListJob } from "../../../services/fetchListJob";
+import { fetchListLocation } from "../../../services/fetchListLocation";
+import { fetchSearchComplete } from "../../../services/fetchSearchComplete";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import useUpdateEffect from "../../../utils/customHook/useUpdateEffect";
 import {
@@ -112,7 +110,7 @@ import "./application.s.scss";
   
     const getListAutoComplete = async (text: string) => {
       try {
-        const autoCompletes = await fetchAutoComplete(text, 0, 6);
+        const autoCompletes = await fetchSearchComplete(text, 0, 6);
         if (!_.isEmpty(autoCompletes)) {
           const listAutoComplete = _.map(autoCompletes, (item) => ({
             value: item.value,
