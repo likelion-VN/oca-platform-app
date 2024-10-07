@@ -10,9 +10,11 @@ import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
-import Loading from "../../components/loading/loading";
+import { LOADING_TYPES } from "../../constants/loadingTypes";
 import { fetchListAttachments } from "../../services/fetchListAttachment";
 import { handleSubmitLApplicationForm } from "../../services/handleSubmitApplicationForm";
+import loadingPage from "../../store/actions/loading";
+import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { newFormDataFormatter } from "./applicationForm.h";
 import "./applicationForm.s.scss";
@@ -20,9 +22,10 @@ import NegotiableForm from "./form/negotiable";
 import ResumeForm from "./form/resume";
 
 const ApplicationForm = () => {
+  const loadingPageAction = useActions(loadingPage);
+  const navigate = useNavigate();
   const location = useLocation();
   const { jobDetail } = location.state || {};
-  const navigate = useNavigate();
   const newForm = useRef({
     step1: {},
     step2: {},
@@ -31,7 +34,6 @@ const ApplicationForm = () => {
   const [state, setState] = useMergeState({
     step: 1,
     detailJob: jobDetail,
-    isLoading: true,
     isOpenModal: true,
     isSuccess: false,
   });
@@ -100,7 +102,19 @@ const ApplicationForm = () => {
     navigate("/");
   };
 
-  const handleClick = async (stepData: any, isClickNext: boolean) => {
+  const handleApply = async (input: any) => {
+    try {
+      loadingPageAction(LOADING_TYPES.APPLYING);
+      const isSuccess = await handleSubmitLApplicationForm(input);
+      setState({ isSuccess });
+    } catch (error) {
+      console.error("Error", error);
+    } finally {
+      loadingPageAction();
+    }
+  };
+
+  const handleClick = (stepData: any, isClickNext: boolean) => {
     if (!_.isEmpty(stepData)) {
       _.merge(newForm.current, stepData);
     }
@@ -108,14 +122,8 @@ const ApplicationForm = () => {
       if (state.step < 2) {
         setState({ step: state.step + 1 });
       } else {
-        setState({ isLoading: true });
         const formData = newFormDataFormatter(newForm.current);
-        try {
-          const isAppliedSuccess = await handleSubmitLApplicationForm(formData);
-          setState({ isSuccess: isAppliedSuccess, isLoading: false });
-        } catch (error) {
-          setState({ isLoading: false });
-        }
+        handleApply(formData);
       }
     } else {
       setState({ step: state.step - 1 });
@@ -165,7 +173,6 @@ const ApplicationForm = () => {
 
   return (
     <>
-      <Loading isLoading={state.isLoading} />
       <div className="background-application-form">
         <div className="header">
           <ButtonComponent

@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { SuccessIconGif } from "../../../assets/gif";
 import ButtonComponent from "../../../components/button/button";
 import InputDefault from "../../../components/input/inputDefault/inputDefault";
-import Loading from "../../../components/loading/loading";
 import ModalComponent from "../../../components/modal/modal";
 import RadioCustom from "../../../components/radio/radio";
 import { ACCEPT_FILE_TYPES, MAX_FILE_SIZE } from "../../../constants";
@@ -40,7 +39,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   handleOpenSuccessModal,
   handleCancel,
   isSuccess,
-  isLoading,
 }) => {
   const navigate = useNavigate();
   const dataAttachment = useRef<any[]>([]);
@@ -202,7 +200,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         selectedResumeId: newListAttachment[0]?.id || null,
         isOpenRemoveModal: false,
       });
-      message.success('Resume is removed succesfully!')
+      message.success("Resume is removed succesfully!");
     }
     setState({ isLoadingUpload: false });
   };
@@ -429,7 +427,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           </div>
         </div>
       </ModalComponent>
-      <Loading isLoading={state.isLoadingUpload || isLoading} />
       <div className="content-title">
         <div className="title-step">Resume</div>
         <div className="subtitle-step">

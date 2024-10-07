@@ -36,6 +36,8 @@ import { fetchListJob } from "../../../services/fetchListJob";
 import { fetchListLocation } from "../../../services/fetchListLocation";
 import { fetchSearchComplete } from "../../../services/fetchSearchComplete";
 import { handleSaveJob } from "../../../services/handleSaveJob";
+import loadingPage from "../../../store/actions/loading";
+import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import {
   calculateDaysDiff,
@@ -49,6 +51,7 @@ interface IPropsHome {
 }
 
 const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
+  const loadingPageAction = useActions(loadingPage)
   const navigate = useNavigate();
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
@@ -371,6 +374,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   useEffect(() => {
     setState({ isLoadingList: true, isLoadingDetail: true });
     getListJob();
+    loadingPageAction();
   }, [isActive]);
 
   useEffect(() => {
