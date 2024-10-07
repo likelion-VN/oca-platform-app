@@ -83,7 +83,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     listJob: [],
     listState: [],
     markSave: false,
-    jobs: undefined,
     indexActive: 0,
     jobDetail: undefined,
     showBottomButton: false,
@@ -165,7 +164,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             const dataDetail = await fetchDetailJob(data.content[0].jobId);
             _.assign(newState, {
               listJob: data.content,
-              jobs: data,
               jobDetail: dataDetail,
               isLoadingList: false,
               isLoadingDetail: false,

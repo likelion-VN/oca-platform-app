@@ -16,12 +16,12 @@ const WorkTypeOptions = [
 ];
 
 const ApplicationTab = [
-  { value: "all", label: "All" },
-  { value: "interested", label: "Interested" },
-  { value: "applied", label: "Applied" },
-  { value: "inProgress", label: "In Progress" },
-  { value: "accepted", label: "Accepted" },
-  { value: "closed", label: "Closed" },
+  { value: -1, label: "All" },
+  { value: 0, label: "Interested" },
+  { value: 1, label: "Applied" },
+  { value: 2, label: "In Progress" },
+  { value: 3, label: "Accepted" },
+  { value: 5, label: "Closed" },
 ];
 
 export {

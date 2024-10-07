@@ -181,7 +181,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           title="Job Title"
           subTitle={state.negotiable && "(Negotiable)"}
           valuePrefix={state.currentJobTitle}
-          readOnly={!state.negotiable}
+          disabled={!state.negotiable}
           type="input"
           onChange={(e) => handleInputChange("jobTitle", e)}
         />
@@ -197,7 +197,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="Start working date"
             subTitle={state.negotiable && "(Negotiable)"}
             type="date"
-            readOnly={!state.negotiable}
+            disabled={!state.negotiable}
             valuePrefix={formatDate(state.currentStartDate)}
             onChange={(date) => handleDateChange("startDate", date)}
           />
@@ -206,7 +206,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="End working date"
             subTitle={state.negotiable && "(Negotiable)"}
             type="date"
-            readOnly={!state.negotiable}
+            disabled={!state.negotiable}
             valuePrefix={formatDate(state.currentEndDate)}
             onChange={(date) => handleDateChange("endDate", date)}
           />
@@ -227,7 +227,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="Hours per week"
             subTitle={state.negotiable && "(Negotiable)"}
             valuePrefix={state.currentHoursPerWeek}
-            readOnly={!state.negotiable}
+            disabled={!state.negotiable}
             type="input"
             onChange={handleNumberChange}
           />
@@ -243,7 +243,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           title="Task"
           subTitle={state.negotiable && "(Negotiable)"}
           type="text-area-input"
-          readOnly={!state.negotiable}
+          disabled={!state.negotiable}
           onChangeMultiple={(e, id) => handleTaskChange(id, e)}
           onKeyDown={(e, id) => handleKeyDown(id, e)}
         />

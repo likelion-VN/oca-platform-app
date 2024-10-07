@@ -5,7 +5,7 @@ const keyFormatter = (keys: string) => {
   return _.map(_.split(keys, ","), _.trim);
 };
 
-const calculateDaysDiff = (date: string) => {
+const calculateDaysDiff = (date: string, isFullDay = false) => {
   const targetDate = dayjs(date);
   const currentDate = dayjs();
 
@@ -14,7 +14,11 @@ const calculateDaysDiff = (date: string) => {
   if (diffInDays < 1) {
     return "Today";
   } else {
-    return `${diffInDays}d`;
+    if (isFullDay) {
+      return `${diffInDays}${diffInDays > 1 ? 'days' : 'day'} ago`;
+    } else {
+      return `${diffInDays}d`;
+    }
   }
 };
 

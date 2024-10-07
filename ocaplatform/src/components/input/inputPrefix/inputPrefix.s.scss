@@ -54,6 +54,9 @@
       &:first-child {
         padding-top: 4px;
       }
+      &:last-child {
+        padding-bottom: 4.5px;
+      }
       &:focus-within {
         box-shadow: none;
       }

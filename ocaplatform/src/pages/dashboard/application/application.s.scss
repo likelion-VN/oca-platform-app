@@ -27,6 +27,16 @@
   .count-jobs {
     font-size: 12px;
     margin-bottom: 16px;
+    .ant-skeleton {
+      display: unset;
+      .ant-skeleton-content {
+        display: unset;
+        .ant-skeleton-paragraph {
+          margin-block-start: 0;
+          margin-inline-end: 0;
+        }
+      }
+    }
   }
   .status-tag {
     width: fit-content;
@@ -38,22 +48,47 @@
     &.applied {
       color: $bright-blue;
       background-color: $sky-blue;
+      &-border {
+        border: 1px solid $bright-blue;
+        color: $bright-blue;
+        background-color: $pure-white;
+      }
     }
     &.declined {
       color: $dark-crimson;
       background-color: $pastel-pink;
+      &-border {
+        border: 1px solid $dark-crimson;
+        color: $dark-crimson;
+        background-color: $pure-white;
+      }
     }
     &.in-progress {
       color: $deep-orange;
       background-color: $pale-yellow;
+      &-border {
+        border: 1px solid $deep-orange;
+        color: $deep-orange;
+        background-color: $pure-white;
+      }
     }
     &.accepted {
       color: $forest-green;
       background-color: $mint-green;
+      &-border {
+        border: 1px solid $forest-green;
+        color: $forest-green;
+        background-color: $pure-white;
+      }
     }
     &.canceled {
       color: $dark-navy-blue;
       background-color: $light-grey-orange;
+      &-border {
+        border: 1px solid $dark-navy-blue;
+        color: $dark-navy-blue;
+        background-color: $pure-white;
+      }
     }
   }
   .application-jobs {
@@ -160,6 +195,7 @@
         &-active {
           border-color: $bright-orange;
           border-left-width: 5px;
+          padding: 16px 16px 16px 11px;
         }
       }
     }
@@ -241,12 +277,16 @@
             border-color: $bright-orange !important;
           }
         }
+        .cancel-btn,
         .save-btn {
           width: 40px;
           height: 40px;
           margin-left: 16px;
           background-color: $off-white;
           border-color: transparent;
+          &:hover {
+            color: unset;
+          }
         }
       }
       &-keys {
@@ -308,12 +348,13 @@
             .circle {
               position: relative;
               width: 16px;
-              height: 16px;
+              height: 20px;
               background-color: $neutral-grey;
               border-radius: 50%;
               display: flex;
               justify-content: center;
               align-items: center;
+              margin-top: 11px;
 
               .inner-circle {
                 width: 6px;
@@ -326,40 +367,42 @@
             .dashed-line {
               z-index: 2;
               width: 2px;
-              height: 50px;
+              height: 100%;
               background-image: linear-gradient(
                 to bottom,
                 $cool-grey 50%,
                 transparent 50%
               );
               background-size: 5px 10px;
-              margin-top: -3px;
+              margin-top: -1.5px;
             }
           }
           .status-right {
             display: flex;
             flex-direction: column;
+            font-size: 14px;
+            line-height: 20px;
 
-            .status-button {
-              border: 1px solid blue;
-              color: blue; // Màu chữ xanh
-              background-color: white; // Nền trắng
-              padding: 4px 12px;
-              border-radius: 4px;
-              font-size: 14px;
-              margin-bottom: 8px;
+            .status-action {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              &-date {
+                font-size: 12px;
+                line-height: 16px;
+                font-weight: 600;
+                color: $silver-grey;
+              }
             }
 
-            h3 {
-              font-size: 16px;
-              color: red;
-              margin: 0;
+            .status-title {
+              margin-top: 12px;
+              font-weight: 600;
             }
-
-            p {
-              font-size: 14px;
-              color: grey;
-              margin: 0;
+            .status-description {
+              margin-top: 8px;
+              font-weight: 400;
+              color: $charcoal-grey;
             }
           }
         }
@@ -422,6 +465,45 @@
           }
         }
       }
+    }
+  }
+}
+
+.modal-cancel {
+  .modal-content-custom {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 32px;
+    }
+    .title-content {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: center;
+      margin-top: 16px;
+    }
+  }
+  .modal-footer-custom {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+    margin-top: 40px;
+    column-gap: 24px;
+    .confirm-btn,
+    .cancel-btn {
+      flex: 1;
+      font-size: 14px;
+      font-family: "Inter";
+      height: 48px;
+    }
+    .confirm-btn {
+      background: $crimson-red !important;
     }
   }
 }

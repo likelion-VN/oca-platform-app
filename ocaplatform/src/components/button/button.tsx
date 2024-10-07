@@ -1,5 +1,7 @@
 import { Button } from "antd";
+import classNames from "classnames";
 import React from "react";
+import './button.s.scss';
 
 interface IPropsButton {
   onClick?: (e?: any) => void;
@@ -26,8 +28,7 @@ const ButtonComponent: React.FC<IPropsButton> = ({
 }) => {
   return (
     <Button
-      className={className}
-      style={{ borderRadius: 4, height: "40px" }}
+      className={classNames(className, "btn-custom")}
       icon={icon}
       onClick={onClick}
       iconPosition={iconPosition}

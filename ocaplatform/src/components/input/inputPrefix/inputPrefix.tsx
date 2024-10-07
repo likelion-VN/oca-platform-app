@@ -13,13 +13,16 @@ interface IPropsInputPrefix {
   title: string;
   subTitle?: any;
   onChange?: (e: any) => void;
-  onChangeMultiple?: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void;
+  onChangeMultiple?: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number
+  ) => void;
   onKeyDown?: (e: any, index: number) => void;
   valuePrefix?: string;
   disabled?: boolean;
   type: string;
   options?: Option[];
-  readOnly?: boolean; 
+  readOnly?: boolean;
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -39,7 +42,9 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
     return current && current < dayjs().endOf("day");
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     if (onChange) {
       onChange(e);
     }
@@ -115,7 +120,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         return (
           <div className="text-area-input">
             {_.map(value, (item) => (
-              // <ProtectedDefaultQuill 
+              // <ProtectedDefaultQuill
               //   id={item.id}
               //   value={item.description}
               //   newValue={item.newTask}
@@ -129,6 +134,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 onChange={(e) => handleInputChangeMutiple(e, item.id)}
                 onKeyDown={(e) => handleKeyDown(e, item.id)}
                 readOnly={readOnly}
+                disabled={disabled}
                 prefix={
                   <span
                     style={{
@@ -158,7 +164,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 top: "50%",
                 transform: "translateY(-50%)",
                 textDecoration: value && "line-through",
-                color: value && "#B42318",
+                color: disabled ? "#00000040" : value && "#B42318",
                 zIndex: 2,
               }}
             >
@@ -169,7 +175,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               disabledDate={disabledDate}
               size="large"
               format="MM/DD/YYYY"
-              disabled={readOnly}
+              disabled={disabled}
               style={{
                 width: "100%",
                 paddingLeft: "93px",

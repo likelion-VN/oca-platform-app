@@ -45,13 +45,13 @@ export interface JobBody {
   totalPages: number;
   size: number;
   content: Job[];
-  number: number;
-  sort: Sort[];
-  pageable: Pageable;
-  numberOfElements: number;
-  first: boolean;
-  last: boolean;
-  empty: boolean;
+  // number: number;
+  // sort: Sort[];
+  // pageable: Pageable;
+  // numberOfElements: number;
+  // first: boolean;
+  // last: boolean;
+  // empty: boolean;
 }
 
 export interface City {
@@ -84,6 +84,8 @@ export interface JobDetail {
     id: number;
     name: string;
   };
+  marked: boolean;
+  applied: boolean;
   workplaceType: {
     id: number;
     name: string;
