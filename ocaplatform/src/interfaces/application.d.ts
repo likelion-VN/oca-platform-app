@@ -98,6 +98,8 @@ interface JobApplicationDetail {
       uploadDate: string;
       downloadLink: string;
     }[];
+    email: string;
+    phoneNumber: string;
     portfolio: string;
     personalWebsites: string[];
     introduction: string;

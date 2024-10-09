@@ -114,7 +114,7 @@ const SelectCustom: React.FC<IPropsSelectCustom> = ({
       dropdownRender={() => renderDropdown()}
       showSearch={false}
       suffixIcon={<CaretDown color="#0F172A" />}
-      placement="bottomRight"
+      placement="bottomLeft"
       onDropdownVisibleChange={handleOnDropdownVisibleChange}
       onClear={handleClear}
     />

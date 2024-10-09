@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoadingPage from "./components/loading/loading";
 import ApplicationForm from "./pages/applicationForm/applicationForm";
+import ApplicationFormRevise from "./pages/applicationForm/applicationFormRevise";
 import CreateUser from "./pages/createUser/createUser";
 import Dashboard from "./pages/dashboard/dashboard";
 import SignIn from "./pages/signIn/signIn";
@@ -16,6 +17,7 @@ function App() {
             <Route path="sign-in" element={<SignIn />} />
             <Route path="create-user" element={<CreateUser />} />
             <Route path="application-form" element={<ApplicationForm />} />
+            <Route path="application-form-revise" element={<ApplicationFormRevise />} />
           </Routes>
         </BrowserRouter>
       </div>

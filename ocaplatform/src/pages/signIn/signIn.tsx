@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleIcon, LinkedinIcon, Logo } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
+import loadingPage from "../../store/actions/loading";
+import useActions from "../../utils/customHook/useActions";
 import "./signIn.s.scss";
 
 const LoginPage = () => {
+  const loadingPageAction = useActions(loadingPage);
   const navigate = useNavigate();
 
   const loginByLinkedin = () => {
@@ -12,6 +16,10 @@ const LoginPage = () => {
   const loginByGoogle = () => {
     navigate("/create-user");
   };
+  useEffect(() => {
+    loadingPageAction();
+  }, []);
+
   return (
     <div className="background-login">
       <div className="header">

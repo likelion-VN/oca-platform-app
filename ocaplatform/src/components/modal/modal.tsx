@@ -28,6 +28,7 @@ const ModalComponent: React.FC<IPropsModal> = ({
       footer={footer}
       onOk={onOk}
       centered={centered}
+      maskClosable={false}
     >
       {children}
     </Modal>

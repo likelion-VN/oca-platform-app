@@ -1,4 +1,5 @@
 const JobTypeOptions = [
+  { value: 0, label: "O-CA Program" },
   { value: 1, label: "Internship" },
   { value: 2, label: "Full-time", isDisabled: true },
   { value: 3, label: "Part-time", isDisabled: true },

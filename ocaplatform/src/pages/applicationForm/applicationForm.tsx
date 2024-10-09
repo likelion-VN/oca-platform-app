@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { message } from "antd";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import _ from "lodash";
@@ -11,7 +10,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import { LOADING_TYPES } from "../../constants/loadingTypes";
-import { fetchListAttachments } from "../../services/fetchListAttachment";
 import { handleSubmitLApplicationForm } from "../../services/handleSubmitApplicationForm";
 import loadingPage from "../../store/actions/loading";
 import useActions from "../../utils/customHook/useActions";
@@ -36,24 +34,11 @@ const ApplicationForm = () => {
     detailJob: jobDetail,
     isOpenModal: true,
     isSuccess: false,
+    isLoading: true,
   });
-
-  const getAttachments = async () => {
-    try {
-      const listAttachment = await fetchListAttachments();
-      if (_.isArray(listAttachment) && !_.isEmpty(listAttachment)) {
-        return listAttachment.slice(-2);
-      } else {
-        return [];
-      }
-    } catch (error) {
-      message.error(`${error}`);
-    }
-  };
 
   const createIntitialData = async () => {
     const { detailJob } = state;
-    const listAttachment = await getAttachments();
     _.assign(newForm.current, {
       step1: {
         currentJobTitle: detailJob.title,
@@ -81,16 +66,13 @@ const ApplicationForm = () => {
         negotiable: detailJob.negotiable,
       },
       step2: {
-        resume: !_.isEmpty(listAttachment) ? [listAttachment?.[0].id] : [],
         email: "",
         phoneNumber: "",
         portfolio: "",
         personalWebsite: [""],
         selfIntroduction: "",
-        listAttachment,
-        selectedResumeId: !_.isEmpty(listAttachment)
-          ? listAttachment?.[0].id
-          : null,
+        listAttachment: [],
+        selectedResumeId: null,
       },
       jobId: detailJob.id,
       jobTypeId: detailJob.jobType.id,
@@ -147,7 +129,6 @@ const ApplicationForm = () => {
             handleClick={handleClick}
             handleCancel={onBackToHome}
             isSuccess={state.isSuccess}
-            isLoading={state.isLoading}
             handleOpenSuccessModal={handleOpenSuccessModal}
           />
         );

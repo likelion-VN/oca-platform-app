@@ -27,7 +27,6 @@ import EmptyComponent from "../../../components/empty/empty";
 import ModalComponent from "../../../components/modal/modal";
 import { ApplicationTab } from "../../../constants/selectOptions";
 import { fetchApplicationDetailJob } from "../../../services/fetchDetailApplicationJob";
-import { fetchDetailJob } from "../../../services/fetchDetailJob";
 import { fetchListApplicationJob } from "../../../services/fetchListApplicationJob";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import { calculateDaysDiff, formatDate } from "../../../utils/formatter";
@@ -184,7 +183,9 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
 
   const handleOnclick = () => {
     const { jobDetail } = state;
-    navigate("/application-form", { state: { jobDetail } });
+    navigate("/application-form-revise", {
+      state: { jobDetailReview: jobDetail },
+    });
   };
 
   const scrollToTop = () => {
@@ -196,7 +197,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   const handleActiveCard = async (index: string, jobId: number) => {
     setState({ isLoadingDetail: true });
     scrollToTop();
-    const dataDetail = await fetchDetailJob(jobId);
+    const dataDetail = await fetchApplicationDetailJob(jobId);
     setState({
       indexActive: index,
       jobDetail: dataDetail,
@@ -318,8 +319,8 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
             <Skeleton active title={false} paragraph={{ rows: 1 }} />
           ) : (
             <>
-              <strong>{totalElements.current}</strong> application statuses were
-              updated.
+              <strong>{totalElements.current}</strong> application{" "}
+              {totalElements.current < 2 ? "status" : "statuses"} were updated.
             </>
           )}
         </div>
@@ -353,7 +354,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
                     index === state.indexActive && "job-card-active"
                   )}
                   key={index}
-                  onClick={() => handleActiveCard(index, job.jobId)}
+                  onClick={() => handleActiveCard(index, job.applicationId)}
                 >
                   <div className="job-card-left">
                     <div className="red-dot"></div>

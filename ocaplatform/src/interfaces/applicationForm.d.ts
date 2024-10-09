@@ -1,32 +1,8 @@
-interface JobTitle {
+interface JobUpdate {
   update: boolean;
   delta?: {
-    company: string;
-    candidate: string;
-  };
-}
-
-interface WorkplaceType {
-  update: boolean;
-  delta?: {
-    company?: number;
-    candidate?: number;
-  };
-}
-
-interface WorkingPeriod {
-  update: boolean;
-  delta?: {
-    company: string;
-    candidate: string;
-  };
-}
-
-interface WorkHoursPerWeek {
-  update: boolean;
-  delta?: {
-    company: number;
-    candidate: number;
+    company?: string | number | { id: number; description: string };
+    candidate?: string | number | { id: number; description: string };
   };
 }
 
@@ -44,26 +20,8 @@ interface Task {
   };
 }
 
-export interface RequestApplicationForm {
-  jobId: number;
-  jobTypeId: number;
-  jobTitle: JobTitle;
-  workplaceType: WorkplaceType;
-  workingPeriodStart: WorkingPeriod;
-  workingPeriodEnd: WorkingPeriod;
-  workHoursPerWeek: WorkHoursPerWeek;
-  tasks: Task[];
-  portfolio: string;
-  email: string;
-  phoneNumber: string;
-  personalWebsites: string[];
-  introduction: string;
-  attachmentIds: number[];
-}
-
-export interface ResponseAttachments {
+export interface Attachments {
   id: number;
-  md5: null;
   name: string;
   format: string;
   size: number;
@@ -74,4 +32,23 @@ export interface ResponseAttachments {
   };
   uploadDate: string;
   downloadLink: string;
+}
+
+export interface RequestApplicationForm {
+  jobId: number;
+  jobTypeId: number;
+  jobTitle: JobUpdate;
+  workplaceType: JobUpdate;
+  workingPeriodStart: JobUpdate;
+  workingPeriodEnd: JobUpdate;
+  workHoursPerWeek: JobUpdate;
+  tasks: Task[];
+  portfolio: string;
+  email: string;
+  phoneNumber: string;
+  personalWebsites: string[];
+  introduction: string;
+  selectedAttachmentId: number,
+  attachmentIds: number[];
+  applicationId?: number;
 }

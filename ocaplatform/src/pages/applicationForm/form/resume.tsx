@@ -18,9 +18,11 @@ import InputDefault from "../../../components/input/inputDefault/inputDefault";
 import ModalComponent from "../../../components/modal/modal";
 import RadioCustom from "../../../components/radio/radio";
 import { ACCEPT_FILE_TYPES, MAX_FILE_SIZE } from "../../../constants";
-import { handleDeleteFile } from "../../../services/handleDeleteFile";
+import { LOADING_TYPES } from "../../../constants/loadingTypes";
 import { handleDownloadFile } from "../../../services/handleDownloadFile";
 import { handleUploadFile } from "../../../services/handleUploadFile";
+import loadingPage from "../../../store/actions/loading";
+import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import { validateEmail, validatePhoneNumber } from "../../../utils/validation";
 
@@ -30,7 +32,6 @@ interface ResumeFormProps {
   handleOpenSuccessModal: (isSuccess: boolean) => void;
   handleCancel: () => void;
   isSuccess: boolean;
-  isLoading: boolean;
 }
 
 const ResumeForm: React.FC<ResumeFormProps> = ({
@@ -40,6 +41,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   handleCancel,
   isSuccess,
 }) => {
+  const loadingPageAction = useActions(loadingPage);
   const navigate = useNavigate();
   const dataAttachment = useRef<any[]>([]);
   const chosseFileErrorMessage = useRef<string | null>(null);
@@ -55,13 +57,22 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     clickedId: null,
   });
 
-  const handleInputChange = (
+  const handleInputRequiredChange = (
     keyValue: string,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setState({
       [keyValue]: e.target.value,
       errors: { ...state.errors, [keyValue]: "" },
+    });
+  };
+
+  const handleInputChange = (
+    keyValue: string,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setState({
+      [keyValue]: e.target.value,
     });
   };
 
@@ -111,12 +122,12 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     name: "file",
     accept: ".doc,.docx,.pdf",
     beforeUpload: async (file) => {
-      setState({ isLoadingUpload: true });
+      loadingPageAction(LOADING_TYPES.UPLOADING);
       const id = await handleUploadFile(file);
       if (id) {
         dataAttachment.current = [...dataAttachment.current, { id, ...file }];
       }
-      setState({ isLoadingUpload: false });
+      loadingPageAction();
 
       return false;
     },
@@ -187,22 +198,16 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   };
 
   const handleRemoveResume = async () => {
-    setState({ isLoadingUpload: true });
     const { listAttachment, clickedId } = state;
-    const isRemoved = await handleDeleteFile(clickedId);
-    if (isRemoved) {
-      const newListAttachment = _.filter(
-        listAttachment,
-        (resume) => resume.id !== clickedId
-      );
-      setState({
-        listAttachment: newListAttachment,
-        selectedResumeId: newListAttachment[0]?.id || null,
-        isOpenRemoveModal: false,
-      });
-      message.success("Resume is removed succesfully!");
-    }
-    setState({ isLoadingUpload: false });
+    const newListAttachment = _.filter(
+      listAttachment,
+      (resume) => resume.id !== clickedId
+    );
+    setState({
+      listAttachment: newListAttachment,
+      selectedResumeId: newListAttachment[0]?.id || null,
+      isOpenRemoveModal: false,
+    });
   };
 
   const handleAddMore = () => {
@@ -271,16 +276,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   const handleApply = () => {
     validates();
     if (_.isEmpty(state.errors)) {
-      const { listAttachment, selectedResumeId } = state;
-      const attachmentCurrent = _.filter(dataAttachment.current, (item) =>
-        _.some(listAttachment, { id: item.id })
-      );
-      const attachmentId = _.find(
-        attachmentCurrent,
-        (attachment) => attachment.id === selectedResumeId
-      )?.id;
-
-      handleClick({ step2: { ...state, resume: [attachmentId] } }, true);
+      handleClick({ step2: { ...state } }, true);
     }
     handleOpenApplyModal(false);
   };
@@ -528,7 +524,8 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           title="Email"
           type="input"
           placeholder="Enter email"
-          onChange={(e) => handleInputChange("email", e)}
+          allowClear
+          onChange={(e) => handleInputRequiredChange("email", e)}
           errorMsg={state.errors.email}
         />
         <InputDefault
@@ -536,6 +533,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           title="Phone number"
           type="input"
           placeholder="Enter phone number"
+          allowClear
           onChange={handleNumberPhoneChange}
           errorMsg={state.errors.phoneNumber}
         />
@@ -544,6 +542,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           title="Portfolio (Optional)"
           type="input"
           addonBefore="http://"
+          allowClear
           optional
           onChange={(e) => handleInputChange("portfolio", e)}
         />
@@ -557,6 +556,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
                   title={
                     index === 0 ? "Personal website (Optional)" : undefined
                   }
+                  allowClear
                   addonBefore="http://"
                   optional
                   onChange={(e) => handleMultipleInputChange(index, e)}

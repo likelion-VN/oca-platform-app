@@ -244,8 +244,13 @@
           color: $off-white;
           height: 40px;
           &:hover {
-            border-color: $bright-orange !important;
+            border-color: transparent;
           }
+        }
+        .disabled {
+          background-color: $off-white !important;
+          color: $mid-grey;
+          border: transparent;
         }
         .save-btn {
           width: 40px;

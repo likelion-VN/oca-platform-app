@@ -1,6 +1,6 @@
 @import "../../styles/variables.scss";
 
-.background-application-form {
+.background-application-form-revise {
   .header {
     display: flex;
     justify-content: space-between;
@@ -20,60 +20,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: calc(100vh - 64px);
-    .switch-background {
-      height: 44px;
-      border-radius: 40px;
-      background: $off-white;
-      padding: 4px;
-    }
-    .switch-component {
-      display: flex;
-      align-items: center;
-      margin-top: 24px;
-      font-weight: 600;
-      line-height: 16px;
-      font-size: 12px;
-      .switch-item {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        padding: 0 10px;
-        border-radius: 40px;
-        font-size: 14px;
-        &-index {
-          display: flex;
-          color: $pure-white;
-          background-color: $silver-grey;
-          border-radius: 50%;
-          align-items: center;
-          justify-content: center;
-          height: 24px;
-          width: 24px;
-          margin-right: 6px;
-        }
-        &-title {
-          color: $silver-grey;
-        }
-        &.active {
-          background-color: $pure-white;
-          .switch-item-index {
-            display: flex;
-            color: $pure-white;
-            background-color: $dark-navy-blue;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            height: 24px;
-            width: 24px;
-            margin-right: 6px;
-          }
-          .switch-item-title {
-            color: $dark-navy-blue;
-          }
-        }
-      }
-    }
     &-title {
       margin: 24px 0;
       text-align: center;
@@ -102,7 +48,7 @@
       padding: 32px 40px;
       border-radius: 12px;
       width: 656px;
-      height: calc(100vh - 333px);
+      height: calc(100vh - 297px);
       overflow-y: auto;
       .double-input {
         display: flex;
@@ -122,6 +68,31 @@
           font-weight: 400;
           color: $charcoal-grey;
           margin-top: 6px;
+        }
+        &-content {
+          margin-top: 12px;
+          border: 1px solid $neutral-grey;
+          border-radius: 4px;
+          display: flex;
+          justify-content: space-between;
+          padding: 12px 14px;
+          &-left {
+            .resume-name {
+              font-size: 14px;
+              font-weight: 600;
+              line-height: 20px;
+            }
+            .resume-upload-date {
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 16px;
+              color: $silver-grey;
+              margin-top: 4px;
+            }
+          }
+          &-right {
+            align-self: center;
+          }
         }
         .resume-list {
           display: flex;
@@ -285,61 +256,10 @@
   }
 }
 
-.modal-confirm {
-  .modal-content-custom {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .modal-top {
-    height: 180px;
-    background-image: url("../../assets/gif/negotiable.gif");
-    background-size: cover;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    overflow: hidden;
-  }
-
-  .modal-bottom {
-    padding: 22px 22px 8px 22px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #fff;
-    .title {
-      font-family: "Inter";
-      text-align: center;
-      font-weight: 700;
-      font-size: 24px;
-      line-height: 32px;
-      &-content {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 20px;
-        text-align: center;
-        color: $silver-grey;
-      }
-    }
-  }
-  .ant-modal-content {
-    padding: 0;
-  }
-  .ant-modal-footer {
-    text-align: center;
-    padding-bottom: 24px;
-    .confirm-btn {
-      background: $bright-orange !important;
-      width: 183px;
-      font-size: 14px;
-      font-family: "Inter";
-    }
-  }
-}
-
 .modal-remove,
 .modal-apply,
-.modal-success {
+.modal-success,
+.modal-revise {
   .modal-content-custom {
     display: flex;
     flex-direction: column;
@@ -347,19 +267,26 @@
     img {
       width: 80px;
       align-self: center;
+      margin-bottom: 28px;
     }
     .title {
       font-size: 24px;
       font-weight: 700;
       text-align: center;
       line-height: 32px;
-    }
-    .title-content {
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 20px;
-      text-align: center;
-      margin-top: 16px;
+      &-content {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: center;
+        margin-top: 16px;
+      }
+      &-caution {
+        margin-top: 8px;
+        color: $earthy-gold;
+        text-align: center;
+        line-height: 20px;
+      }
     }
   }
   .modal-footer-custom {
@@ -369,6 +296,7 @@
     justify-content: center;
     margin-top: 40px;
     column-gap: 24px;
+    .revise-btn,
     .remove-btn,
     .submit-btn,
     .cancel-btn {
@@ -380,7 +308,8 @@
     .remove-btn {
       background: $crimson-red !important;
     }
-    .submit-btn {
+    .submit-btn,
+    .revise-btn {
       background: $bright-orange !important;
     }
     .confirm-btn {
@@ -403,7 +332,6 @@
         border-color: transparent;
         justify-content: flex-start;
         &:hover {
-          border-radius: 0 !important;
           border-color: transparent !important;
           color: unset !important;
           background-color: $smoke-white !important;

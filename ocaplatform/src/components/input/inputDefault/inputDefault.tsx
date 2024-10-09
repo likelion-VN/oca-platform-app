@@ -10,12 +10,14 @@ interface IPropsInputDefault {
   title?: string;
   subTitle?: string;
   onChange?: (e: any) => void;
+  onClick?: () => void;
   disabled?: boolean;
   type: string;
   optional?: boolean;
   placeholder?: string;
   addonBefore?: string;
   errorMsg?: string;
+  allowClear?: boolean;
 }
 
 const InputDefault: React.FC<IPropsInputDefault> = ({
@@ -23,11 +25,13 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
   title,
   optional,
   onChange,
+  onClick,
   disabled = false,
   type,
   placeholder,
   addonBefore,
   errorMsg,
+  allowClear = false,
 }) => {
   const handleInputChange = (e: any) => {
     if (onChange) {
@@ -41,12 +45,13 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
         return (
           <>
             <Input
+              onClick={onClick}
               addonBefore={addonBefore}
               value={value}
               onChange={handleInputChange}
               size="large"
               disabled={disabled}
-              allowClear
+              allowClear={allowClear}
               placeholder={placeholder}
               status={errorMsg && "error"}
             />
@@ -56,6 +61,7 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
       case "text-area":
         return (
           <TextArea
+            onClick={onClick}
             value={value}
             onChange={handleInputChange}
             autoSize={{ minRows: 4, maxRows: 4 }}

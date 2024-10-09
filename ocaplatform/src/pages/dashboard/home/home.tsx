@@ -498,7 +498,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           <Space wrap>
             <SelectCustom
               value={state.valueJobType}
-              placeholder="O-CA Program"
+              placeholder="Job Type"
               options={JobTypeOptions}
               onChange={handleChangeJobType}
               type="checkbox"
@@ -670,9 +670,10 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               </div>
               <div ref={topButtonRef} className="job-detail-action">
                 <ButtonComponent
-                  className="application-btn"
-                  title="Apply now"
+                  className={classNames("application-btn", jobDetail.applied && "disabled")}
+                  title={jobDetail.applied ? "Applied" : "Apply now"}
                   onClick={handleOnclick}
+                  disabled={jobDetail.applied}
                 />
                 <ButtonComponent
                   className="save-btn"

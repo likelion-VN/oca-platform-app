@@ -23,6 +23,7 @@ interface IPropsInputPrefix {
   type: string;
   options?: Option[];
   readOnly?: boolean;
+  allowClear?: boolean;
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -37,6 +38,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   type,
   options,
   readOnly = false,
+  allowClear = false,
 }) => {
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < dayjs().endOf("day");
@@ -89,7 +91,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             onChange={handleInputChange}
             size="large"
             disabled={disabled}
-            allowClear
+            allowClear={allowClear}
             readOnly={readOnly}
             prefix={
               <span
@@ -128,7 +130,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               //   onContentChange={onChangeMultiple}
               // />
               <Input
-                allowClear
+                allowClear={allowClear}
                 value={item.newTask}
                 placeholder=""
                 onChange={(e) => handleInputChangeMutiple(e, item.id)}
@@ -165,6 +167,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 transform: "translateY(-50%)",
                 textDecoration: value && "line-through",
                 color: disabled ? "#00000040" : value && "#B42318",
+                cursor: disabled ? 'not-allowed' : 'none',
                 zIndex: 2,
               }}
             >
@@ -185,6 +188,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               value={value ? dayjs(value) : null}
               placeholder=""
               onChange={handleDateChange}
+              allowClear={allowClear}
             />
           </div>
         );
@@ -201,7 +205,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             }))}
             disabled={readOnly}
             value={value}
-            allowClear
+            allowClear={allowClear}
             onClear={() => handleSelectChange(null)}
             size="large"
           >

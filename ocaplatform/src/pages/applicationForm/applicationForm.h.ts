@@ -65,7 +65,8 @@ const newFormDataFormatter = (newFormData: any) => {
     phoneNumber: step2.phoneNumber,
     personalWebsites: step2.personalWebsite,
     introduction: step2.selfIntroduction,
-    attachmentIds: step2.resume,
+    attachmentIds: _.map(step2.listAttachment, attachment => attachment.id),
+    selectedAttachmentId: step2.selectedResumeId,
   };
   return formDataFormatted;
 };

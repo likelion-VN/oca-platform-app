@@ -15,6 +15,13 @@
     border-radius: 4px;
     font-family: "Inter";
     font-size: 14px;
+    &:hover {
+      border-color: $neutral-grey;
+    }
+    &:focus {
+      border-color: $neutral-grey;
+      box-shadow: none;
+    }
   }
   .ant-input-wrapper {
     .ant-input-group-addon {
@@ -30,6 +37,13 @@
     font-size: 14px;
     .ant-input-prefix {
       font-weight: 400;
+    }
+    &:hover {
+      border-color: $neutral-grey;
+    }
+    &:focus-within {
+      border-color: $neutral-grey;
+      box-shadow: none;
     }
     .ant-input {
       font-weight: 400;

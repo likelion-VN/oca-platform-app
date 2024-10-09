@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from "axios";
 import { apiServiceUrl } from "../constants";
-import { ResponseAttachments } from "../interfaces/applicationForm";
+import { Attachments } from "../interfaces/applicationForm";
 
 export const fetchListAttachments = async (): Promise<
-  ResponseAttachments[] | void
+  Attachments[] | void
 > => {
   try {
-    const response: AxiosResponse<ResponseAttachments[]> = await axios.get(
+    const response: AxiosResponse<Attachments[]> = await axios.get(
       `${apiServiceUrl}users/get-attachments`
     );
     return response.data;
