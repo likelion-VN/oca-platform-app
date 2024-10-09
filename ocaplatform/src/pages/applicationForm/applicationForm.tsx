@@ -32,7 +32,6 @@ const ApplicationForm = () => {
   const [state, setState] = useMergeState({
     step: 1,
     detailJob: jobDetail,
-    isOpenModal: true,
     isSuccess: false,
     isLoading: true,
   });
@@ -62,7 +61,7 @@ const ApplicationForm = () => {
         endDate: null,
         workplaceType: null,
         hoursPerWeek: "",
-        isOpenModal: detailJob.isOpenModal,
+        isOpenGuideModal: detailJob.isOpenModal,
         negotiable: detailJob.negotiable,
       },
       step2: {
@@ -112,10 +111,6 @@ const ApplicationForm = () => {
     }
   };
 
-  const handleOpenModal = (isOpenModal: boolean) => {
-    setState({ isOpenModal });
-  };
-
   const handleOpenSuccessModal = (isSuccess: boolean) => {
     setState({ isSuccess });
   };
@@ -137,9 +132,7 @@ const ApplicationForm = () => {
         return (
           <NegotiableForm
             defaultData={newForm.current.step1}
-            isOpenModal={state.isOpenModal}
             handleClick={handleClick}
-            handleOpenModal={handleOpenModal}
             handleCancel={onBackToHome}
             isLoading={state.isLoading}
           />

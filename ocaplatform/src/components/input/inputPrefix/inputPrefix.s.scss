@@ -29,6 +29,13 @@
       color: $bright-blue;
       font-weight: 400;
     }
+    &:hover {
+      border-color: $neutral-grey;
+    }
+    &:focus-within {
+      border-color: $neutral-grey;
+      box-shadow: none;
+    }
   }
   .ant-picker {
     &-input {
@@ -37,6 +44,13 @@
       input {
         font-size: 14px;
       }
+    }
+    &:hover {
+      border-color: $neutral-grey;
+    }
+    &:focus-within {
+      border-color: $neutral-grey;
+      box-shadow: none;
     }
   }
   .text-area-input {

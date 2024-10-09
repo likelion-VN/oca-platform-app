@@ -1,15 +1,68 @@
 @import "../../styles/variables.scss";
 
 .content {
-    display: flex;
-    .nav-bar {
-        height: calc(100vh - 65px);
-        border-inline-end: 1px solid $neutral-grey !important;
+  display: flex;
+  .nav-bar {
+    height: calc(100vh - 65px);
+    border-inline-end: 1px solid $neutral-grey !important;
+  }
+  &-detail {
+    width: 100%;
+    height: calc(100vh - 89px);
+    padding: 24px;
+    padding-bottom: 0;
+  }
+  .status-tag {
+    width: fit-content;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    padding: 6px 18px;
+    &.applied {
+      color: $bright-blue;
+      background-color: $sky-blue;
+      &-border {
+        border: 1px solid $bright-blue;
+        color: $bright-blue;
+        background-color: $pure-white;
+      }
     }
-    &-detail {
-        width: 100%;
-        height: calc(100vh - 89px);
-        padding: 24px;
-        padding-bottom: 0;
+    &.declined {
+      color: $dark-crimson;
+      background-color: $pastel-pink;
+      &-border {
+        border: 1px solid $dark-crimson;
+        color: $dark-crimson;
+        background-color: $pure-white;
+      }
     }
+    &.in-progress {
+      color: $deep-orange;
+      background-color: $pale-yellow;
+      &-border {
+        border: 1px solid $deep-orange;
+        color: $deep-orange;
+        background-color: $pure-white;
+      }
+    }
+    &.accepted {
+      color: $forest-green;
+      background-color: $mint-green;
+      &-border {
+        border: 1px solid $forest-green;
+        color: $forest-green;
+        background-color: $pure-white;
+      }
+    }
+    &.canceled {
+      color: $dark-navy-blue;
+      background-color: $light-grey-orange;
+      &-border {
+        border: 1px solid $dark-navy-blue;
+        color: $dark-navy-blue;
+        background-color: $pure-white;
+      }
+    }
+  }
 }

@@ -31,7 +31,7 @@ interface ResumeFormProps {
   handleClick: (stepData: any, isClickNext: boolean) => void;
   handleOpenSuccessModal: (isSuccess: boolean) => void;
   handleCancel: () => void;
-  isSuccess: boolean;
+  isSuccess?: boolean;
 }
 
 const ResumeForm: React.FC<ResumeFormProps> = ({
@@ -39,7 +39,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   handleClick,
   handleOpenSuccessModal,
   handleCancel,
-  isSuccess,
+  isSuccess = false,
 }) => {
   const loadingPageAction = useActions(loadingPage);
   const navigate = useNavigate();
@@ -276,7 +276,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   const handleApply = () => {
     validates();
     if (_.isEmpty(state.errors)) {
-      handleClick({ step2: { ...state } }, true);
+      handleClick({ step2: state }, true);
     }
     handleOpenApplyModal(false);
   };
@@ -593,6 +593,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           value={state.selfIntroduction}
           title="Self-Introduction (Optional)"
           type="text-area"
+          allowClear
           optional
           placeholder="Describe yourself in your own words..."
           onChange={(e) => handleInputChange("selfIntroduction", e)}

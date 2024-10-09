@@ -4,7 +4,7 @@ import { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import _ from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { Option } from "../../../interfaces";
 import "./inputPrefix.s.scss";
 
@@ -18,6 +18,7 @@ interface IPropsInputPrefix {
     id: number
   ) => void;
   onKeyDown?: (e: any, index: number) => void;
+  onClick?: () => void;
   valuePrefix?: string;
   disabled?: boolean;
   type: string;
@@ -33,6 +34,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   onChange,
   onChangeMultiple,
   onKeyDown,
+  onClick,
   valuePrefix,
   disabled = false,
   type,
@@ -40,6 +42,16 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   readOnly = false,
   allowClear = false,
 }) => {
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleDivClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      setOpen(true);
+    }
+  };
+
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < dayjs().endOf("day");
   };
@@ -93,6 +105,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             disabled={disabled}
             allowClear={allowClear}
             readOnly={readOnly}
+            onClick={onClick}
             prefix={
               <span
                 style={{
@@ -120,7 +133,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         );
       case "text-area-input":
         return (
-          <div className="text-area-input">
+          <div className="text-area-input" onClick={onClick}>
             {_.map(value, (item) => (
               // <ProtectedDefaultQuill
               //   id={item.id}
@@ -154,7 +167,10 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         );
       case "date":
         return (
-          <div style={{ position: "relative", width: "100%" }}>
+          <div
+            style={{ position: "relative", width: "100%" }}
+            onClick={handleDivClick}
+          >
             {/* Prefix */}
             <span
               style={{
@@ -167,7 +183,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 transform: "translateY(-50%)",
                 textDecoration: value && "line-through",
                 color: disabled ? "#00000040" : value && "#B42318",
-                cursor: disabled ? 'not-allowed' : 'none',
+                cursor: disabled ? "not-allowed" : "none",
                 zIndex: 2,
               }}
             >
@@ -175,6 +191,8 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             </span>
             {/* DatePicker */}
             <DatePicker
+              open={onClick ? false : open}
+              onOpenChange={(status: boolean) => setOpen(status)}
               disabledDate={disabledDate}
               size="large"
               format="MM/DD/YYYY"
@@ -195,6 +213,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
       case "select":
         return (
           <AutoComplete
+            onClick={onClick}
             className="auto-completed-custom"
             style={{ width: "100%", fontWeight: 400 }}
             onSelect={handleSelectChange}
@@ -212,6 +231,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             <Input
               size="large"
               placeholder=""
+              readOnly={readOnly}
               prefix={
                 <span
                   style={{

@@ -37,10 +37,10 @@ import { fetchListLocation } from "../../../services/fetchListLocation";
 import { fetchSearchComplete } from "../../../services/fetchSearchComplete";
 import { handleSaveJob } from "../../../services/handleSaveJob";
 import loadingPage from "../../../store/actions/loading";
+import { calculateDaysDiff } from "../../../utils";
 import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import {
-  calculateDaysDiff,
   formatDate,
   keyFormatter,
 } from "../../../utils/formatter";
@@ -320,10 +320,14 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     setState({ markSave: isMarkSave });
   };
 
-  const handleOnclick = () => {
+  const handleApply = () => {
     const { jobDetail } = state;
     navigate("/application-form", { state: { jobDetail } });
   };
+
+  // const handleReview = () => {
+    
+  // }
 
   const onChangeJob = (value: string) => {
     setState({ searchJob: value });
@@ -670,10 +674,9 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               </div>
               <div ref={topButtonRef} className="job-detail-action">
                 <ButtonComponent
-                  className={classNames("application-btn", jobDetail.applied && "disabled")}
-                  title={jobDetail.applied ? "Applied" : "Apply now"}
-                  onClick={handleOnclick}
-                  disabled={jobDetail.applied}
+                  className="application-btn"
+                  title={jobDetail.applied ? "View your application" : "Apply now"}
+                  onClick={handleApply}
                 />
                 <ButtonComponent
                   className="save-btn"

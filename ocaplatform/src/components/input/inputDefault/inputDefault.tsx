@@ -18,6 +18,7 @@ interface IPropsInputDefault {
   addonBefore?: string;
   errorMsg?: string;
   allowClear?: boolean;
+  readonly?: boolean;
 }
 
 const InputDefault: React.FC<IPropsInputDefault> = ({
@@ -32,6 +33,7 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
   addonBefore,
   errorMsg,
   allowClear = false,
+  readonly = false,
 }) => {
   const handleInputChange = (e: any) => {
     if (onChange) {
@@ -54,6 +56,7 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
               allowClear={allowClear}
               placeholder={placeholder}
               status={errorMsg && "error"}
+              readOnly={readonly}
             />
             {errorMsg && <span className="msg-error">{errorMsg}</span>}
           </>
@@ -67,7 +70,8 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
             autoSize={{ minRows: 4, maxRows: 4 }}
             disabled={disabled}
             placeholder={placeholder}
-            allowClear
+            allowClear={allowClear}
+            readOnly={readonly}
           />
         );
       default:

@@ -15,21 +15,18 @@ import { formatDate } from "../../../utils/formatter";
 interface NegotiableFormProps {
   defaultData: any;
   handleClick: (stepData: any, isClickNext: boolean) => void;
-  handleOpenModal: (isOpenModal: boolean) => void;
   handleCancel: () => void;
-  isOpenModal: boolean;
   isLoading: boolean;
 }
 
 const NegotiableForm: React.FC<NegotiableFormProps> = ({
   defaultData,
   handleClick,
-  handleOpenModal,
   handleCancel,
-  isOpenModal,
   isLoading,
 }) => {
-  const [state, setState] = useMergeState({});
+  const [state, setState] = useMergeState({
+  });
 
   const handleInputChange = (
     keyValue: string,
@@ -121,6 +118,10 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     [state, setState, handleAddTaskBelow]
   );
 
+  const handleOpenGuideModal = (isOpenGuideModal: boolean) => {
+    setState({isOpenGuideModal})
+  }
+
   const handleNext = () => {
     handleClick({ step1: state }, true);
   };
@@ -133,9 +134,9 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     <>
       <ModalComponent
         className="modal-confirm"
-        open={!isLoading ? isOpenModal : false}
-        onOk={() => handleOpenModal(false)}
-        onCancel={() => handleOpenModal(false)}
+        open={!isLoading ? state.isOpenGuideModal : false}
+        onOk={() => handleOpenGuideModal(false)}
+        onCancel={() => handleOpenGuideModal(false)}
         centered
         footer={
           <div className="modal-footer-custom">
@@ -144,7 +145,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
               title="Got It"
               size="large"
               type="primary"
-              onClick={() => handleOpenModal(false)}
+              onClick={() => handleOpenGuideModal(false)}
             />
           </div>
         }
@@ -170,7 +171,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           <span className="question-btn">
             <QuestionCircleOutlined
               style={{ color: "#0A5CD8", cursor: "pointer" }}
-              onClick={() => handleOpenModal(true)}
+              onClick={() => handleOpenGuideModal(true)}
             />
           </span>
         </div>

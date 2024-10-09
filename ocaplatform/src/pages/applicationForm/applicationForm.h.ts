@@ -3,7 +3,7 @@ import { WorkTypeOptions } from "../../constants/selectOptions";
 import { RequestApplicationForm } from "../../interfaces/applicationForm";
 
 const newFormDataFormatter = (newFormData: any) => {
-  const { jobId, jobTypeId, step1, step2 } = newFormData;
+  const { applicationId, jobId, jobTypeId, step1, step2 } = newFormData;
   const newListTask = _.filter(step1.currentTasks, task => !_.isNil(task.description) && !_.isNil(task.newTask));
   const formDataFormatted: RequestApplicationForm = {
     jobId,
@@ -67,6 +67,7 @@ const newFormDataFormatter = (newFormData: any) => {
     introduction: step2.selfIntroduction,
     attachmentIds: _.map(step2.listAttachment, attachment => attachment.id),
     selectedAttachmentId: step2.selectedResumeId,
+    ...applicationId && { applicationId }
   };
   return formDataFormatted;
 };
