@@ -14,6 +14,7 @@ import InputPrefix from "../../components/input/inputPrefix/inputPrefix";
 import ModalComponent from "../../components/modal/modal";
 import { LOADING_TYPES } from "../../constants/loadingTypes";
 import { WorkTypeOptions } from "../../constants/selectOptions";
+import { handleSubmitLApplicationForm } from "../../services/handleSubmitApplicationForm";
 import loadingPage from "../../store/actions/loading";
 import { getLabelByValue } from "../../utils";
 import useActions from "../../utils/customHook/useActions";
@@ -88,16 +89,13 @@ const ApplicationFormRevise = () => {
         negotiable: detailJob.jobNegotiable,
       },
       step2: {
-        resume: !_.isEmpty(listAttachment) ? [listAttachment?.[0].id] : [],
         email: "",
         phoneNumber: "",
         portfolio: "",
         personalWebsite: [""],
         selfIntroduction: "",
         listAttachment: detailJob.attachment,
-        selectedResumeId: !_.isEmpty(listAttachment)
-          ? listAttachment?.[0].id
-          : null,
+        selectedResumeId: null,
       },
       jobId: detailJob.id,
       jobTypeId: detailJob.jobType.id,
@@ -111,8 +109,8 @@ const ApplicationFormRevise = () => {
   const handleApply = async (input: any) => {
     try {
       loadingPageAction(LOADING_TYPES.APPLYING);
-      // const isSuccess = await handleSubmitLApplicationForm(input);
-      // setState({ isSuccess });
+      const isSuccess = await handleSubmitLApplicationForm(input);
+      setState({ isSuccess });
     } catch (error) {
       console.error("Error", error);
     } finally {
