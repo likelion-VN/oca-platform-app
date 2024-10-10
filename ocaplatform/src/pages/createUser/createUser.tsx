@@ -4,28 +4,39 @@ import { Company, Congratulation, Individual, Logo } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import ModalComponent from "../../components/modal/modal";
 import useMergeState from "../../utils/customHook/useMergeState";
+import { maskEmail } from "../../utils/formatter";
 import "./createUser.s.scss";
 
 const CreateUser = () => {
   const navigae = useNavigate();
   const [state, setState] = useMergeState({
     activeType: null,
-    isOpenConfirm: false,
+    isOpenConfirmModal: false,
+    isOpenExistsModal: false,
   });
+
   const onActiveType = (type: string) => {
     setState({ activeType: type });
   };
+
   const onCreateAccount = () => {
-    setState({ isOpenConfirm: true });
+    setState({ isOpenConfirmModal: true });
+    // setState({ isOpenExistsModal: true });
   };
+
   const onClickConfirm = () => {
     navigae("/dashboard");
   };
+
+  const onClickExists = () => {
+    navigae("/sign-in");
+  }
+
   return (
     <div className="background-create">
       <ModalComponent
-        className="modal-confirm"
-        open={state.isOpenConfirm}
+        className="modal-success"
+        open={state.isOpenConfirmModal}
         onCancel={onClickConfirm}
         footer={
           <div className="modal-footer-custom">
@@ -39,10 +50,31 @@ const CreateUser = () => {
         }
       >
         <img src={Congratulation} alt="congratulation" />
-        <div className="modal-confirm-title">Congratulation!</div>
-        <div className="modal-confirm-content">
+        <div className="modal-success-title">Congratulation!</div>
+        <div className="modal-success-content">
           You registered successfully <br />
           Let’s start finding an O-CA program that fits you.
+        </div>
+      </ModalComponent>
+      <ModalComponent
+        className="modal-exists"
+        open={state.isOpenExistsModal}
+        onCancel={onClickExists}
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="confirm-btn"
+              title="OK"
+              size="large"
+              onClick={onClickExists}
+            />
+          </div>
+        }
+      >
+        <div className="modal-exists-title">Company account already exists</div>
+        <div className="modal-exists-content">
+          The company account has already been assigned as {maskEmail("developer@likelion.net")}.<br />
+          Please check with your HR team and use this account.
         </div>
       </ModalComponent>
       <div className="header">
@@ -95,6 +127,7 @@ const CreateUser = () => {
             className="create-btn"
             onClick={onCreateAccount}
             size="large"
+            disabled={!state.activeType}
           />
         </div>
       </div>

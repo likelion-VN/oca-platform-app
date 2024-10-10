@@ -658,7 +658,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                         </div>
                       </div>
                     </div>
-                    {job.applicationId ? (
+                    {job.statusId ? (
                       <div className="job-status">
                         {renderStatus(job.statusId)}
                       </div>
@@ -742,11 +742,11 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                   <ButtonComponent
                     className="application-btn"
                     title={
-                      jobDetail.applied ? "View your application" : "Apply now"
+                      jobDetail.application.applicationId ? "View your application" : "Apply now"
                     }
                     onClick={handleApply}
                   />
-                  {(jobDetail.statusId === 1 || jobDetail.statusId === 2) && (
+                  {(jobDetail.application.statusId === 1 || jobDetail.application.statusId === 2) && (
                     <Tooltip
                       className="tooltip"
                       title="Cancel your application"
@@ -780,33 +780,38 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                     <Badge title={keyword.name} />
                   ))}
                 </div>
-                <div className="job-detail-update">
-                  <div className="job-detail-title">The latest updated</div>
-                  <div className="job-detail-content">
-                    <div className="application-status-card">
-                      <div className="status-left">
-                        <div className="circle">
-                          <div className="inner-circle"></div>
-                        </div>
-                        <div className="dashed-line"></div>
-                      </div>
-                      <div className="status-right">
-                        <div className="status-action">
-                          {renderStatusDetail(jobDetail.statusId)}
-                          <div className="status-action-date">
-                            {calculateDaysDiff(jobDetail.lastUpdateDate, true)}
+                {jobDetail.application.applicationId && (
+                  <div className="job-detail-update">
+                    <div className="job-detail-title">The latest updated</div>
+                    <div className="job-detail-content">
+                      <div className="application-status-card">
+                        <div className="status-left">
+                          <div className="circle">
+                            <div className="inner-circle"></div>
                           </div>
+                          <div className="dashed-line"></div>
                         </div>
-                        <div className="status-title">
-                          {renderStatusTitle(jobDetail.statusId)}
-                        </div>
-                        <div className="status-description">
-                          {renderStatusDescription(jobDetail.statusId)}
+                        <div className="status-right">
+                          <div className="status-action">
+                            {renderStatusDetail(jobDetail.application.statusId)}
+                            <div className="status-action-date">
+                              {calculateDaysDiff(
+                                jobDetail.lastUpdateDate,
+                                true
+                              )}
+                            </div>
+                          </div>
+                          <div className="status-title">
+                            {renderStatusTitle(jobDetail.application.statusId)}
+                          </div>
+                          <div className="status-description">
+                            {renderStatusDescription(jobDetail.application.statusId)}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
                 <div className="job-detail-about">
                   <div className="job-detail-title">About the job</div>
                   <div className="job-detail-content">
