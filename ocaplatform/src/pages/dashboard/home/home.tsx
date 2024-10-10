@@ -40,10 +40,7 @@ import loadingPage from "../../../store/actions/loading";
 import { calculateDaysDiff } from "../../../utils";
 import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
-import {
-  formatDate,
-  keyFormatter,
-} from "../../../utils/formatter";
+import { formatDate, keyFormatter } from "../../../utils/formatter";
 import "./home.s.scss";
 
 interface IPropsHome {
@@ -51,7 +48,7 @@ interface IPropsHome {
 }
 
 const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
-  const loadingPageAction = useActions(loadingPage)
+  const loadingPageAction = useActions(loadingPage);
   const navigate = useNavigate();
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
@@ -126,7 +123,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         setState({ listAutoComplete });
       }
     } catch (error) {
-      console.error("error");
+      console.error("Error:", error);
     }
   };
 
@@ -165,6 +162,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             _.assign(newState, {
               listJob: data.content,
               jobDetail: dataDetail,
+              markSave: dataDetail?.marked,
               isLoadingList: false,
               isLoadingDetail: false,
             });
@@ -316,8 +314,16 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   };
 
   const handleMarkSave = async (id: number) => {
-    const isMarkSave = await handleSaveJob(id);
-    setState({ markSave: isMarkSave });
+    const { listJob } = state;
+    const listJobCloned = _.map(listJob, (job) => {
+      if (job.jobId === id) {
+        return { ...job, marked: !state.markSave };
+      }
+      return job;
+    });
+
+    await handleSaveJob(id);
+    setState({ markSave: !state.markSave, listJob: listJobCloned });
   };
 
   const handleApply = () => {
@@ -326,7 +332,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   };
 
   // const handleReview = () => {
-    
+
   // }
 
   const onChangeJob = (value: string) => {
@@ -365,6 +371,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     setState({
       indexActive: index,
       jobDetail: dataDetail,
+      markSave: dataDetail?.marked,
       isLoadingDetail: false,
     });
   };
@@ -595,10 +602,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                     <div className="company-info">
                       <div className="company-info-name">{job.companyName}</div>
                       <div className="company-info-state">
-                      {_.compact([
-                          job.cityName,
-                          job.countryName,
-                        ]).join(", ")}
+                        {_.compact([job.cityName, job.countryName]).join(", ")}
                       </div>
                     </div>
                   </div>
@@ -675,7 +679,9 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               <div ref={topButtonRef} className="job-detail-action">
                 <ButtonComponent
                   className="application-btn"
-                  title={jobDetail.applied ? "View your application" : "Apply now"}
+                  title={
+                    jobDetail.applied ? "View your application" : "Apply now"
+                  }
                   onClick={handleApply}
                 />
                 <ButtonComponent
