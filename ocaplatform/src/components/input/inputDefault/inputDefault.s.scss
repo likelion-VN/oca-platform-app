@@ -15,6 +15,7 @@
     border-radius: 4px;
     font-family: "Inter";
     font-size: 14px;
+    height: 40px;
     &:hover {
       border-color: $neutral-grey;
     }
@@ -33,10 +34,15 @@
   }
   .ant-input-affix-wrapper {
     border-radius: 4px;
-    height: 40px;
     font-size: 14px;
+    height: 40px;
     .ant-input-prefix {
       font-weight: 400;
+    }
+    .ant-input {
+      font-weight: 400;
+      color: $dark-navy-blue;
+      height: unset;
     }
     &:hover {
       border-color: $neutral-grey;
@@ -44,10 +50,6 @@
     &:focus-within {
       border-color: $neutral-grey;
       box-shadow: none;
-    }
-    .ant-input {
-      font-weight: 400;
-      color: $dark-navy-blue;
     }
   }
   .msg-error {

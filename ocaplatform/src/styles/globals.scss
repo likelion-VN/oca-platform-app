@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 html,
 body {
@@ -34,4 +34,19 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.ant-checkbox-wrapper {
+  &:hover {
+    .ant-checkbox-inner {
+      border-color: $bright-orange !important;
+    }
+  }
+  &.ant-checkbox-wrapper-disabled {
+    &:hover {
+      .ant-checkbox-inner {
+        border-color: $neutral-grey !important;
+      }
+    }
+  }
 }

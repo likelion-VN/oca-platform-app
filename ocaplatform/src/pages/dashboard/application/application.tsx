@@ -31,7 +31,12 @@ import { fetchListApplicationJob } from "../../../services/fetchListApplicationJ
 import { calculateDaysDiff } from "../../../utils";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import { formatDate } from "../../../utils/formatter";
-import { renderStatus, renderStatusDescription, renderStatusDetail, renderStatusTitle } from "../dashboard.h";
+import {
+  renderStatus,
+  renderStatusDescription,
+  renderStatusDetail,
+  renderStatusTitle,
+} from "../dashboard.h";
 import "./application.s.scss";
 
 interface IPropsApplication {
@@ -40,11 +45,12 @@ interface IPropsApplication {
 
 const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   const navigate = useNavigate();
+  const isFirstRender = useRef<boolean>(true);
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
   const pageCurrent = useRef(1);
-  const totalElements = useRef(20);
+  const totalElements = useRef(10);
   const filter = useRef<any>({
     statusId: -1,
   });
@@ -160,8 +166,10 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   };
 
   useEffect(() => {
-    setState({ isLoadingList: true, isLoadingDetail: true });
-    getListApplicationJob();
+    if (isActive) {
+      setState({ isLoadingList: true, isLoadingDetail: true });
+      getListApplicationJob();
+    }
   }, [isActive]);
 
   useEffect(() => {
@@ -187,8 +195,6 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
       element.addEventListener("scroll", handleScroll);
     }
 
-    handleScroll();
-
     return () => {
       if (element) {
         element.removeEventListener("scroll", handleScroll);
@@ -197,13 +203,17 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   }, []);
 
   useEffect(() => {
-    const { selectTab } = state;
-    const newFilter = { statusId: selectTab };
-    filter.current = newFilter;
-    pageCurrent.current = 1;
-    totalElements.current = 20;
-    setState({ isLoadingList: true, isLoadingDetail: true });
-    getListApplicationJob();
+    if (!isFirstRender.current) {
+      const { selectTab } = state;
+      const newFilter = { statusId: selectTab };
+      filter.current = newFilter;
+      pageCurrent.current = 1;
+      totalElements.current = 10;
+      setState({ isLoadingList: true, isLoadingDetail: true });
+      getListApplicationJob();
+    } else {
+      isFirstRender.current = false;
+    }
   }, [state.selectTab]);
 
   const { jobDetail } = state || {};

@@ -19,7 +19,7 @@ const calculateDaysDiff = (date: string, isFullDay = false) => {
     return "Today";
   } else {
     if (isFullDay) {
-      return `${diffInDays}${diffInDays > 1 ? 'days' : 'day'} ago`;
+      return `${diffInDays} ${diffInDays > 1 ? 'days' : 'day'} ago`;
     } else {
       return `${diffInDays}d`;
     }
