@@ -25,10 +25,14 @@ import Badge from "../../../components/badge/badge";
 import ButtonComponent from "../../../components/button/button";
 import EmptyComponent from "../../../components/empty/empty";
 import ModalComponent from "../../../components/modal/modal";
+import { LOADING_TYPES } from "../../../constants/loadingTypes";
 import { ApplicationTab } from "../../../constants/selectOptions";
 import { fetchApplicationDetailJob } from "../../../services/fetchDetailApplicationJob";
 import { fetchListApplicationJob } from "../../../services/fetchListApplicationJob";
+import { handleCancelApplication } from "../../../services/handleCancelApplication";
+import loadingPage from "../../../store/actions/loading";
 import { calculateDaysDiff } from "../../../utils";
+import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import { formatDate } from "../../../utils/formatter";
 import {
@@ -44,6 +48,7 @@ interface IPropsApplication {
 }
 
 const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
+  const loadingPageAction = useActions(loadingPage);
   const navigate = useNavigate();
   const isFirstRender = useRef<boolean>(true);
   const divRef = useRef<HTMLDivElement>(null);
@@ -95,6 +100,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
               jobDetail: dataDetail,
               isLoadingList: false,
               isLoadingDetail: false,
+              indexActive: 0,
             });
             totalElements.current = data.totalElements;
           }
@@ -165,6 +171,29 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
     setState({ isOpenCancelModal });
   };
 
+  const handleCancel = async (applicationId: number) => {
+    handleOpenCancelModal(false);
+    loadingPageAction(LOADING_TYPES.CANCELING);
+    const isSucces = await handleCancelApplication(applicationId);
+    if (isSucces) {
+      const { jobDetail, listJob } = state;
+      const listJobCloned = _.map(listJob, (job) => {
+        if (job.jobId === jobDetail.job.id) {
+          return { ...job, statusId: 5 };
+        }
+        return job;
+      });
+      setState({
+        jobDetail: {
+          ...jobDetail,
+            statusId: 5,
+        },
+        listJob: listJobCloned,
+      });
+    }
+    loadingPageAction();
+  };
+
   useEffect(() => {
     if (isActive) {
       setState({ isLoadingList: true, isLoadingDetail: true });
@@ -232,7 +261,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
               title="Confirm"
               size="large"
               type="primary"
-              // onClick={handleRemoveResume}
+              onClick={() => handleCancel(jobDetail.applicationId)}
             />
             <ButtonComponent
               className="cancel-btn"

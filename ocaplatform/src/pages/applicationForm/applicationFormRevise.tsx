@@ -440,6 +440,7 @@ const ApplicationFormRevise = () => {
                   type="primary"
                   size="large"
                   title="Revising"
+                  disabled={detailJob.statusId !== 1 && detailJob.statusId !== 2}
                   onClick={() => handleOpenModal(true)}
                 />
               </div>
