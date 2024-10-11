@@ -49,6 +49,10 @@
       font-weight: 600;
       background: $dark-navy-blue !important;
       color: $pure-white;
+      &:hover {
+        color: $pure-white !important;
+        border-color: unset !important;
+      }
     }
 
     &-space {
@@ -76,6 +80,10 @@
       height: 56px;
       font-size: 14px;
       font-weight: 600;
+      &:hover {
+        color: $dark-navy-blue !important;
+        border-color: $soft-grey !important;
+      }
     }
 
     &-policy {

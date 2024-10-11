@@ -132,13 +132,25 @@
           font-weight: 600;
           line-height: 24px;
         }
+
+        &:hover {
+          border-color: unset !important;
+        }
+
+        &:disabled {
+          background: $cool-grey !important;
+          color: $pure-white;
+        }
       }
     }
   }
 }
 
-.modal-confirm {
-  font-family: "Inter";
+.modal-success,
+.modal-exists {
+  img {
+    margin-top: 40px;
+  }
 
   .ant-modal-body {
     display: flex;
@@ -157,6 +169,10 @@
     color: $off-white !important;
     width: 162px;
     height: 48px;
+
+    &:hover {
+      border-color: unset !important;
+    }
   }
 
   &-title {

@@ -374,6 +374,12 @@
       .apply-btn {
         background: $bright-orange !important;
       }
+      .continue-btn {
+        &:disabled {
+          background: $cool-grey !important;
+          color: $pure-white;
+        }
+      }
     }
   }
 }

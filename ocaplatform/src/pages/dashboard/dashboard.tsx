@@ -8,6 +8,7 @@ import ApplicationPage from "./application/application";
 import "./dashboard.s.scss";
 import HomePage from "./home/home";
 import DrawerComponent from "../../components/drawer/drawer";
+import Profile from "./profile/profile";
 
 export default function Dashboard() {
   const [state, setState] = useSetState({
@@ -34,9 +35,7 @@ export default function Dashboard() {
         return <ApplicationPage isActive={state.selectedKey === "2"} />;
       }
       case "3": {
-        return (
-          <Result status="403" subTitle="This page will be updated soon!" />
-        );
+        return <Profile isActive={state.selectedKey === "3"} />;
       }
       case "4": {
         return (

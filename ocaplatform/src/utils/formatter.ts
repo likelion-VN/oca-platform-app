@@ -9,4 +9,14 @@ const formatDate = (date: string) => {
   return dayjs(date).format("MM/DD/YYYY");
 };
 
-export { formatDate, keyFormatter };
+const maskEmail = (email: string) => {
+  const [localPart, domain] = email.split('@');
+  
+  const maskedLocalPart = '*'.repeat(localPart.length);
+  
+  const formattedEmail = `${maskedLocalPart}@${domain}`;
+  
+  return formattedEmail;
+}
+
+export { formatDate, keyFormatter, maskEmail };

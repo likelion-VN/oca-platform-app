@@ -35,16 +35,19 @@ import ButtonComponent from "../../../components/button/button";
 import EmptyComponent from "../../../components/empty/empty";
 import ModalComponent from "../../../components/modal/modal";
 import SelectCustom from "../../../components/selectCustom/selectCustom";
+import { LOADING_TYPES } from "../../../constants/loadingTypes";
 import {
   ApplicationTermsOptions,
   JobTypeOptions,
   WorkTypeOptions,
 } from "../../../constants/selectOptions";
 import { RequestHomePageBody } from "../../../interfaces/home";
+import { fetchApplicationDetailJob } from "../../../services/fetchDetailApplicationJob";
 import { fetchDetailJob } from "../../../services/fetchDetailJob";
 import { fetchListJob } from "../../../services/fetchListJob";
 import { fetchListLocation } from "../../../services/fetchListLocation";
 import { fetchSearchComplete } from "../../../services/fetchSearchComplete";
+import { handleCancelApplication } from "../../../services/handleCancelApplication";
 import { handleSaveJob } from "../../../services/handleSaveJob";
 import loadingPage from "../../../store/actions/loading";
 import { calculateDaysDiff } from "../../../utils";
@@ -185,6 +188,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               markSave: dataDetail?.marked,
               isLoadingList: false,
               isLoadingDetail: false,
+              indexActive: 0,
             });
             totalElements.current = data.totalElements;
           }
@@ -339,6 +343,14 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     }
   };
 
+  const handleClickReview = async () => {
+    const { applicationId } = state.jobDetail.application || {};
+    const jobDetailReview = await fetchApplicationDetailJob(applicationId);
+    navigate("/application-form-revise", {
+      state: { jobDetailReview },
+    });
+  };
+
   const handleMarkSave = async (id: number) => {
     const { listJob } = state;
     const listJobCloned = _.map(listJob, (job) => {
@@ -356,10 +368,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     const { jobDetail } = state;
     navigate("/application-form", { state: { jobDetail } });
   };
-
-  // const handleReview = () => {
-
-  // }
 
   const onChangeJob = (value: string) => {
     setState({ searchJob: value });
@@ -408,6 +416,32 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
 
   const handleOpenCancelModal = (isOpenCancelModal: boolean) => {
     setState({ isOpenCancelModal });
+  };
+
+  const handleCancel = async (applicationId: number) => {
+    handleOpenCancelModal(false);
+    loadingPageAction(LOADING_TYPES.CANCELING);
+    const isSucces = await handleCancelApplication(applicationId);
+    if (isSucces) {
+      const { jobDetail, listJob } = state;
+      const listJobCloned = _.map(listJob, (job) => {
+        if (job.jobId === jobDetail.id) {
+          return { ...job, statusId: 5 };
+        }
+        return job;
+      });
+      setState({
+        jobDetail: {
+          ...jobDetail,
+          application: {
+            ...jobDetail.application,
+            statusId: 5,
+          },
+        },
+        listJob: listJobCloned,
+      });
+    }
+    loadingPageAction();
   };
 
   useEffect(() => {
@@ -490,7 +524,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               title="Confirm"
               size="large"
               type="primary"
-              // onClick={handleRemoveResume}
+              onClick={() => handleCancel(jobDetail.application.applicationId)}
             />
             <ButtonComponent
               className="cancel-btn"
@@ -674,7 +708,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                         </div>
                       </div>
                     </div>
-                    {job.applicationId ? (
+                    {job.statusId ? (
                       <div className="job-status">
                         {renderStatus(job.statusId)}
                       </div>
@@ -758,11 +792,18 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                   <ButtonComponent
                     className="application-btn"
                     title={
-                      jobDetail.applied ? "View your application" : "Apply now"
+                      jobDetail.application.applicationId
+                        ? "View your application"
+                        : "Apply now"
                     }
-                    onClick={handleApply}
+                    onClick={
+                      jobDetail.application.applicationId
+                        ? handleClickReview
+                        : handleApply
+                    }
                   />
-                  {(jobDetail.statusId === 1 || jobDetail.statusId === 2) && (
+                  {(jobDetail.application.statusId === 1 ||
+                    jobDetail.application.statusId === 2) && (
                     <Tooltip
                       className="tooltip"
                       title="Cancel your application"
@@ -796,33 +837,40 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                     <Badge title={keyword.name} />
                   ))}
                 </div>
-                <div className="job-detail-update">
-                  <div className="job-detail-title">The latest updated</div>
-                  <div className="job-detail-content">
-                    <div className="application-status-card">
-                      <div className="status-left">
-                        <div className="circle">
-                          <div className="inner-circle"></div>
-                        </div>
-                        <div className="dashed-line"></div>
-                      </div>
-                      <div className="status-right">
-                        <div className="status-action">
-                          {renderStatusDetail(jobDetail.statusId)}
-                          <div className="status-action-date">
-                            {calculateDaysDiff(jobDetail.lastUpdateDate, true)}
+                {jobDetail.application.applicationId && (
+                  <div className="job-detail-update">
+                    <div className="job-detail-title">The latest updated</div>
+                    <div className="job-detail-content">
+                      <div className="application-status-card">
+                        <div className="status-left">
+                          <div className="circle">
+                            <div className="inner-circle"></div>
                           </div>
+                          <div className="dashed-line"></div>
                         </div>
-                        <div className="status-title">
-                          {renderStatusTitle(jobDetail.statusId)}
-                        </div>
-                        <div className="status-description">
-                          {renderStatusDescription(jobDetail.statusId)}
+                        <div className="status-right">
+                          <div className="status-action">
+                            {renderStatusDetail(jobDetail.application.statusId)}
+                            <div className="status-action-date">
+                              {calculateDaysDiff(
+                                jobDetail.lastUpdateDate,
+                                true
+                              )}
+                            </div>
+                          </div>
+                          <div className="status-title">
+                            {renderStatusTitle(jobDetail.application.statusId)}
+                          </div>
+                          <div className="status-description">
+                            {renderStatusDescription(
+                              jobDetail.application.statusId
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
                 <div className="job-detail-about">
                   <div className="job-detail-title">About the job</div>
                   <div className="job-detail-content">

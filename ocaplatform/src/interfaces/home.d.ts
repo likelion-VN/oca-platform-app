@@ -20,6 +20,7 @@ export interface Job {
   negotiable: string;
   postDateTime: string;
   marked: boolean;
+  statusId: number;
   companyAvatarUrl: string;
 }
 
@@ -85,7 +86,10 @@ export interface JobDetail {
     name: string;
   };
   marked: boolean;
-  applied: boolean;
+  application: {
+    applicationId: number;
+    statusId: number;
+  };
   workplaceType: {
     id: number;
     name: string;

@@ -48,8 +48,8 @@ const newFormDataFormatter = (newFormData: any) => {
       } : undefined,
     },
     tasks: _.map(newListTask, task => ({
-        update: !!task.newTask.trim() || task.isRemove,
-        delta: (!!task.newTask.trim() || task.isRemove) ? {
+        update: !!_.trim(task.newTask) || task.isRemove,
+        delta: (!!_.trim(task.newTask) || task.isRemove) ? {
           company: {
             id: _.isNumber(task.id) ? task.id : null,
             description: task.description,
