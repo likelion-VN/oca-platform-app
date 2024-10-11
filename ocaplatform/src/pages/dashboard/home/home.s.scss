@@ -4,44 +4,58 @@
   font-family: "Inter";
   color: $dark-navy-blue;
   height: calc(100vh - 89px);
+
   .search {
     display: flex;
     justify-content: center;
     column-gap: 4px;
+
+    .input-search-mobile {
+      display: none;
+    }
+
     .ant-input-affix-wrapper {
       background-color: $off-white;
       border-radius: 4px;
       height: 40px;
+
       .ant-input {
         font-family: "Inter";
         font-weight: 400;
         line-height: 20px;
         font-size: 14px;
       }
+
       &:hover {
         border-color: $neutral-grey;
       }
+
       &:focus-within {
         border-color: $neutral-grey;
         box-shadow: none;
       }
     }
+
     .ant-select-selection-item {
       font-weight: 400;
     }
+
     &-btn {
       background-color: $bright-orange !important;
       color: $off-white;
       border-radius: 4px;
+
       &:hover {
         background: $bright-orange;
       }
     }
   }
+
   .filter {
     display: flex;
     justify-content: space-between;
     margin: 32px 0 20px 0;
+
     &-left {
       .ant-select {
         &:hover {
@@ -49,31 +63,37 @@
             border-color: $neutral-grey !important;
           }
         }
+
         &-focused {
           .ant-select-selector {
             border-color: $neutral-grey !important;
             box-shadow: none !important;
           }
         }
+
         &-selector {
           border-radius: 4px;
         }
+
         &-selection-placeholder {
           color: $dark-navy-blue !important;
           font-size: 14px;
           font-weight: 600;
           font-family: "Inter";
         }
+
         &-selection-item {
           font-weight: 600;
         }
       }
     }
+
     &-right {
       .ant-btn {
         font-family: "Inter";
         font-weight: 600;
         border-radius: 4px;
+
         &-icon {
           svg {
             display: flex;
@@ -83,15 +103,18 @@
       }
     }
   }
+
   .count-jobs {
     font-size: 12px;
     margin-bottom: 16px;
   }
+
   .jobs {
     display: grid;
     grid-template-columns: 435px 1fr;
     gap: 24px;
     height: 83.25%;
+
     .job-list {
       display: flex;
       flex-direction: column;
@@ -114,22 +137,27 @@
         box-shadow: inset 0 -15px 15px -10px rgba(0, 0, 0, 0.2);
         transition: box-shadow 0.3s ease;
       }
+
       .job-card {
         display: flex;
         border: 1px solid $neutral-grey;
         border-radius: 4px;
         padding: 16px;
         justify-content: space-between;
+
         &:hover {
           cursor: pointer;
         }
+
         &-left {
           .job-title {
             display: flex;
             margin-bottom: 12px;
+
             .title {
               font-weight: 700;
               font-size: 20px;
+
               &-sub {
                 font-weight: 600;
                 color: $bright-blue;
@@ -138,23 +166,28 @@
               }
             }
           }
+
           .company {
             display: flex;
             margin-bottom: 12px;
+
             &-logo {
               width: 40px;
               height: 40px;
               border-radius: 8px;
               object-fit: contain;
             }
+
             &-info {
               margin-left: 12px;
               align-self: center;
+
               &-name {
                 font-size: 14px;
                 font-weight: 600;
                 line-height: 20px;
               }
+
               &-state {
                 margin-top: 2px;
                 font-size: 12px;
@@ -163,25 +196,30 @@
               }
             }
           }
+
           .job-keys {
             display: flex;
             flex-wrap: wrap;
             row-gap: 4px;
           }
         }
+
         &-right {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+
           .job-mark {
             text-align: right;
           }
+
           .update-time {
             font-size: 12px;
             color: $silver-grey;
             text-align: right;
           }
         }
+
         &-active {
           border-color: $bright-orange;
           border-left-width: 5px;
@@ -189,30 +227,36 @@
         }
       }
     }
+
     .job-detail {
       border: 1px solid $neutral-grey;
       border-radius: 4px;
       padding: 16px;
       height: 95.5%;
       overflow-y: scroll;
+
       &-title {
         font-weight: 600;
         font-size: 20px;
         line-height: 28px;
       }
+
       &-content {
         font-size: 14px;
         font-weight: 400;
         line-height: 20px;
         margin-top: 12px;
+
         ul {
           margin-block-start: 0;
           margin-block-end: 0;
           padding-inline-start: 25px;
         }
       }
+
       &-name {
         display: flex;
+
         .company-logo {
           height: 84px;
           width: 84px;
@@ -220,34 +264,42 @@
           align-self: center;
           object-fit: contain;
         }
+
         .job-title {
           margin-left: 12px;
           align-self: center;
+
           .title {
             font-size: 24px;
             font-weight: 700;
             line-height: 32px;
+
             &-sub {
               font-weight: 600;
               color: $bright-blue;
               font-size: 14px;
               margin-left: 4px;
             }
+
             .tooltip {
               margin-left: 4px;
             }
           }
+
           .company-info {
             display: flex;
             color: $charcoal-grey;
             font-size: 14px;
             font-weight: 400;
+
             &-name {
               border-right: 1px solid $off-white;
               padding-right: 8px;
             }
+
             &-state {
               padding-left: 8px;
+
               .icon {
                 margin-right: 4px;
               }
@@ -255,23 +307,28 @@
           }
         }
       }
+
       &-action {
         display: flex;
         margin-top: 16px;
+
         .application-btn {
           flex: 1;
           background: $bright-orange !important;
           color: $off-white;
           height: 40px;
+
           &:hover {
             border-color: transparent;
           }
         }
+
         .disabled {
           background-color: $off-white !important;
           color: $mid-grey;
           border: transparent;
         }
+
         .cancel-btn,
         .save-btn {
           width: 40px;
@@ -279,27 +336,33 @@
           margin-left: 16px;
           background-color: $off-white;
           border-color: transparent;
+
           &:hover {
             color: unset;
           }
         }
       }
+
       &-keys {
         margin-top: 24px;
       }
+
       &-update,
       &-about,
       &-tasks,
       &-qualify {
         margin-top: 24px;
+
         .job-detail-duration {
           display: flex;
           flex-direction: column;
           row-gap: 16px;
           margin-top: 24px;
+
           .apply-duration {
             display: flex;
             width: 272px;
+
             &-icon {
               background-color: $off-white;
               width: 40px;
@@ -309,17 +372,20 @@
               align-items: center;
               justify-content: center;
             }
+
             &-detail {
               display: flex;
               flex-direction: column;
               justify-content: space-between;
               margin-left: 12px;
+
               &-title {
                 font-size: 12px;
                 font-weight: 600;
                 line-height: 16px;
                 color: $charcoal-grey;
               }
+
               &-time {
                 font-size: 14px;
                 font-weight: 400;
@@ -329,11 +395,13 @@
             }
           }
         }
+
         .application-status-card {
           display: flex;
           background-color: $off-white;
           padding: 14px 16px;
           border-radius: 4px;
+
           .status-left {
             display: flex;
             flex-direction: column;
@@ -363,15 +431,14 @@
               z-index: 2;
               width: 2px;
               height: 100%;
-              background-image: linear-gradient(
-                to bottom,
-                $cool-grey 50%,
-                transparent 50%
-              );
+              background-image: linear-gradient(to bottom,
+                  $cool-grey 50%,
+                  transparent 50%);
               background-size: 5px 10px;
               margin-top: -1.5px;
             }
           }
+
           .status-right {
             display: flex;
             flex: 1;
@@ -383,6 +450,7 @@
               display: flex;
               justify-content: space-between;
               align-items: center;
+
               &-date {
                 font-size: 12px;
                 line-height: 16px;
@@ -395,6 +463,7 @@
               margin-top: 12px;
               font-weight: 600;
             }
+
             .status-description {
               margin-top: 8px;
               font-weight: 400;
@@ -403,16 +472,20 @@
           }
         }
       }
+
       &-company {
         margin-top: 17px;
         padding-top: 17px;
         border-top: 1px solid $neutral-grey;
+
         &-intro {
           display: flex;
           justify-content: space-between;
           margin-bottom: 18px;
+
           &-left {
             display: flex;
+
             .company-logo-intro {
               height: 64px;
               width: 64px;
@@ -420,15 +493,18 @@
               align-self: center;
               object-fit: contain;
             }
+
             .company-info {
               align-self: center;
               margin-left: 7px;
+
               &-name {
                 font-size: 24px;
                 font-weight: 700;
                 line-height: 32px;
                 margin-bottom: 7px;
               }
+
               &-detail {
                 display: flex;
                 color: $charcoal-grey;
@@ -436,9 +512,11 @@
                 font-weight: 400;
                 line-height: 20px;
                 column-gap: 12px;
+
                 &-state,
                 &-employ {
                   display: flex;
+
                   .icon {
                     height: 18px;
                     width: 18px;
@@ -451,6 +529,7 @@
               }
             }
           }
+
           &-right {
             .view-btn {
               font-family: "Inter";

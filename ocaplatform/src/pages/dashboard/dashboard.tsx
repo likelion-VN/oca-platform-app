@@ -7,6 +7,7 @@ import { useSetState } from "../../utils/customHook/useSetState";
 import ApplicationPage from "./application/application";
 import "./dashboard.s.scss";
 import HomePage from "./home/home";
+import DrawerComponent from "../../components/drawer/drawer";
 
 export default function Dashboard() {
   const [state, setState] = useSetState({
@@ -61,19 +62,21 @@ export default function Dashboard() {
           />
           <div className="content-detail">{renderPage(state.selectedKey)}</div>
         </div>
-        <Drawer
-          onClose={toggleDrawer}
-          placement="left"
+        <DrawerComponent
           open={state.openDrawer}
+          placement="left"
+          closeable={true}
+          onclose={toggleDrawer}
           className="dashboard-drawer"
-        >
-          <SideBar
-            collapsed={false}
-            className="drawer-side-bar"
-            selectedKey={state.selectedKey}
-            onSelect={() => {}}
-          />
-        </Drawer>
+          content={
+            <SideBar
+              collapsed={false}
+              className="drawer-side-bar"
+              selectedKey={state.selectedKey}
+              onSelect={() => {}}
+            />
+          }
+        />
       </div>
     </div>
   );

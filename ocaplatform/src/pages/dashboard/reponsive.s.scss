@@ -35,8 +35,12 @@
               display: none;
             }
 
-            .auto-completed-custom.auto-completed-city-state {
+            .auto-completed-custom {
               display: none;
+            }
+
+            .input-search-mobile {
+              display: flex;
             }
           }
 
@@ -83,5 +87,41 @@
       }
     }
 
+  }
+
+  .drawer-search-jobs {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+
+    .ant-drawer-header {
+      .ant-drawer-header-title {
+        flex-direction: row-reverse;
+        font-size: 18px;
+        line-height: 28px;
+
+        .ant-drawer-close {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .ant-drawer-body {
+      padding: 20px 16px 0 16px;
+
+
+      .search-job-content {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+
+        .ant-input-affix-wrapper {
+          background-color: $off-white;
+          border-radius: 4px;
+          height: 40px;
+        }
+      }
+
+
+    }
   }
 }

@@ -18,7 +18,7 @@ import {
 } from "antd";
 
 import classNames from "classnames";
-import _ from "lodash";
+import _, { set } from "lodash";
 import {
   BookmarkSimple,
   Clock,
@@ -58,6 +58,7 @@ import {
   renderStatusTitle,
 } from "../dashboard.h";
 import "./home.s.scss";
+import DrawerComponent from "../../../components/drawer/drawer";
 
 interface IPropsHome {
   isActive: boolean;
@@ -106,6 +107,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     isLoadingDetail: false,
     visible: false,
     isOpenCancelModal: false,
+    openDrawer: false,
   });
 
   const renderValue = (
@@ -510,6 +512,20 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
       </ModalComponent>
       <div className="home-page">
         <div className="search">
+          <Input
+            readOnly
+            className="input-search-mobile"
+            allowClear
+            value={state.searchJob}
+            size="large"
+            placeholder="Find your perfect experience"
+            prefix={
+              <SearchOutlined style={{ marginRight: 6, color: "#0F172A" }} />
+            }
+            onClick={() => {
+              setState({ openDrawer: true });
+            }}
+          />
           <AutoComplete
             className="auto-completed-custom"
             style={{ width: 350, fontWeight: 400 }}
@@ -939,6 +955,55 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           </div>
         </div>
       </div>
+      <DrawerComponent
+        title="Search Jobs"
+        closeable
+        placement="bottom"
+        className="drawer-search-jobs"
+        size="large"
+        open={state.openDrawer}
+        onclose={() => setState({ openDrawer: false })}
+        content={
+          <div className="search-job-content">
+            <AutoComplete
+              className="auto-completed-custom"
+              style={{ width: 350, fontWeight: 400 }}
+              onSearch={(text) => getListAutoComplete(text)}
+              onChange={onChangeJob}
+              options={state.listAutoComplete}
+            >
+              <Input
+                allowClear
+                size="large"
+                placeholder="Find your perfect experience"
+                prefix={
+                  <SearchOutlined
+                    style={{ marginRight: 6, color: "#0F172A" }}
+                  />
+                }
+              />
+            </AutoComplete>
+            <AutoComplete
+              className="auto-completed-custom auto-completed-city-state"
+              style={{ width: 350, fontWeight: 400 }}
+              onSearch={(text) => getListLocation(text)}
+              onChange={onChangeLocation}
+              options={state.listLocation}
+            >
+              <Input
+                allowClear
+                size="large"
+                placeholder="City, state"
+                prefix={
+                  <EnvironmentOutlined
+                    style={{ marginRight: 6, color: "#0F172A" }}
+                  />
+                }
+              />
+            </AutoComplete>
+          </div>
+        }
+      />
     </>
   );
 };
