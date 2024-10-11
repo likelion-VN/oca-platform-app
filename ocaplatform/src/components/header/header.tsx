@@ -7,9 +7,10 @@ import "./header.s.scss";
 
 interface IPropsHeader {
   toggleCollapsed: () => void;
+  toggleDrawer: () => void;
 }
 
-const Header: React.FC<IPropsHeader> = ({ toggleCollapsed }) => {
+const Header: React.FC<IPropsHeader> = ({ toggleCollapsed, toggleDrawer }) => {
   return (
     <div>
       <div className="header">
@@ -24,6 +25,11 @@ const Header: React.FC<IPropsHeader> = ({ toggleCollapsed }) => {
         <div className="header-right">
           <BellOutlined />
           <Avatar size={32} icon={<UserOutlined />} className="avatar" />
+          <ButtonComponent
+            className="drawer-menu-icon"
+            icon={<MenuOutlined size={24} />}
+            onClick={toggleDrawer}
+          />
         </div>
       </div>
     </div>

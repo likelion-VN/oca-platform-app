@@ -527,7 +527,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             />
           </AutoComplete>
           <AutoComplete
-            className="auto-completed-custom"
+            className="auto-completed-custom auto-completed-city-state"
             style={{ width: 350, fontWeight: 400 }}
             onSearch={(text) => getListLocation(text)}
             onChange={onChangeLocation}

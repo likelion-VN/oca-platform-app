@@ -1,0 +1,87 @@
+@media screen and (max-width: 576px) {
+  .dashboard-layout {
+
+    .header {
+      .header-left {
+        button {
+          display: none;
+        }
+      }
+
+      .header-right {
+        width: 130px;
+
+        .drawer-menu-icon {
+          display: inline-block;
+          border: none;
+          outline: none;
+        }
+      }
+    }
+
+    .content {
+      .nav-bar {
+        display: none;
+      }
+
+      .content-detail {
+        padding: 16px;
+        box-sizing: border-box;
+
+        .home-page {
+
+          .search {
+            .search-btn {
+              display: none;
+            }
+
+            .auto-completed-custom.auto-completed-city-state {
+              display: none;
+            }
+          }
+
+          .jobs {
+            grid-template-columns: 1fr;
+            height: 100%;
+
+            .job-list {
+              overflow-y: unset;
+            }
+          }
+
+          .filter {
+            .filter-left {
+              display: none;
+            }
+          }
+        }
+
+        .job-detail {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .dashboard-drawer {
+    .ant-drawer-header-title {
+      justify-content: end;
+    }
+
+    .ant-drawer-body {
+      .ant-menu {
+        border-inline-end: none;
+        width: 100%;
+      }
+
+      .drawer-side-bar {
+        .ant-menu-item {
+          margin-left: 0;
+          margin-right: 0;
+          width: 100%;
+        }
+      }
+    }
+
+  }
+}

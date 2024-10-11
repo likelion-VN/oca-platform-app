@@ -25,8 +25,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   handleCancel,
   isLoading,
 }) => {
-  const [state, setState] = useMergeState({
-  });
+  const [state, setState] = useMergeState({});
 
   const handleInputChange = (
     keyValue: string,
@@ -119,8 +118,8 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   );
 
   const handleOpenGuideModal = (isOpenGuideModal: boolean) => {
-    setState({isOpenGuideModal})
-  }
+    setState({ isOpenGuideModal });
+  };
 
   const handleNext = () => {
     handleClick({ step1: state }, true);
