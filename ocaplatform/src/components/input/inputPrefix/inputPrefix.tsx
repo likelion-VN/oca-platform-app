@@ -7,6 +7,7 @@ import _ from "lodash";
 import React, { useState } from "react";
 import { Option } from "../../../interfaces";
 import "./inputPrefix.s.scss";
+import InputQuillCustom from "../../inputQuill/inputQuillCustom/inputQuillCustom";
 
 interface IPropsInputPrefix {
   value?: any;
@@ -245,6 +246,8 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             />
           </AutoComplete>
         );
+      case "input-quill":
+        return <InputQuillCustom valuePrefix={valuePrefix} />;
       default:
         return <></>;
     }

@@ -176,13 +176,22 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         </div>
       </div>
       <div className="form-application">
-        <InputPrefix
+        {/* <InputPrefix
           value={state.jobTitle}
           title="Job Title"
           subTitle={state.negotiable && "(Negotiable)"}
           valuePrefix={state.currentJobTitle}
           disabled={!state.negotiable}
           type="input"
+          onChange={(e) => handleInputChange("jobTitle", e)}
+        /> */}
+        <InputPrefix
+          value={state.jobTitle}
+          title="Job Title"
+          subTitle={state.negotiable && "(Negotiable)"}
+          valuePrefix={state.currentJobTitle}
+          disabled={!state.negotiable}
+          type="input-quill"
           onChange={(e) => handleInputChange("jobTitle", e)}
         />
         <InputPrefix
