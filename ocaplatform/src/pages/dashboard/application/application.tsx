@@ -19,6 +19,7 @@ import {
   UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CalendarDotIcon } from "../../../assets/svg";
 import Badge from "../../../components/badge/badge";
@@ -30,6 +31,7 @@ import { ApplicationTab } from "../../../constants/selectOptions";
 import { fetchApplicationDetailJob } from "../../../services/fetchDetailApplicationJob";
 import { fetchListApplicationJob } from "../../../services/fetchListApplicationJob";
 import { handleCancelApplication } from "../../../services/handleCancelApplication";
+import updateGotoData from "../../../store/actions/goto";
 import loadingPage from "../../../store/actions/loading";
 import { calculateDaysDiff } from "../../../utils";
 import useActions from "../../../utils/customHook/useActions";
@@ -48,7 +50,12 @@ interface IPropsApplication {
 }
 
 const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
+  const dispatch = useDispatch();
+  const applicationGotoRedux = useSelector(
+    (state: any) => state.goto.application
+  );
   const loadingPageAction = useActions(loadingPage);
+
   const navigate = useNavigate();
   const isFirstRender = useRef<boolean>(true);
   const divRef = useRef<HTMLDivElement>(null);
@@ -57,7 +64,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   const pageCurrent = useRef(1);
   const totalElements = useRef(10);
   const filter = useRef<any>({
-    statusId: -1,
+    statusId: applicationGotoRedux.selectedTab,
   });
 
   const [state, setState] = useMergeState({
@@ -88,9 +95,11 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
           filter.current
         );
         const newState = {};
+        const updateApplicationGoto = {...filter.current};
         if (data && !_.isEmpty(data.content)) {
           if (isLoadMore) {
             _.assign(newState, { listJob: data.content });
+            _.assign(updateApplicationGoto, { listJob: data.content });
           } else {
             const dataDetail = await fetchApplicationDetailJob(
               data.content[0].applicationId
@@ -101,6 +110,10 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
               isLoadingList: false,
               isLoadingDetail: false,
               indexActive: 0,
+            });
+            _.assign(updateApplicationGoto, {
+              listJob: data.content,
+              jobDetail: dataDetail,
             });
             totalElements.current = data.totalElements;
           }
@@ -114,6 +127,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
           });
           totalElements.current = 0;
         }
+        dispatch(updateGotoData("application", updateApplicationGoto));
         pageCurrent.current = newPage;
         setState(newState);
       } else {
@@ -186,7 +200,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
       setState({
         jobDetail: {
           ...jobDetail,
-            statusId: 5,
+          statusId: 5,
         },
         listJob: listJobCloned,
       });
@@ -196,8 +210,15 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
 
   useEffect(() => {
     if (isActive) {
-      setState({ isLoadingList: true, isLoadingDetail: true });
-      getListApplicationJob();
+      if (_.isEmpty(applicationGotoRedux.listJob)) {
+        setState({ isLoadingList: true, isLoadingDetail: true });
+        getListApplicationJob();
+      } else {
+        setState({
+          listJob: applicationGotoRedux.listJob,
+          jobDetail: applicationGotoRedux.jobDetail,
+        })
+      }
     }
   }, [isActive]);
 

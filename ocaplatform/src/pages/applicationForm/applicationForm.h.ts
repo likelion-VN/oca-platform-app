@@ -55,7 +55,7 @@ const newFormDataFormatter = (newFormData: any) => {
             description: task.description,
           },
           candidate: {
-            id: _.isNumber(task.id) ? task.id : null,
+            id: _.isNumber(task.idNewTask) ? task.idNewTask : null,
             description: task.newTask.trim(),
           },
       } : undefined
