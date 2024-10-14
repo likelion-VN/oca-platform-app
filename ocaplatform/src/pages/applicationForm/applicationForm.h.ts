@@ -51,11 +51,11 @@ const newFormDataFormatter = (newFormData: any) => {
         update: !!_.trim(task.newTask) || task.isRemove,
         delta: (!!_.trim(task.newTask) || task.isRemove) ? {
           company: {
-            id: _.isNumber(task.idNewTask) ? task.idNewTask : null,
+            id: _.isNumber(task.id) ? task.id : null,
             description: task.description,
           },
           candidate: {
-            id: _.isNumber(task.id) ? task.id : null,
+            id: _.isNumber(task.idNewTask) ? task.idNewTask : null,
             description: task.newTask.trim(),
           },
       } : undefined
