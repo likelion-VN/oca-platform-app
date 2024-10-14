@@ -51,25 +51,25 @@ const ApplicationFormRevise = () => {
     const { detailJob } = state;
     _.assign(newForm.current, {
       step1: {
-        currentJobTitle: detailJob.jobTitle.delta.company,
-        currentJobType: detailJob.jobType.name,
-        currentStartDate: dayjs(
-          detailJob.workPeriodStart.delta.company
-        ).toISOString(),
-        currentEndDate: dayjs(
-          detailJob.workPeriodEnd.delta.company
-        ).toISOString(),
+        currentJobTitle: detailJob.jobTitle?.delta?.company || "",
+        currentJobType: detailJob.jobType?.name || "",
+        currentStartDate: detailJob.workPeriodStart?.delta?.company
+          ? dayjs(detailJob.workPeriodStart.delta.company).toISOString()
+          : "",
+        currentEndDate: detailJob.workPeriodEnd?.delta?.company
+          ? dayjs(detailJob.workPeriodEnd.delta.company).toISOString()
+          : "",
         currentWorkplaceType: getLabelByValue(
           WorkTypeOptions,
-          detailJob.workplaceType.delta.company
+          detailJob.workplaceType?.delta?.company
         ),
-        currentHoursPerWeek: detailJob.workHoursPerWeek.delta.company,
-        currentDescription: detailJob.job.description,
+        currentHoursPerWeek: detailJob.workHoursPerWeek?.delta?.company || "",
+        currentDescription: detailJob.job?.description || "",
         currentTasks: _.map(detailJob.tasks, (task) => ({
-          id: task.delta.company.id,
-          idNewTask: task.delta.candidate?.id || null,
-          description: task.delta.company.description,
-          newTask: task.delta.candidate?.description || "",
+          id: task?.delta?.company?.id || "",
+          idNewTask: task?.delta?.candidate?.id || null,
+          description: task?.delta?.company?.description || "",
+          newTask: task?.delta?.candidate?.description || "",
           isRemove:
             task.negotiable && _.isEmpty(task.delta.candidate.description),
         })),
@@ -77,28 +77,28 @@ const ApplicationFormRevise = () => {
           detailJob.qualifications,
           (qualification) => qualification.description
         ).join("\n"),
-        jobTitle: detailJob.jobTitle.delta.candidate,
-        startDate: detailJob.workPeriodStart.delta.candidate,
-        endDate: detailJob.workPeriodEnd.delta.candidate,
+        jobTitle: detailJob.jobTitle?.delta?.candidate || "",
+        startDate: detailJob.workPeriodStart?.delta?.candidate || "",
+        endDate: detailJob.workPeriodEnd?.delta?.candidate || "",
         workplaceType: getLabelByValue(
           WorkTypeOptions,
-          detailJob.workplaceType.delta.candidate
+          detailJob.workplaceType?.delta?.candidate
         ),
-        hoursPerWeek: detailJob.workHoursPerWeek.delta.candidate,
-        negotiable: detailJob.jobNegotiable,
+        hoursPerWeek: detailJob.workHoursPerWeek?.delta?.candidate || "",
+        negotiable: detailJob.jobNegotiable || false,
       },
       step2: {
-        email: detailJob.email,
-        phoneNumber: detailJob.phoneNumber,
-        portfolio: detailJob.portfolio,
-        personalWebsite: detailJob.personalWebsites,
-        selfIntroduction: detailJob.introduction,
-        listAttachment: detailJob.attachments,
-        selectedResumeId: detailJob.selectedAttachment.id,
+        email: detailJob.email || "",
+        phoneNumber: detailJob.phoneNumber || "",
+        portfolio: detailJob.portfolio || "",
+        personalWebsite: detailJob.personalWebsites || [],
+        selfIntroduction: detailJob.introduction || "",
+        listAttachment: detailJob.attachments || [],
+        selectedResumeId: detailJob.selectedAttachment?.id || null,
       },
-      jobId: detailJob.job.id,
-      jobTypeId: detailJob.jobType.id,
-      applicationId: detailJob.applicationId,
+      jobId: detailJob.job?.id || 0,
+      jobTypeId: detailJob.jobType?.id || 0,
+      applicationId: detailJob.applicationId || 0,
     });
   };
 
@@ -113,7 +113,10 @@ const ApplicationFormRevise = () => {
   const handleApply = async (input: any) => {
     try {
       loadingPageAction(LOADING_TYPES.APPLYING);
-      const isSuccess = await handleResubmitLApplicationForm(newForm.current.applicationId ,input);
+      const isSuccess = await handleResubmitLApplicationForm(
+        newForm.current.applicationId,
+        input
+      );
       setState({ isSuccess });
     } catch (error) {
       console.error("Error", error);
@@ -441,7 +444,9 @@ const ApplicationFormRevise = () => {
                   type="primary"
                   size="large"
                   title="Revising"
-                  disabled={detailJob.statusId !== 1 && detailJob.statusId !== 2}
+                  disabled={
+                    detailJob.statusId !== 1 && detailJob.statusId !== 2
+                  }
                   onClick={() => handleOpenModal(true)}
                 />
               </div>
