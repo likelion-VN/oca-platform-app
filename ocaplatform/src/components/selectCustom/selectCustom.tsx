@@ -2,22 +2,19 @@ import { Checkbox, Radio, RadioChangeEvent, Select } from "antd";
 import classNames from "classnames";
 import _ from "lodash";
 import { CaretDown } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Option } from "../../interfaces";
 import "./selectCustom.s.scss";
-
-interface OptionItem {
-  value: number | string;
-  label: string;
-  isDisabled?: boolean;
-}
 
 interface IPropsSelectCustom {
   className?: string;
-  options: OptionItem[];
+  options: Option[];
   onChange?: (array: string[]) => void;
   onChangeRadio?: (value: string | null) => void;
   placeholder?: string;
-  value: string;
+  multipleValue?: string[];
+  value?: string;
+  valueRender: string;
   type: string;
 }
 
@@ -27,12 +24,14 @@ const SelectCustom: React.FC<IPropsSelectCustom> = ({
   className,
   placeholder,
   options,
-  value,
+  multipleValue = [],
+  value = null,
+  valueRender,
   type,
 }) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
-
+  
   const isCheckbox = type === "checkbox";
 
   const handleChange = (selectedValues: string[]) => {
@@ -40,7 +39,8 @@ const SelectCustom: React.FC<IPropsSelectCustom> = ({
   };
 
   const handleChangeRadio = (event: RadioChangeEvent) => {
-    setSelectedValue(event.target.value);
+    const newValue = event.target.value;
+    setSelectedValue(newValue);
   };
 
   const handleClear = () => {
@@ -102,14 +102,26 @@ const SelectCustom: React.FC<IPropsSelectCustom> = ({
     return renderRadioOptions();
   };
 
+  useEffect(() => {
+    if (!_.isEqual(selectedValues, multipleValue)) {
+      setSelectedValues(multipleValue);
+    }
+  }, [multipleValue]);
+
+  useEffect(() => {
+    if (selectedValue !== value) {
+      setSelectedValue(value);
+    }
+  }, [value]);
+
   return (
     <Select
       className={classNames(
         className,
-        (!_.isEmpty(selectedValues) || selectedValue) && "has-value"
+        (!_.isEmpty(selectedValues)|| !!selectedValue) && "has-value"
       )}
       placeholder={placeholder}
-      value={value}
+      value={valueRender}
       allowClear={!_.isEmpty(selectedValues) || !!selectedValue}
       dropdownRender={() => renderDropdown()}
       showSearch={false}
