@@ -266,7 +266,12 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
       <div className="action">
         <div className="action-left"></div>
         <div className="action-right">
-          <ButtonComponent title="Cancel" size="large" onClick={handleCancel} />
+          <ButtonComponent
+            className="btn-cancel"
+            title="Cancel"
+            size="large"
+            onClick={handleCancel}
+          />
           <ButtonComponent
             className="continue-btn"
             type="primary"

@@ -54,6 +54,8 @@
           }
 
           .filter {
+            margin: 20px 0 15px 0;
+
             .filter-left {
               display: none;
             }
@@ -118,10 +120,122 @@
           background-color: $off-white;
           border-radius: 4px;
           height: 40px;
+          border: 1px solid #DBDBDB;
+          outline: none;
+
+          &:focus-within {
+            border-color: #0F172A;
+            box-shadow: none;
+            outline: none;
+          }
         }
       }
 
 
+    }
+  }
+
+  .drawer-filter-job {
+    .ant-drawer-header {
+      .ant-drawer-header-title {
+        flex-direction: row-reverse;
+
+        .ant-drawer-close {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .ant-drawer-body {
+      .list-filter {
+        .list-filter-title {
+          font-size: 14px;
+          font-weight: 600;
+          color: $dark-navy-blue;
+        }
+      }
+
+
+      margin-bottom: 20px;
+
+      .ant-checkbox-wrapper {
+        margin-bottom: 15px;
+
+        .ant-checkbox {
+          width: 18px;
+          height: 18px;
+
+          .ant-checkbox-inner {
+            border: 1px solid $cool-grey;
+            width: 18px;
+            height: 18px;
+            border-radius: 2px;
+          }
+
+        }
+
+        .ant-checkbox-checked {
+          .ant-checkbox-inner {
+            border: 1.5px solid $bright-orange;
+            background-color: $bright-orange !important;
+          }
+        }
+      }
+
+      .ant-radio-wrapper {
+        margin-bottom: 15px;
+
+        .ant-radio {
+          width: 18px;
+          height: 18px;
+
+          .ant-radio-inner {
+            border: 1px solid $cool-grey;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+          }
+
+        }
+
+        .ant-radio-checked {
+          .ant-radio-inner {
+            border: 1.5px solid $bright-orange;
+            background-color: unset !important;
+
+            &::after {
+              transform: scale(0.55);
+              background-color: $bright-orange;
+            }
+          }
+        }
+      }
+
+
+    }
+
+    .ant-drawer-footer {
+      border-top: unset;
+      padding-bottom: 40px;
+
+      .drawer-footer-action {
+        display: flex;
+        justify-content: space-between;
+
+        .btn-reset {
+          border-color: transparent;
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .btn-apply {
+          background-color: $bright-orange;
+          color: $pure-white;
+          border-color: $bright-orange;
+          font-weight: 600;
+          font-size: 14px;
+        }
+      }
     }
   }
 }

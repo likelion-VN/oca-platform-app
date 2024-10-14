@@ -11,6 +11,7 @@ interface IDrawerProps {
   closeable: boolean;
   onclose: () => void;
   size?: "default" | "large";
+  footer?: React.ReactNode;
 }
 
 const DrawerComponent: React.FC<IDrawerProps> = ({
@@ -22,6 +23,7 @@ const DrawerComponent: React.FC<IDrawerProps> = ({
   closeable,
   onclose,
   size = "default",
+  footer,
 }) => {
   return (
     <>
@@ -34,6 +36,7 @@ const DrawerComponent: React.FC<IDrawerProps> = ({
         open={open}
         key={placement}
         size={size}
+        footer={footer}
       >
         {content}
       </Drawer>
