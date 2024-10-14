@@ -26,9 +26,10 @@ Quill.register(PrefixBlot); // Đăng ký blot
 
 interface InputQuillDefaultProps {
   valuePrefix?: string;
+  disabled: boolean;
 }
 
-function InputQuillCustom({ valuePrefix }: InputQuillDefaultProps) {
+function InputQuillCustom({ valuePrefix, disabled }: InputQuillDefaultProps) {
   const [valueHtml, setValueHtml] = useState(""); // Lưu trữ nội dung đã chỉnh sửa
   const quillRef = useRef<ReactQuill>(null); // Tham chiếu đến Quill editor
 
@@ -104,9 +105,16 @@ function InputQuillCustom({ valuePrefix }: InputQuillDefaultProps) {
     }
   };
 
+  // useEffect(() => {
+  //   if (disabled) {
+  //     quillRef.current.
+  //   }
+  // },[])
+
   return (
     <div className="customEditor">
       <ReactQuill
+        readOnly={disabled}
         value={valueHtml}
         ref={quillRef}
         theme="snow"

@@ -8,6 +8,21 @@
     }
   }
 
+  .ql-disabled {
+    cursor: not-allowed;
+    background-color: rgba(0, 0, 0, 0.04);
+
+    .ql-editor {
+      pointer-events: none;
+      cursor: not-allowed;
+
+      strong {
+        color: rgba(0, 0, 0, 0.25);
+
+      }
+    }
+  }
+
   strong {
     font-weight: 400;
     color: black;

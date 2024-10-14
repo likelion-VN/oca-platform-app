@@ -247,7 +247,9 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
           </AutoComplete>
         );
       case "input-quill":
-        return <InputQuillCustom valuePrefix={valuePrefix} />;
+        return (
+          <InputQuillCustom disabled={disabled} valuePrefix={valuePrefix} />
+        );
       default:
         return <></>;
     }
