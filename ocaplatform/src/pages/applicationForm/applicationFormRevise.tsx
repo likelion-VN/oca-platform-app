@@ -67,6 +67,7 @@ const ApplicationFormRevise = () => {
         currentDescription: detailJob.job.description,
         currentTasks: _.map(detailJob.tasks, (task) => ({
           id: task.delta.company.id,
+          idNewTask: task.delta.candidate?.id || null,
           description: task.delta.company.description,
           newTask: task.delta.candidate?.description || "",
           isRemove:

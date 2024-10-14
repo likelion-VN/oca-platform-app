@@ -28,6 +28,7 @@ import {
   UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CalendarDotIcon } from "../../../assets/svg";
 import Badge from "../../../components/badge/badge";
@@ -49,6 +50,7 @@ import { fetchListLocation } from "../../../services/fetchListLocation";
 import { fetchSearchComplete } from "../../../services/fetchSearchComplete";
 import { handleCancelApplication } from "../../../services/handleCancelApplication";
 import { handleSaveJob } from "../../../services/handleSaveJob";
+import updateGotoData from "../../../store/actions/goto";
 import loadingPage from "../../../store/actions/loading";
 import { calculateDaysDiff } from "../../../utils";
 import useActions from "../../../utils/customHook/useActions";
@@ -67,23 +69,25 @@ interface IPropsHome {
 }
 
 const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
+  const dispatch = useDispatch();
+  const homeGotoRedux = useSelector((state: any) => state.goto.home);
   const loadingPageAction = useActions(loadingPage);
+
   const navigate = useNavigate();
-  const isFirstRender = useRef<boolean>(true);
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
   const pageCurrent = useRef(1);
   const totalElements = useRef(10);
   const filter = useRef<RequestHomePageBody>({
-    jobTitle: "",
-    jobTypeId: 0,
-    negotiable: null,
-    workplaceTypeIds: [],
-    cityId: 0,
-    stateId: 0,
-    countryId: 1,
-    searchOptionId: 0,
+    jobTitle: homeGotoRedux.jobTitle,
+    jobTypeId: homeGotoRedux.jobTypeId,
+    negotiable: homeGotoRedux.negotiable,
+    workplaceTypeIds: homeGotoRedux.workplaceTypeIds,
+    cityId: homeGotoRedux.cityId,
+    stateId: homeGotoRedux.stateId,
+    countryId: homeGotoRedux.countryId,
+    searchOptionId: homeGotoRedux.searchOptionId,
   });
 
   const [state, setState] = useMergeState({
@@ -175,9 +179,11 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
       if (newPage * 10 <= totalElements.current) {
         const data = await fetchListJob(0, 10 * newPage, filter.current);
         const newState = {};
+        const updateHomeGoto = { ...filter.current };
         if (data && !_.isEmpty(data.content)) {
           if (isLoadMore) {
             _.assign(newState, { listJob: data.content });
+            _.assign(updateHomeGoto, { listJob: data.content });
           } else {
             const dataDetail = await fetchDetailJob(data.content[0].jobId);
             _.assign(newState, {
@@ -188,6 +194,10 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               isLoadingDetail: false,
               indexActive: 0,
             });
+            _.assign(updateHomeGoto, {
+              listJob: data.content,
+              jobDetail: dataDetail,
+            });
             totalElements.current = data.totalElements;
           }
         } else {
@@ -197,7 +207,12 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             isLoadingList: false,
             isLoadingDetail: false,
           });
+          _.assign(updateHomeGoto, {
+            listJob: [],
+            jobDetail: [],
+          });
         }
+        dispatch(updateGotoData("home", updateHomeGoto));
         pageCurrent.current = newPage;
         setState(newState);
       } else {
@@ -212,6 +227,25 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         isLoadingDetail: false,
       });
     }
+  };
+
+  const handleUpdateFilter = () => {
+    const { jobType, application, workType } = state;
+    const clonedFilter = _.cloneDeep(filter.current);
+    const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
+    const negotiable = !!application ? application === "negotiable" : null;
+    const workplaceTypeIds = !_.isEmpty(workType) ? workType : [];
+    const newFilter = {
+      ...clonedFilter,
+      jobTypeId,
+      negotiable,
+      workplaceTypeIds,
+    };
+    filter.current = newFilter;
+    pageCurrent.current = 1;
+    totalElements.current = 10;
+    setState({ isLoadingList: true, isLoadingDetail: true });
+    getListJob();
   };
 
   // const menu = (
@@ -319,16 +353,21 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         jobType: values,
         valueJobType: renderValue(values, JobTypeOptions),
       });
+      handleUpdateFilter();
     }
   };
 
   const handleChangeApplication = (value: string | null) => {
-    setState({
-      application: value,
-      valueApplication:
-        ApplicationTermsOptions.find((option) => option.value === value)
-          ?.label || "Application Terms",
-    });
+    const isModified = state.application !== value;
+    if (isModified) {
+      setState({
+        application: value,
+        valueApplication:
+          ApplicationTermsOptions.find((option) => option.value === value)
+            ?.label || "Application Terms",
+      });
+      handleUpdateFilter();
+    }
   };
 
   const handleChangeWorkType = (values: string[]) => {
@@ -338,6 +377,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         workType: values,
         valueWorkType: renderValue(values, WorkTypeOptions),
       });
+      handleUpdateFilter();
     }
   };
 
@@ -428,27 +468,45 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         }
         return job;
       });
-      setState({
-        jobDetail: {
-          ...jobDetail,
-          application: {
-            ...jobDetail.application,
-            statusId: 5,
-          },
+      const jobDetailCloned = {
+        ...jobDetail,
+        application: {
+          ...jobDetail.application,
+          statusId: 5,
         },
+      };
+      setState({
+        jobDetail: jobDetailCloned,
         listJob: listJobCloned,
       });
+      dispatch(
+        updateGotoData("home", {
+          jobDetail: jobDetailCloned,
+          listJob: listJobCloned,
+        })
+      );
     }
     loadingPageAction();
   };
 
   useEffect(() => {
     if (isActive) {
-      setState({
-        isLoadingList: true,
-        isLoadingDetail: true,
-      });
-      getListJob();
+      if (_.isEmpty(homeGotoRedux.listJob)) {
+        setState({
+          isLoadingList: true,
+          isLoadingDetail: true,
+        });
+        getListJob();
+      } else {
+        setState({
+          listJob: homeGotoRedux.listJob,
+          jobDetail: homeGotoRedux.jobDetail,
+        });
+        totalElements.current = homeGotoRedux.listJob.length;
+      }
+      handleChangeJobType(homeGotoRedux.jobTypeId);
+      handleChangeApplication(homeGotoRedux.negotiable);
+      handleChangeWorkType(homeGotoRedux.workplaceTypeIds);
       loadingPageAction();
     }
   }, [isActive]);
@@ -483,28 +541,28 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isFirstRender.current) {
-      const { jobType, application, workType } = state;
-      const clonedFilter = _.cloneDeep(filter.current);
-      const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
-      const negotiable = !!application ? application === "negotiable" : null;
-      const workplaceTypeIds = !_.isEmpty(workType) ? workType : [];
-      const newFilter = {
-        ...clonedFilter,
-        jobTypeId,
-        negotiable,
-        workplaceTypeIds,
-      };
-      filter.current = newFilter;
-      pageCurrent.current = 1;
-      totalElements.current = 10;
-      setState({ isLoadingList: true, isLoadingDetail: true });
-      getListJob();
-    } else {
-      isFirstRender.current = false;
-    }
-  }, [state.jobType, state.application, state.workType]);
+  // useEffect(() => {
+  //   if (!isFirstRender.current) {
+  //     const { jobType, application, workType } = state;
+  //     const clonedFilter = _.cloneDeep(filter.current);
+  //     const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
+  //     const negotiable = !!application ? application === "negotiable" : null;
+  //     const workplaceTypeIds = !_.isEmpty(workType) ? workType : [];
+  //     const newFilter = {
+  //       ...clonedFilter,
+  //       jobTypeId,
+  //       negotiable,
+  //       workplaceTypeIds,
+  //     };
+  //     filter.current = newFilter;
+  //     pageCurrent.current = 1;
+  //     totalElements.current = 10;
+  //     setState({ isLoadingList: true, isLoadingDetail: true });
+  //     getListJob();
+  //   } else {
+  //     isFirstRender.current = false;
+  //   }
+  // }, [state.jobType, state.application, state.workType]);
 
   const { jobDetail } = state || {};
 
@@ -590,21 +648,24 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           <div className="filter-left">
             <Space wrap>
               <SelectCustom
-                value={state.valueJobType}
+                multipleValue={state.jobType}
+                valueRender={state.valueJobType}
                 placeholder="Job Type"
                 options={JobTypeOptions}
                 onChange={handleChangeJobType}
                 type="checkbox"
               />
               <SelectCustom
-                value={state.valueApplication}
+                value={state.application}
+                valueRender={state.valueApplication}
                 placeholder="Application Terms"
                 options={ApplicationTermsOptions}
                 onChangeRadio={handleChangeApplication}
                 type="radio"
               />
               <SelectCustom
-                value={state.valueWorkType}
+                multipleValue={state.workType}
+                valueRender={state.valueWorkType}
                 placeholder="Work Type"
                 options={WorkTypeOptions}
                 onChange={handleChangeWorkType}

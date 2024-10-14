@@ -80,9 +80,6 @@
           }
         }
       }
-      .disabled {
-        opacity: 0.4;
-      }
     }
   }
   .content-form {
@@ -348,9 +345,6 @@
         font-weight: 600;
         margin-top: 12px;
       }
-      .disabled {
-        opacity: 0.4;
-      }
     }
   }
   .action {
@@ -377,7 +371,7 @@
       .continue-btn {
         &:disabled {
           background: $cool-grey !important;
-          color: $pure-white;
+          color: $translucent-white;
         }
       }
     }
