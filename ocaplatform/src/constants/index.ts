@@ -1,5 +1,5 @@
-// const apiServiceUrl = "https://be.lion-up.net/";
-const apiServiceUrl = "https://3.16.49.203/";
+const apiServiceUrl = "https://be.lion-up.net/";
+// const apiServiceUrl = "https://3.16.49.203/";
 
 const ACCEPT_FILE_TYPES = ".doc,.docx,.pdf";
 

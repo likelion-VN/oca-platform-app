@@ -29,7 +29,11 @@ interface InputQuillDefaultProps {
   disabled: boolean;
 }
 
-function InputQuillCustom({ valuePrefix, disabled }: InputQuillDefaultProps) {
+function InputQuillCustom({
+  valuePrefix,
+  disabled,
+}: // value,
+InputQuillDefaultProps) {
   const [valueHtml, setValueHtml] = useState(""); // Lưu trữ nội dung đã chỉnh sửa
   const quillRef = useRef<ReactQuill>(null); // Tham chiếu đến Quill editor
 

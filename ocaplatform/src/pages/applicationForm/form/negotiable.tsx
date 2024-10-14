@@ -68,11 +68,11 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState({ [keyValue]: value });
   };
 
+  // xử lí thêm task - làm thêm hàm focus cho nhảy xuống input tiếp theo khi thêm
   const handleAddTaskBelow = useCallback(
     (id: number | string) => {
-      const newId = uuidv4();
       const newTask = {
-        id: newId,
+        id: null,
         description: "",
         newTask: "",
         isRemove: false,
@@ -128,6 +128,8 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   useEffect(() => {
     setState(defaultData);
   }, [defaultData]);
+
+  console.log(state.currentTasks);
 
   return (
     <>
@@ -256,6 +258,14 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           onChangeMultiple={(e, id) => handleTaskChange(id, e)}
           onKeyDown={(e, id) => handleKeyDown(id, e)}
         />
+        <InputPrefix
+          title="Task"
+          type="mutiple-input-quill"
+          disabled={!state.negotiable}
+          listDataMutipleInput={state.currentTasks}
+          subTitle={state.negotiable && "(Negotiable)"}
+        />
+
         <InputPrefix
           value={state.currentQualifications}
           title="Minimum Qualifications"

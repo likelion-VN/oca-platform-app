@@ -46,11 +46,11 @@
 
           .jobs {
             grid-template-columns: 1fr;
-            height: 100%;
+            // height: 100%;
 
-            .job-list {
-              overflow-y: unset;
-            }
+            // .job-list {
+            //   overflow-y: unset;
+            // }
           }
 
           .filter {

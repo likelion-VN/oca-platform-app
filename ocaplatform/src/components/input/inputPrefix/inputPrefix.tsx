@@ -26,6 +26,7 @@ interface IPropsInputPrefix {
   options?: Option[];
   readOnly?: boolean;
   allowClear?: boolean;
+  listDataMutipleInput?: any[];
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -42,6 +43,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   options,
   readOnly = false,
   allowClear = false,
+  listDataMutipleInput,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -249,6 +251,19 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
       case "input-quill":
         return (
           <InputQuillCustom disabled={disabled} valuePrefix={valuePrefix} />
+        );
+      case "mutiple-input-quill":
+        return (
+          <div className="text-area-input">
+            {_.map(listDataMutipleInput, (item) => {
+              return (
+                <InputQuillCustom
+                  disabled={disabled}
+                  valuePrefix={item.description}
+                />
+              );
+            })}
+          </div>
         );
       default:
         return <></>;
