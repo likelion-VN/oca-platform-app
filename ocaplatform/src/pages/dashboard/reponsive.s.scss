@@ -149,10 +149,30 @@
     .ant-drawer-body {
       .list-filter {
         .list-filter-title {
-          font-size: 14px;
-          font-weight: 600;
-          color: $dark-navy-blue;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          p {
+            font-size: 14px;
+            font-weight: 600;
+            color: $dark-navy-blue;
+          }
+
+          .btn-clear {
+            margin-bottom: 0;
+
+            .ant-checkbox {
+              display: none;
+            }
+
+            border: none;
+            font-size: 14px;
+            color: #706F74;
+          }
         }
+
+
       }
 
 
@@ -183,11 +203,16 @@
       }
 
       .ant-radio-wrapper {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
 
         .ant-radio {
           width: 18px;
           height: 18px;
+
+          .ant-radio-input {
+            width: 18px;
+            height: 18px;
+          }
 
           .ant-radio-inner {
             border: 1px solid $cool-grey;

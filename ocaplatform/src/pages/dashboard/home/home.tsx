@@ -116,6 +116,11 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     isOpenCancelModal: false,
     openDrawerFindJob: false,
     openDrawerFilter: false,
+    itemsfilter: {
+      jobType: [],
+      applicationTerms: [],
+      workType: [],
+    },
   });
 
   const renderValue = (
@@ -139,17 +144,31 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const renderListFilter = (
     title: string,
     type: "checkbox" | "radio",
-    arrOption: Array<any>
+    arrOption: Array<any>,
+    handleCountFilter: () => void
   ) => {
     if (type == "checkbox") {
       return (
         <div>
-          <p className="list-filter-title">{title}</p>
+          <div className="list-filter-title">
+            <p>{title}</p>
+            <Checkbox className="btn-clear" indeterminate>
+              Clear
+            </Checkbox>
+          </div>
           <div className="list-filter-item">
             {arrOption.map((item, index) => {
               return (
                 <div>
-                  <Checkbox key={index}>{item.label}</Checkbox>
+                  <Checkbox
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                    }}
+                    key={index}
+                    value={item.value}
+                  >
+                    {item.label}
+                  </Checkbox>
                 </div>
               );
             })}
@@ -159,15 +178,22 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     } else if (type == "radio") {
       return (
         <div>
-          <p className="list-filter-title">{title}</p>
+          <div className="list-filter-title">
+            <p>{title}</p>
+            <Checkbox className="btn-clear" indeterminate>
+              Clear
+            </Checkbox>
+          </div>
           <div className="list-filter-item">
-            {arrOption.map((item, index) => {
-              return (
-                <div>
-                  <Radio key={index}>{item.label}</Radio>{" "}
-                </div>
-              );
-            })}
+            <div>
+              <Radio.Group>
+                <Space direction="vertical">
+                  {arrOption.map((item, index) => {
+                    return <Radio key={index}>{item.label}</Radio>;
+                  })}
+                </Space>
+              </Radio.Group>
+            </div>
           </div>
         </div>
       );
@@ -410,6 +436,11 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const handleApply = () => {
     const { jobDetail } = state;
     navigate("/application-form", { state: { jobDetail } });
+  };
+
+  const handleCountItemsFilter = () => {
+    // console.log(state.itemsfilter);
+    // setState({ itemsfilter: state.itemsfilter + 1 });
   };
 
   const onChangeJob = (value: string) => {
@@ -685,6 +716,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               onClick={() => setState({ openDrawerFilter: true })}
             >
               All filter
+              {/* {state.itemsfilter !== 0 && state.itemsfilter} */}
             </Button>
             {/* </Dropdown> */}
           </div>
@@ -1105,13 +1137,24 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         content={
           <div className="drawer-filter-job-body">
             <div className="list-filter">
-              {renderListFilter("Job type", "checkbox", JobTypeOptions)}
+              {renderListFilter(
+                "Job type",
+                "checkbox",
+                JobTypeOptions,
+                handleCountItemsFilter
+              )}
               {renderListFilter(
                 "Application Terms",
                 "radio",
-                ApplicationTermsOptions
+                ApplicationTermsOptions,
+                handleCountItemsFilter
               )}
-              {renderListFilter("Work Type", "checkbox", WorkTypeOptions)}
+              {renderListFilter(
+                "Work Type",
+                "checkbox",
+                WorkTypeOptions,
+                handleCountItemsFilter
+              )}
             </div>
           </div>
         }
@@ -1119,7 +1162,13 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         open={state.openDrawerFilter}
         footer={
           <div className="drawer-footer-action">
-            <ButtonComponent className="btn-reset" title="Reset" />
+            <ButtonComponent
+              className="btn-reset"
+              onClick={() => {
+                // setState({ itemsfilter: 0 });
+              }}
+              title="Reset"
+            />
             <ButtonComponent className="btn-apply" title="Apply filters" />
           </div>
         }
