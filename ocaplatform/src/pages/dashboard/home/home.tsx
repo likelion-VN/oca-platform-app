@@ -91,16 +91,13 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   });
 
   const [state, setState] = useMergeState({
-    searchJob: "",
+    searchJob: homeGotoRedux.jobTitle,
     listAutoComplete: [],
     searchLocation: [],
     listLocation: [],
-    jobType: [],
-    valueJobType: null,
-    application: null,
-    valueApplication: null,
-    workType: [],
-    valueWorkType: null,
+    jobType: homeGotoRedux.jobTypeId,
+    application: homeGotoRedux.negotiable,
+    workType: homeGotoRedux.workplaceTypeIds,
     listJob: [],
     listState: [],
     markSave: false,
@@ -233,7 +230,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     const { jobType, application, workType } = state;
     const clonedFilter = _.cloneDeep(filter.current);
     const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
-    const negotiable = !!application ? application === "negotiable" : null;
+    const negotiable = !_.isNil(application) ? application : null;
     const workplaceTypeIds = !_.isEmpty(workType) ? workType : [];
     const newFilter = {
       ...clonedFilter,
@@ -349,23 +346,15 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const handleChangeJobType = (values: string[]) => {
     const isModified = !_.isEqual(_.sortBy(state.jobType), _.sortBy(values));
     if (isModified) {
-      setState({
-        jobType: values,
-        valueJobType: renderValue(values, JobTypeOptions),
-      });
+      setState({ jobType: values });
       handleUpdateFilter();
     }
   };
 
-  const handleChangeApplication = (value: string | null) => {
+  const handleChangeApplication = (value: boolean | null) => {
     const isModified = state.application !== value;
     if (isModified) {
-      setState({
-        application: value,
-        valueApplication:
-          ApplicationTermsOptions.find((option) => option.value === value)
-            ?.label || "Application Terms",
-      });
+      setState({ application: value });
       handleUpdateFilter();
     }
   };
@@ -373,10 +362,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const handleChangeWorkType = (values: string[]) => {
     const isModified = !_.isEqual(_.sortBy(state.workType), _.sortBy(values));
     if (isModified) {
-      setState({
-        workType: values,
-        valueWorkType: renderValue(values, WorkTypeOptions),
-      });
+      setState({ workType: values });
       handleUpdateFilter();
     }
   };
@@ -608,6 +594,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             onSearch={(text) => getListAutoComplete(text)}
             onChange={onChangeJob}
             options={state.listAutoComplete}
+            value={state.searchJob}
           >
             <Input
               allowClear
@@ -649,24 +636,31 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             <Space wrap>
               <SelectCustom
                 multipleValue={state.jobType}
-                valueRender={state.valueJobType}
-                placeholder="Job Type"
+                valueRender={
+                  renderValue(state.jobType, JobTypeOptions) || "Job Type"
+                }
                 options={JobTypeOptions}
                 onChange={handleChangeJobType}
                 type="checkbox"
+                disabled
               />
               <SelectCustom
                 value={state.application}
-                valueRender={state.valueApplication}
-                placeholder="Application Terms"
+                valueRender={
+                  _.find(
+                    ApplicationTermsOptions,
+                    (option) => option.value === state.application
+                  )?.label || "Application Terms"
+                }
                 options={ApplicationTermsOptions}
                 onChangeRadio={handleChangeApplication}
                 type="radio"
               />
               <SelectCustom
                 multipleValue={state.workType}
-                valueRender={state.valueWorkType}
-                placeholder="Work Type"
+                valueRender={
+                  renderValue(state.workType, WorkTypeOptions) || "Work Type"
+                }
                 options={WorkTypeOptions}
                 onChange={handleChangeWorkType}
                 type="checkbox"

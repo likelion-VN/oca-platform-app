@@ -10,12 +10,13 @@ interface IPropsSelectCustom {
   className?: string;
   options: Option[];
   onChange?: (array: string[]) => void;
-  onChangeRadio?: (value: string | null) => void;
+  onChangeRadio?: (value: boolean | null) => void;
   placeholder?: string;
   multipleValue?: string[];
-  value?: string;
+  value?: boolean | null;
   valueRender: string;
   type: string;
+  disabled?: boolean;
 }
 
 const SelectCustom: React.FC<IPropsSelectCustom> = ({
@@ -28,9 +29,10 @@ const SelectCustom: React.FC<IPropsSelectCustom> = ({
   value = null,
   valueRender,
   type,
+  disabled = false,
 }) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedValue, setSelectedValue] = useState<boolean | null>(null);
   
   const isCheckbox = type === "checkbox";
 
@@ -118,17 +120,18 @@ const SelectCustom: React.FC<IPropsSelectCustom> = ({
     <Select
       className={classNames(
         className,
-        (!_.isEmpty(selectedValues)|| !!selectedValue) && "has-value"
+        (!_.isEmpty(selectedValues)|| !_.isNil(selectedValue)) && "has-value"
       )}
       placeholder={placeholder}
       value={valueRender}
-      allowClear={!_.isEmpty(selectedValues) || !!selectedValue}
+      allowClear={!_.isEmpty(selectedValues) || !_.isNil(selectedValue)}
       dropdownRender={() => renderDropdown()}
       showSearch={false}
       suffixIcon={<CaretDown color="#0F172A" />}
       placement="bottomLeft"
       onDropdownVisibleChange={handleOnDropdownVisibleChange}
       onClear={handleClear}
+      disabled={disabled}
     />
   );
 };

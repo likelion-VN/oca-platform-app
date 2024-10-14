@@ -16,7 +16,7 @@ export default {
       jobDetail: {}
     },
     application: {
-      selectedTab: -1,
+      statusId: -1,
       listJob: [],
       jobDetail: {}
     }
