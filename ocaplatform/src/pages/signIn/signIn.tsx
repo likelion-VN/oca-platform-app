@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoogleIcon, LinkedinIcon, Logo } from "../../assets/svg";
+import { GoogleIcon, LinkedinIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
@@ -58,10 +58,10 @@ const LoginPage = () => {
   return (
     <div className="background-login">
       <div className="header">
-        <img src={Logo} alt="logo" />
+        <div className="text">LION-UP</div>
       </div>
       <div className="login">
-        <div className="login-title">Welcome to O-CA</div>
+        <div className="login-title">Welcome to LION-UP</div>
         <div className="login-subtitle">Please sign in or sign up below.</div>
         <ButtonComponent
           title="Continue with Linkedin"

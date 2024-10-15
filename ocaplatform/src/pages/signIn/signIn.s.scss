@@ -12,8 +12,10 @@
     height: 64px;
     border-bottom: 1px solid $neutral-grey;
     background-color: $pure-white;
-    img {
+    .text {
       margin-left: 56px;
+      font-size: 30px;
+      font-weight: 600;
     }
   }
 
