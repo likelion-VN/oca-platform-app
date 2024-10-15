@@ -11,7 +11,7 @@ const AuthCallback: React.FC = () => {
       allCookies[name] = decodeURIComponent(value);
     });
 
-    if (_.isNil(allCookies[2])) {
+    if (!_.isNil(allCookies.j_user_token)) {
       window.opener?.postMessage(
         { cookies: allCookies },
         window.location.origin

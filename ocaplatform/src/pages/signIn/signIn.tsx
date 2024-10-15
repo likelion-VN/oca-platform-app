@@ -35,13 +35,11 @@ const LoginPage = () => {
   useEffect(() => {
     const handleReceiveData = (event: MessageEvent) => {
       if (event.origin === window.location.origin) {
-        const { token, cookies } = event.data;
+        const { cookies } = event.data;
 
-        if (token) {
-          document.cookie = `i_user_token=${token}; path=/; secure; HttpOnly`;
-          console.log("Token đã được lưu vào cookie:", token);
-          navigate("/create-user");
-        }
+          // document.cookie = `i_user_token=${token}; path=/; secure; HttpOnly`;
+          // console.log("Token đã được lưu vào cookie:", token);
+          // navigate("/create-user");
 
         console.log("Tất cả cookie:", cookies);
       }
