@@ -8,6 +8,7 @@ const AuthCallback: React.FC = () => {
     const allCookies: { [key: string]: string } = {};
 
     const cookies = document.cookie.split("; ");
+    console.log('test', cookies)
     cookies.forEach((cookie) => {
       const [name, value] = cookie.split("=");
       allCookies[name] = decodeURIComponent(value);
@@ -16,7 +17,7 @@ const AuthCallback: React.FC = () => {
     if (token) {
       window.opener?.postMessage({ token, cookies: allCookies }, window.location.origin);
     }
-    window.close();
+    // window.close();
   }, []);
 
   return <div>Processing authentication...</div>;

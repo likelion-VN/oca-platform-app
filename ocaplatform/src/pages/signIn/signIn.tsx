@@ -32,29 +32,28 @@ const LoginPage = () => {
     );
   };
 
-    useEffect(() => {
-      const handleReceiveData = (event: MessageEvent) => {
-        if (event.origin === window.location.origin) {
-          const { token, cookies } = event.data;
+  useEffect(() => {
+    const handleReceiveData = (event: MessageEvent) => {
+      if (event.origin === window.location.origin) {
+        const { token, cookies } = event.data;
 
-          if (token) {
-            document.cookie = `i_user_token=${token}; path=/; secure; HttpOnly`;
-            console.log("Token đã được lưu vào cookie:", token);
-          }
-
-          console.log("Tất cả cookie:", cookies);
-
+        if (token) {
+          document.cookie = `i_user_token=${token}; path=/; secure; HttpOnly`;
+          console.log("Token đã được lưu vào cookie:", token);
           navigate("/create-user");
         }
-      };
 
-      window.addEventListener("message", handleReceiveData);
+        console.log("Tất cả cookie:", cookies);
+      }
+    };
 
-      return () => {
-        window.removeEventListener("message", handleReceiveData);
-      };
-    }, [navigate]);
     loadingPageAction();
+    window.addEventListener("message", handleReceiveData);
+
+    return () => {
+      window.removeEventListener("message", handleReceiveData);
+    };
+  }, [navigate]);
 
   return (
     <div className="background-login">
