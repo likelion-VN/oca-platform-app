@@ -1,13 +1,12 @@
-import axios from "axios";
-import { apiServiceUrl } from "../constants";
 import { JobDetail } from "../interfaces/home";
+import { http } from "./config";
 
 export const fetchDetailJob = async (
   jobId: number
 ): Promise<JobDetail | void> => {
   try {
-    const response = await axios.get<JobDetail>(
-      `${apiServiceUrl}jobs/${jobId}`
+    const response = await http.get<JobDetail>(
+      `jobs/${jobId}`
     );
     return response.data;
   } catch (error) {

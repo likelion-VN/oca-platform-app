@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { Option } from "../../../interfaces";
 import "./inputPrefix.s.scss";
 import InputQuillCustom from "../../inputQuill/inputQuillCustom/inputQuillCustom";
+import InputMutipleQuillCustom from "../../inputQuill/inputQuillCustom/inputMutipleQuillCustom";
 
 interface IPropsInputPrefix {
   value?: any;
@@ -27,6 +28,9 @@ interface IPropsInputPrefix {
   readOnly?: boolean;
   allowClear?: boolean;
   listDataMutipleInput?: any[];
+  idNewTask?: string;
+  handleChangeMutiple?: (value: string, id: string) => void;
+  handleChangeInputQuill?: (value: string) => void;
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -44,6 +48,9 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   readOnly = false,
   allowClear = false,
   listDataMutipleInput,
+  idNewTask,
+  handleChangeMutiple,
+  handleChangeInputQuill,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -137,7 +144,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
       case "text-area-input":
         return (
           <div className="text-area-input" onClick={onClick}>
-            {_.map(value, (item) => (
+            {_.map(value, (item, index) => (
               // <ProtectedDefaultQuill
               //   id={item.id}
               //   value={item.description}
@@ -146,6 +153,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               //   onContentChange={onChangeMultiple}
               // />
               <Input
+                key={index}
                 allowClear={allowClear}
                 value={item.newTask}
                 placeholder=""
@@ -250,16 +258,31 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         );
       case "input-quill":
         return (
-          <InputQuillCustom disabled={disabled} valuePrefix={valuePrefix} />
+          <InputQuillCustom
+            value={value}
+            disabled={disabled}
+            valuePrefix={valuePrefix}
+            onChange={handleChangeInputQuill}
+          />
         );
       case "mutiple-input-quill":
         return (
           <div className="text-area-input">
-            {_.map(listDataMutipleInput, (item) => {
+            {_.map(listDataMutipleInput, (item, index) => {
               return (
                 <InputQuillCustom
+                  key={index}
+                  id={item.id}
+                  className="mutiple-input-quill"
                   disabled={disabled}
                   valuePrefix={item.description}
+                  value={item.newTask}
+                  onKeyDown={(e) => {
+                    if (onKeyDown) {
+                      onKeyDown(e, item.id);
+                    }
+                  }}
+                  handleChangeMutiple={handleChangeMutiple}
                 />
               );
             })}

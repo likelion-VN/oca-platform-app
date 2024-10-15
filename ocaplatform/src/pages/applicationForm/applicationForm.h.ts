@@ -5,6 +5,8 @@ import { RequestApplicationForm } from "../../interfaces/applicationForm";
 const newFormDataFormatter = (newFormData: any) => {
   const { applicationId, jobId, jobTypeId, step1, step2 } = newFormData;
   const newListTask = _.filter(step1.currentTasks, task => !_.isNil(task.description) && !_.isNil(task.newTask));
+  console.log(step1.currentTasks)
+  console.log(newListTask)
   const formDataFormatted: RequestApplicationForm = {
     jobId,
     jobTypeId,
@@ -12,18 +14,18 @@ const newFormDataFormatter = (newFormData: any) => {
       update: !!step1.jobTitle,
       delta: !!step1.jobTitle
         ? {
-            company: step1.currentJobTitle,
-            candidate: step1.jobTitle,
-          }
+          company: step1.currentJobTitle,
+          candidate: step1.jobTitle,
+        }
         : undefined,
     },
     workplaceType: {
       update: !!step1.workplaceType,
       delta: !!step1.workplaceType
         ? {
-            company: _.find(WorkTypeOptions, item => item.label === step1.currentWorkplaceType)?.value,
-            candidate: _.find(WorkTypeOptions, item => item.label === step1.workplaceType)?.value,
-          }
+          company: _.find(WorkTypeOptions, item => item.label === step1.currentWorkplaceType)?.value,
+          candidate: _.find(WorkTypeOptions, item => item.label === step1.workplaceType)?.value,
+        }
         : undefined,
     },
     workingPeriodStart: {
@@ -48,16 +50,16 @@ const newFormDataFormatter = (newFormData: any) => {
       } : undefined,
     },
     tasks: _.map(newListTask, task => ({
-        update: !!_.trim(task.newTask) || task.isRemove,
-        delta: (!!_.trim(task.newTask) || task.isRemove) ? {
-          company: {
-            id: _.isNumber(task.id) ? task.id : null,
-            description: task.description,
-          },
-          candidate: {
-            id: _.isNumber(task.idNewTask) ? task.idNewTask : null,
-            description: task.newTask.trim(),
-          },
+      update: !!_.trim(task.newTask) || task.isRemove,
+      delta: (!!_.trim(task.newTask) || task.isRemove) ? {
+        company: {
+          id: _.isNumber(task.id) ? task.id : null,
+          description: task.description,
+        },
+        candidate: {
+          id: _.isNumber(task.idNewTask) ? task.idNewTask : null,
+          description: task.newTask.trim(),
+        },
       } : undefined
     })),
     portfolio: step2.portfolio,

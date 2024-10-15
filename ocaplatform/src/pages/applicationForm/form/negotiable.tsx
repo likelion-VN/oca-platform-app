@@ -2,7 +2,7 @@
 
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import _ from "lodash";
+import _, { set } from "lodash";
 import React, { useCallback, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ButtonComponent from "../../../components/button/button";
@@ -42,17 +42,18 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     }
   };
 
-  const handleTaskChange = (
-    id: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeMutiple = (value: string, id: string) => {
     const { currentTasks } = state;
-    const updatedTasks = _.map(currentTasks, (task) =>
-      task.id === id
-        ? { ...task, newTask: e.target.value, isRemove: false }
-        : task
-    );
-    setState({ currentTasks: updatedTasks });
+    console.log(value);
+    console.log(currentTasks);
+    if (currentTasks.length > 0) {
+      const updateTask = _.map(currentTasks, (task) => {
+        return task.id.toString() == id
+          ? { ...task, newTask: value, isRemove: false }
+          : task;
+      });
+      setState({ currentTasks: updateTask });
+    }
   };
 
   const handleDateChange = (keyValue: string, date: dayjs.Dayjs | null) => {
@@ -70,9 +71,11 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 
   // xử lí thêm task - làm thêm hàm focus cho nhảy xuống input tiếp theo khi thêm
   const handleAddTaskBelow = useCallback(
-    (id: number | string) => {
+    (id: number) => {
+      console.log(state.currentTasks);
+      const newId = uuidv4();
       const newTask = {
-        id: null,
+        id: newId,
         description: "",
         newTask: "",
         isRemove: false,
@@ -84,13 +87,14 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         const updatedTasks = _.cloneDeep(state.currentTasks);
         updatedTasks.splice(currentIndex + 1, 0, newTask);
         setState({ currentTasks: updatedTasks });
+        setState({ newTaskId: newId });
       }
     },
     [state.currentTasks, setState]
   );
 
   const handleKeyDown = useCallback(
-    (id: number | string, e: React.KeyboardEvent<HTMLInputElement>) => {
+    (id: number, e: React.KeyboardEvent<HTMLInputElement>) => {
       const { currentTasks } = state;
       if (e.key === "Delete" || e.key === "Backspace") {
         const task = _.find(currentTasks, (item) => item.id === id);
@@ -178,15 +182,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         </div>
       </div>
       <div className="form-application">
-        {/* <InputPrefix
-          value={state.jobTitle}
-          title="Job Title"
-          subTitle={state.negotiable && "(Negotiable)"}
-          valuePrefix={state.currentJobTitle}
-          disabled={!state.negotiable}
-          type="input"
-          onChange={(e) => handleInputChange("jobTitle", e)}
-        /> */}
         <InputPrefix
           value={state.jobTitle}
           title="Job Title"
@@ -194,7 +189,9 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           valuePrefix={state.currentJobTitle}
           disabled={!state.negotiable}
           type="input-quill"
-          onChange={(e) => handleInputChange("jobTitle", e)}
+          handleChangeInputQuill={(value) => {
+            setState({ jobTitle: value });
+          }}
         />
         <InputPrefix
           title="Job Type"
@@ -249,7 +246,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           disabled
           type="text-area"
         />
-        <InputPrefix
+        {/* <InputPrefix
           value={state.currentTasks}
           title="Task"
           subTitle={state.negotiable && "(Negotiable)"}
@@ -257,13 +254,18 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           disabled={!state.negotiable}
           onChangeMultiple={(e, id) => handleTaskChange(id, e)}
           onKeyDown={(e, id) => handleKeyDown(id, e)}
-        />
+        /> */}
+
         <InputPrefix
+          value={state.currentTasks}
           title="Task"
           type="mutiple-input-quill"
           disabled={!state.negotiable}
           listDataMutipleInput={state.currentTasks}
+          onKeyDown={(e, id) => handleKeyDown(id, e)}
           subTitle={state.negotiable && "(Negotiable)"}
+          idNewTask={state.idNewTask}
+          handleChangeMutiple={handleChangeMutiple}
         />
 
         <InputPrefix

@@ -26,23 +26,35 @@ Quill.register(PrefixBlot); // Đăng ký blot
 
 interface InputQuillDefaultProps {
   valuePrefix?: string;
+  value: string;
   disabled: boolean;
+  onChange?: (value: string) => void;
+  id?: string; // uuid hoặc id số từ BE
+  onKeyDown?: (e: any) => void;
+  className?: string;
+  handleChangeMutiple?: (value: string, id: string) => void;
 }
 
 function InputQuillCustom({
   valuePrefix,
+  value,
   disabled,
-}: // value,
-InputQuillDefaultProps) {
+  onChange,
+  id,
+  onKeyDown,
+  className,
+  handleChangeMutiple,
+}: InputQuillDefaultProps) {
   const [valueHtml, setValueHtml] = useState(""); // Lưu trữ nội dung đã chỉnh sửa
   const quillRef = useRef<ReactQuill>(null); // Tham chiếu đến Quill editor
-
   useEffect(() => {
     if (quillRef.current && valuePrefix) {
+      console.log(valuePrefix);
       const quill = quillRef.current.getEditor();
+
       // Xóa nội dung hiện tại và chèn prefix không thể chỉnh sửa
       quill.setContents(
-        new Delta([{ insert: { prefix: valuePrefix } }, { insert: "\n" }])
+        new Delta([{ insert: { prefix: valuePrefix } }, { insert: value }])
       );
 
       // Ngăn chặn việc xóa prefix
@@ -53,10 +65,12 @@ InputQuillDefaultProps) {
 
         const prefixLength = valuePrefix.length;
 
-        // Kiểm tra nếu con trỏ nằm ở phía trước prefix hoặc đang cố gắng xóa prefix
+        // Kiểm tra nếu con trỏ nằm ở phía trước prefix
         if (selection.index < prefixLength) {
-          // Đặt lại con trỏ ở phía sau prefix
-          quill.setSelection(prefixLength, 0, "silent");
+          // Chỉ đặt lại con trỏ nếu nó đang nằm trong vùng prefix
+          if (selection.index !== prefixLength) {
+            quill.setSelection(prefixLength, 0, "silent");
+          }
         }
 
         // Kiểm tra nếu người dùng cố gắng xóa prefix
@@ -64,6 +78,7 @@ InputQuillDefaultProps) {
           quill.setContents(
             new Delta([
               { insert: { prefix: valuePrefix } },
+              { insert: value },
               ...currentContents.ops.slice(1),
             ])
           );
@@ -90,10 +105,9 @@ InputQuillDefaultProps) {
       const textWithoutPrefix = editor
         .getText()
         .replace(valuePrefix as string, "")
-        .trim(); // Loại bỏ valuePrefix
-      // Loại bỏ ký tự xuống dòng (nếu có)
-      const cleanedContent = textWithoutPrefix.replace(/\n/g, "");
-      const newContent = `<p><strong>${valuePrefix}</strong><span> ${cleanedContent}</span></p>`; // Tạo cấu trúc mới
+        .trim();
+      // const cleanedContent = textWithoutPrefix.replace(/\n/g, "");
+      const newContent = `<p><strong>${valuePrefix}</strong><span> ${textWithoutPrefix}</span></p>`; // Tạo cấu trúc mới
 
       // kiểm tra nếu có nội dung mới thì thêm class change-value vào thẻ strong
       if (textWithoutPrefix) {
@@ -102,26 +116,34 @@ InputQuillDefaultProps) {
           ?.classList.add("change-value");
       }
 
-      // Tránh việc cập nhật quá mức nếu không cần thiết
       if (valueHtml !== newContent) {
-        setValueHtml(newContent); // Chỉ cập nhật khi nội dung thay đổi
+        setValueHtml(newContent);
       }
+    } else {
+      const textWithoutPrefix = editor.getText().trim();
+      setValueHtml(`<p><span>${textWithoutPrefix}</span></p>`);
+    }
+    const newText = editor
+      .getText()
+      .replace(valuePrefix ? valuePrefix : ("" as string), "")
+      .trim();
+    console.log(newText);
+    if (value !== newText) {
+      onChange && onChange(newText);
+      handleChangeMutiple && id && handleChangeMutiple(newText, id.toString());
     }
   };
-
-  // useEffect(() => {
-  //   if (disabled) {
-  //     quillRef.current.
-  //   }
-  // },[])
 
   return (
     <div className="customEditor">
       <ReactQuill
-        readOnly={disabled}
+        className={className}
+        id={id ? id : ""}
         value={valueHtml}
+        readOnly={disabled}
         ref={quillRef}
         theme="snow"
+        onKeyDown={onKeyDown}
         onChange={handleChange} // Theo dõi sự thay đổi nội dung
         modules={{
           toolbar: false, // Ẩn toolbar để không sử dụng toolbar
