@@ -12,8 +12,11 @@ export default {
       stateId: 0,
       countryId: 1,
       searchOptionId: 0,
+      searchValueLocation: '',
+      listAutoComplete: [],
+      listLocation: [],
       listJob: [],
-      jobDetail: {}
+      jobDetail: {},
     },
     application: {
       statusId: -1,
