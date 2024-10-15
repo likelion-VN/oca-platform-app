@@ -25,39 +25,36 @@ const LoginPage = () => {
     const left = window.screen.width / 2 - width / 2;
     const top = window.screen.height / 2 - height / 2;
 
-    const loginWindow = window.open(
+    window.open(
       googleAuthUrl,
       "Login by Google",
       `width=${width},height=${height},top=${top},left=${left}`
     );
-
-    const checkToken = setInterval(() => {
-      if (loginWindow) {
-
-        try {
-          if (loginWindow.closed) {
-            clearInterval(checkToken);
-            // Lấy token từ localStorage
-            const token = '';
-            if (token) {
-              // console.log("Token từ localStorage:", token);
-              navigate("/create-user");
-            } else {
-              // console.log("Không tìm thấy token.");
-            }
-          }
-        } catch (error) {
-          // console.error("Lỗi khi kiểm tra cửa sổ popup:", error);
-        }
-      } else {
-        clearInterval(checkToken);
-      }
-    }, 500);
   };
 
-  useEffect(() => {
+    useEffect(() => {
+      const handleReceiveData = (event: MessageEvent) => {
+        if (event.origin === window.location.origin) {
+          const { token, cookies } = event.data;
+
+          if (token) {
+            document.cookie = `i_user_token=${token}; path=/; secure; HttpOnly`;
+            console.log("Token đã được lưu vào cookie:", token);
+          }
+
+          console.log("Tất cả cookie:", cookies);
+
+          navigate("/create-user");
+        }
+      };
+
+      window.addEventListener("message", handleReceiveData);
+
+      return () => {
+        window.removeEventListener("message", handleReceiveData);
+      };
+    }, [navigate]);
     loadingPageAction();
-  }, []);
 
   return (
     <div className="background-login">

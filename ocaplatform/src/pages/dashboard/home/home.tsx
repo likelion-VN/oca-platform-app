@@ -810,18 +810,18 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                   <ButtonComponent
                     className="application-btn"
                     title={
-                      jobDetail.application.applicationId
+                      jobDetail.application?.applicationId
                         ? "View your application"
                         : "Apply now"
                     }
                     onClick={
-                      jobDetail.application.applicationId
+                      jobDetail.application?.applicationId
                         ? handleClickReview
                         : handleApply
                     }
                   />
-                  {(jobDetail.application.statusId === 1 ||
-                    jobDetail.application.statusId === 2) && (
+                  {(jobDetail.application?.statusId === 1 ||
+                    jobDetail.application?.statusId === 2) && (
                     <Tooltip
                       className="tooltip"
                       title="Cancel your application"
@@ -855,7 +855,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                     <Badge title={keyword.name} />
                   ))}
                 </div>
-                {jobDetail.application.applicationId && (
+                {jobDetail.application?.applicationId && (
                   <div className="job-detail-update">
                     <div className="job-detail-title">The latest updated</div>
                     <div className="job-detail-content">
