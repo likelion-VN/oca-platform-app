@@ -33,13 +33,13 @@ const auth = {
     localStorage.phone1 = me?.contact?.phone1;
     localStorage.country = me?.contact?.country;
     localStorage.roles = JSON.stringify(me?.roles);
-    localStorage.freshChatRestoreId = me?.freshChatRestoreId;
-    localStorage.willViewTutorialLater = me?.willViewTutorialLater;
-    localStorage.willShowWhatNewPopup = me?.willViewTutorialLater;
-    localStorage.canUseAiViewer = me?.canUseAiViewer;
-    localStorage.isTestAccount = me?.isTestAccount;
-    localStorage.isEmailVerified = me?.isEmailVerified;
   },
+
+  setEmail: (email: string) => {
+    localStorage.email = email;
+  },
+
+  email: () => localStorage.email,
 
   setAccessToken: (accessToken: string) => {
     localStorage.accessToken = accessToken;
@@ -56,7 +56,7 @@ const auth = {
     localStorage?.userId,
 
   setRoles: (roles: string) => {
-    localStorage.roles = JSON.stringify(roles);
+    localStorage.roles = roles;
   },
 
   roles: () => (localStorage.roles ? JSON.parse(localStorage.roles) : []),

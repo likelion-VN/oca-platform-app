@@ -4,6 +4,7 @@ import { GoogleIcon, LinkedinIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
+import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
 import "./signIn.s.scss";
 
@@ -36,15 +37,21 @@ const LoginPage = () => {
     const handleReceiveData = (event: MessageEvent) => {
       if (event.origin === window.location.origin) {
         const { cookies } = event.data;
-
-          // document.cookie = `i_user_token=${token}; path=/; secure; HttpOnly`;
-          // console.log("Token đã được lưu vào cookie:", token);
-          // navigate("/create-user");
-
+        if (cookies.j_user_token) {
+          auth.setAccessToken(cookies.j_user_token);
+          auth.setEmail(cookies.j_user_email);
+          // document.cookie = `i_user_token=${cookies.j_user_token}; path=/; secure; HttpOnly`;
+          
+          if (cookies.j_user_account_type !== "0") {
+            auth.setRoles(cookies.j_user_account_type)
+            navigate("/");
+          } else {
+            navigate("/create-user");
+          }
+        }
         console.log("Tất cả cookie:", cookies);
       }
     };
-
     loadingPageAction();
     window.addEventListener("message", handleReceiveData);
 
