@@ -8,7 +8,7 @@ const AuthCallback: React.FC = () => {
     const allCookies: { [key: string]: string } = {};
 
     const cookies = document.cookie.split("; ");
-    console.log('test', cookies)
+    console.log('test', document)
     cookies.forEach((cookie) => {
       const [name, value] = cookie.split("=");
       allCookies[name] = decodeURIComponent(value);
