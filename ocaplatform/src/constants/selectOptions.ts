@@ -1,13 +1,13 @@
 const JobTypeOptions = [
-  { value: 0, label: "O-CA Program" },
+  // { value: 0, label: "O-CA Program" },
   { value: 1, label: "Internship" },
   { value: 2, label: "Full-time", isDisabled: true },
   { value: 3, label: "Part-time", isDisabled: true },
 ];
 
 const ApplicationTermsOptions = [
-  { value: "nonnegotiable", label: "Non-negotiable" },
-  { value: "negotiable", label: "Negotiable" },
+  { value: false, label: "Non-negotiable" },
+  { value: true, label: "Negotiable" },
 ];
 
 const WorkTypeOptions = [

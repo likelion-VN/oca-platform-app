@@ -57,14 +57,13 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   const loadingPageAction = useActions(loadingPage);
 
   const navigate = useNavigate();
-  const isFirstRender = useRef<boolean>(true);
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
   const pageCurrent = useRef(1);
   const totalElements = useRef(10);
   const filter = useRef<any>({
-    statusId: applicationGotoRedux.selectedTab,
+    statusId: applicationGotoRedux.statusId,
   });
 
   const [state, setState] = useMergeState({
@@ -80,7 +79,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
     isLoadingList: false,
     isLoadingDetail: false,
     visible: false,
-    selectTab: -1,
+    selectTab: applicationGotoRedux.statusId,
     isOpenCancelModal: false,
   });
 
@@ -95,7 +94,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
           filter.current
         );
         const newState = {};
-        const updateApplicationGoto = {...filter.current};
+        const updateApplicationGoto = { ...filter.current };
         if (data && !_.isEmpty(data.content)) {
           if (isLoadMore) {
             _.assign(newState, { listJob: data.content });
@@ -119,11 +118,14 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
           }
         } else {
           _.assign(newState, {
-            jobCount: 0,
             listJob: [],
             jobDetail: {},
             isLoadingList: false,
             isLoadingDetail: false,
+          });
+          _.assign(updateApplicationGoto, {
+            listJob: [],
+            jobDetail: {},
           });
           totalElements.current = 0;
         }
@@ -178,7 +180,16 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   };
 
   const handleSelectTab = (selectTab: number) => {
-    setState({ selectTab });
+    const isModified = !_.isEqual(state.selectTab, selectTab);
+    if (isModified) {
+      setState({ selectTab });
+      const newFilter = { statusId: selectTab };
+      filter.current = newFilter;
+      pageCurrent.current = 1;
+      totalElements.current = 10;
+      setState({ isLoadingList: true, isLoadingDetail: true });
+      getListApplicationJob();
+    }
   };
 
   const handleOpenCancelModal = (isOpenCancelModal: boolean) => {
@@ -210,14 +221,16 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
 
   useEffect(() => {
     if (isActive) {
-      if (_.isEmpty(applicationGotoRedux.listJob)) {
+      if (applicationGotoRedux.statusId === -1 && _.isEmpty(applicationGotoRedux.listJob)) {
         setState({ isLoadingList: true, isLoadingDetail: true });
         getListApplicationJob();
       } else {
         setState({
           listJob: applicationGotoRedux.listJob,
           jobDetail: applicationGotoRedux.jobDetail,
-        })
+          selectTab: applicationGotoRedux.statusId,
+        });
+        totalElements.current = applicationGotoRedux.listJob.length;
       }
     }
   }, [isActive]);
@@ -251,20 +264,6 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
       }
     };
   }, []);
-
-  useEffect(() => {
-    if (!isFirstRender.current) {
-      const { selectTab } = state;
-      const newFilter = { statusId: selectTab };
-      filter.current = newFilter;
-      pageCurrent.current = 1;
-      totalElements.current = 10;
-      setState({ isLoadingList: true, isLoadingDetail: true });
-      getListApplicationJob();
-    } else {
-      isFirstRender.current = false;
-    }
-  }, [state.selectTab]);
 
   const { jobDetail } = state || {};
 

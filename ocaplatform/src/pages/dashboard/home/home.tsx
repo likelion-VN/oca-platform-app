@@ -96,21 +96,18 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   });
 
   const [state, setState] = useMergeState({
-    searchJob: "",
+    searchJob: homeGotoRedux.jobTitle,
     listAutoComplete: [],
     searchLocation: [],
     listLocation: [],
-    jobType: [],
-    valueJobType: null,
-    application: null,
-    valueApplication: null,
-    workType: [],
-    valueWorkType: null,
-    listJob: [],
-    listState: [],
+    jobType: homeGotoRedux.jobTypeId,
+    application: homeGotoRedux.negotiable,
+    valueLocation: homeGotoRedux.searchValueLocation,
+    workType: homeGotoRedux.workplaceTypeIds,
+    listJob: homeGotoRedux.listJob,
     markSave: false,
     indexActive: 0,
-    jobDetail: undefined,
+    jobDetail: homeGotoRedux.jobDetail,
     showBottomButton: false,
     hasShadowTop: false,
     hasShadowBottom: true,
@@ -217,6 +214,9 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           ),
         }));
         setState({ listAutoComplete });
+        dispatch(
+          updateGotoData("home", { listAutoComplete: listAutoComplete })
+        );
       }
     } catch (error) {
       console.error("Error:", error);
@@ -237,9 +237,10 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           ),
         }));
         setState({ listLocation });
+        dispatch(updateGotoData("home", { listLocation: listLocation }));
       }
     } catch (error) {
-      console.error("error");
+      console.error("Error:", error);
     }
   };
 
@@ -250,7 +251,10 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
       if (newPage * 10 <= totalElements.current) {
         const data = await fetchListJob(0, 10 * newPage, filter.current);
         const newState = {};
-        const updateHomeGoto = { ...filter.current };
+        const updateHomeGoto = {
+          ...filter.current,
+          searchValueLocation: state.valueLocation,
+        };
         if (data && !_.isEmpty(data.content)) {
           if (isLoadMore) {
             _.assign(newState, { listJob: data.content });
@@ -261,8 +265,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               listJob: data.content,
               jobDetail: dataDetail,
               markSave: dataDetail?.marked,
-              isLoadingList: false,
-              isLoadingDetail: false,
+
               indexActive: 0,
             });
             _.assign(updateHomeGoto, {
@@ -275,14 +278,16 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           _.assign(newState, {
             listJob: [],
             jobDetail: {},
-            isLoadingList: false,
-            isLoadingDetail: false,
           });
           _.assign(updateHomeGoto, {
             listJob: [],
             jobDetail: [],
           });
         }
+        _.assign(newState, {
+          isLoadingList: false,
+          isLoadingDetail: false,
+        });
         dispatch(updateGotoData("home", updateHomeGoto));
         pageCurrent.current = newPage;
         setState(newState);
@@ -304,7 +309,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     const { jobType, application, workType } = state;
     const clonedFilter = _.cloneDeep(filter.current);
     const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
-    const negotiable = !!application ? application === "negotiable" : null;
+    const negotiable = !_.isNil(application) ? application : null;
     const workplaceTypeIds = !_.isEmpty(workType) ? workType : [];
     const newFilter = {
       ...clonedFilter,
@@ -420,23 +425,15 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const handleChangeJobType = (values: string[]) => {
     const isModified = !_.isEqual(_.sortBy(state.jobType), _.sortBy(values));
     if (isModified) {
-      setState({
-        jobType: values,
-        valueJobType: renderValue(values, JobTypeOptions),
-      });
+      setState({ jobType: values });
       handleUpdateFilter();
     }
   };
 
-  const handleChangeApplication = (value: string | null) => {
+  const handleChangeApplication = (value: boolean | null) => {
     const isModified = state.application !== value;
     if (isModified) {
-      setState({
-        application: value,
-        valueApplication:
-          ApplicationTermsOptions.find((option) => option.value === value)
-            ?.label || "Application Terms",
-      });
+      setState({ application: value });
       handleUpdateFilter();
     }
   };
@@ -444,10 +441,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const handleChangeWorkType = (values: string[]) => {
     const isModified = !_.isEqual(_.sortBy(state.workType), _.sortBy(values));
     if (isModified) {
-      setState({
-        workType: values,
-        valueWorkType: renderValue(values, WorkTypeOptions),
-      });
+      setState({ workType: values });
       handleUpdateFilter();
     }
   };
@@ -487,8 +481,8 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     setState({ searchJob: value });
   };
 
-  const onChangeLocation = (_value: string, option: any) => {
-    setState({ searchLocation: option.id });
+  const onChangeLocation = (value: string, option: any) => {
+    setState({ searchLocation: option.id, valueLocation: value });
   };
 
   const onSearch = () => {
@@ -503,6 +497,9 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
       stateId,
     };
     filter.current = newFilter;
+    pageCurrent.current = 1;
+    totalElements.current = 10;
+    setState({ isLoadingList: true, isLoadingDetail: true });
     getListJob();
   };
 
@@ -568,21 +565,11 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   useEffect(() => {
     if (isActive) {
       if (_.isEmpty(homeGotoRedux.listJob)) {
-        setState({
-          isLoadingList: true,
-          isLoadingDetail: true,
-        });
+        setState({ isLoadingList: true, isLoadingDetail: true });
         getListJob();
       } else {
-        setState({
-          listJob: homeGotoRedux.listJob,
-          jobDetail: homeGotoRedux.jobDetail,
-        });
         totalElements.current = homeGotoRedux.listJob.length;
       }
-      handleChangeJobType(homeGotoRedux.jobTypeId);
-      handleChangeApplication(homeGotoRedux.negotiable);
-      handleChangeWorkType(homeGotoRedux.workplaceTypeIds);
       loadingPageAction();
     }
   }, [isActive]);
@@ -616,29 +603,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
       }
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (!isFirstRender.current) {
-  //     const { jobType, application, workType } = state;
-  //     const clonedFilter = _.cloneDeep(filter.current);
-  //     const jobTypeId = !_.isEmpty(jobType) ? 1 : 0;
-  //     const negotiable = !!application ? application === "negotiable" : null;
-  //     const workplaceTypeIds = !_.isEmpty(workType) ? workType : [];
-  //     const newFilter = {
-  //       ...clonedFilter,
-  //       jobTypeId,
-  //       negotiable,
-  //       workplaceTypeIds,
-  //     };
-  //     filter.current = newFilter;
-  //     pageCurrent.current = 1;
-  //     totalElements.current = 10;
-  //     setState({ isLoadingList: true, isLoadingDetail: true });
-  //     getListJob();
-  //   } else {
-  //     isFirstRender.current = false;
-  //   }
-  // }, [state.jobType, state.application, state.workType]);
 
   const { jobDetail } = state || {};
 
@@ -698,6 +662,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             onSearch={(text) => getListAutoComplete(text)}
             onChange={onChangeJob}
             options={state.listAutoComplete}
+            value={state.searchJob}
           >
             <Input
               allowClear
@@ -714,6 +679,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             onSearch={(text) => getListLocation(text)}
             onChange={onChangeLocation}
             options={state.listLocation}
+            value={state.valueLocation}
           >
             <Input
               allowClear
@@ -739,24 +705,31 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             <Space wrap>
               <SelectCustom
                 multipleValue={state.jobType}
-                valueRender={state.valueJobType}
-                placeholder="Job Type"
+                valueRender={
+                  renderValue(state.jobType, JobTypeOptions) || "Job Type"
+                }
                 options={JobTypeOptions}
                 onChange={handleChangeJobType}
                 type="checkbox"
+                disabled
               />
               <SelectCustom
                 value={state.application}
-                valueRender={state.valueApplication}
-                placeholder="Application Terms"
+                valueRender={
+                  _.find(
+                    ApplicationTermsOptions,
+                    (option) => option.value === state.application
+                  )?.label || "Application Terms"
+                }
                 options={ApplicationTermsOptions}
                 onChangeRadio={handleChangeApplication}
                 type="radio"
               />
               <SelectCustom
                 multipleValue={state.workType}
-                valueRender={state.valueWorkType}
-                placeholder="Work Type"
+                valueRender={
+                  renderValue(state.workType, WorkTypeOptions) || "Work Type"
+                }
                 options={WorkTypeOptions}
                 onChange={handleChangeWorkType}
                 type="checkbox"
