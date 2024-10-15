@@ -1,13 +1,17 @@
 import classNames from "classnames";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Company, Congratulation, Individual, Logo } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import ModalComponent from "../../components/modal/modal";
+import loadingPage from "../../store/actions/loading";
+import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { maskEmail } from "../../utils/formatter";
 import "./createUser.s.scss";
 
 const CreateUser = () => {
+  const loadingPageAction = useActions(loadingPage);
   const navigae = useNavigate();
   const [state, setState] = useMergeState({
     activeType: null,
@@ -30,7 +34,11 @@ const CreateUser = () => {
 
   const onClickExists = () => {
     navigae("/sign-in");
-  }
+  };
+
+  useEffect(() => {
+    loadingPageAction();
+  }, []);
 
   return (
     <div className="background-create">
@@ -73,7 +81,8 @@ const CreateUser = () => {
       >
         <div className="modal-exists-title">Company account already exists</div>
         <div className="modal-exists-content">
-          The company account has already been assigned as {maskEmail("developer@likelion.net")}.<br />
+          The company account has already been assigned as{" "}
+          {maskEmail("developer@likelion.net")}.<br />
           Please check with your HR team and use this account.
         </div>
       </ModalComponent>

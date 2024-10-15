@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleIcon, LinkedinIcon, Logo } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
+import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
 import useActions from "../../utils/customHook/useActions";
 import "./signIn.s.scss";
@@ -10,12 +11,50 @@ const LoginPage = () => {
   const loadingPageAction = useActions(loadingPage);
   const navigate = useNavigate();
 
+  const linkedinAuthUrl = `${apiServiceUrl}oauth2/authorization/linkedin`;
+  const googleAuthUrl = `${apiServiceUrl}oauth2/authorization/google`;
+
   const loginByLinkedin = () => {
-    navigate("/create-user");
+    window.location.href = linkedinAuthUrl;
+    // navigate("/create-user");
   };
+
   const loginByGoogle = () => {
-    navigate("/create-user");
+    const width = 500;
+    const height = 600;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+
+    const loginWindow = window.open(
+      googleAuthUrl,
+      "Login by Google",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
+
+    const checkToken = setInterval(() => {
+      if (loginWindow) {
+
+        try {
+          if (loginWindow.closed) {
+            clearInterval(checkToken);
+            // Lấy token từ localStorage
+            const token = '';
+            if (token) {
+              // console.log("Token từ localStorage:", token);
+              navigate("/create-user");
+            } else {
+              // console.log("Không tìm thấy token.");
+            }
+          }
+        } catch (error) {
+          // console.error("Lỗi khi kiểm tra cửa sổ popup:", error);
+        }
+      } else {
+        clearInterval(checkToken);
+      }
+    }, 500);
   };
+
   useEffect(() => {
     loadingPageAction();
   }, []);
