@@ -3,6 +3,7 @@
 import { MenuProps, Result } from "antd";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
+import auth from "../../utils/auth";
 import { useSetState } from "../../utils/customHook/useSetState";
 import ApplicationPage from "./application/application";
 import "./dashboard.s.scss";
@@ -26,10 +27,10 @@ export default function Dashboard() {
   const renderPage = (key: string) => {
     switch (key) {
       case "2": {
-        return <ApplicationPage isActive={state.selectedKey === "2"}/>;
+        return <ApplicationPage isActive={state.selectedKey === "2"} />;
       }
       case "3": {
-        return <Profile isActive={state.selectedKey === "3"}/>
+        return <Profile isActive={state.selectedKey === "3"} />;
       }
       case "4": {
         return (
@@ -47,12 +48,14 @@ export default function Dashboard() {
       <div className="dashboard-content">
         <Header toggleCollapsed={toggleCollapsed} />
         <div className="content">
-          <SideBar
-            collapsed={state.collapsed}
-            className="nav-bar"
-            selectedKey={state.selectedKey}
-            onSelect={handleSelect}
-          />
+          {auth.isLogin() && (
+            <SideBar
+              collapsed={state.collapsed}
+              className="nav-bar"
+              selectedKey={state.selectedKey}
+              onSelect={handleSelect}
+            />
+          )}
           <div className="content-detail">{renderPage(state.selectedKey)}</div>
         </div>
       </div>

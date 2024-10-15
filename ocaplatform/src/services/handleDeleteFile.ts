@@ -1,9 +1,8 @@
-import axios from "axios";
-import { apiServiceUrl } from "../constants";
+import axios from "./axiosConfig";
 
 export const handleDeleteFile = async (id: number) => {
   try {
-    const response = await axios.delete(`${apiServiceUrl}attachments/${id}`);
+    const response = await axios.delete(`attachments/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error:", error);

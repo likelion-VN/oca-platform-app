@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { apiServiceUrl } from "../constants";
+import { AxiosResponse } from "axios";
 import { JobApplicationBody } from "../interfaces/application";
+import axios from "./axiosConfig";
 
 export const fetchListApplicationJob = async (
   page: number,
@@ -9,7 +9,7 @@ export const fetchListApplicationJob = async (
 ): Promise<JobApplicationBody | void> => {
   try {
     const response: AxiosResponse<JobApplicationBody> = await axios.post(
-      `${apiServiceUrl}applications?page=${page}&size=${pageSize}`,
+      `applications?page=${page}&size=${pageSize}`,
       requestBody,
       {
         headers: {

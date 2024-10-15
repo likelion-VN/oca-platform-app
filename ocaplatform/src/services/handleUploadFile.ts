@@ -1,11 +1,10 @@
-import axios from "axios";
-import { apiServiceUrl } from "../constants";
+import axios from "./axiosConfig";
 
 export const handleUploadFile = async (file: any) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await axios.put(`${apiServiceUrl}attachments`, formData, {
+    const response = await axios.put(`attachments`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

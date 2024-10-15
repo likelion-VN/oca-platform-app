@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import _ from "lodash";
 import { apiServiceUrl } from "../constants";
 import { Option } from "../interfaces";
 import { AutoCompletedBody } from "../interfaces/home";
+import axios from "./axiosConfig";
 
 export const fetchSearchComplete = async (
   searchStr: string,

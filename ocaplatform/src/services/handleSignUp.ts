@@ -1,0 +1,22 @@
+import auth from "../utils/auth";
+import axios from "./axiosConfig";
+
+export const handleSignUp = async (accountTypeId: number) => {
+  try {
+    const response = await axios.post(
+      `users/sign-up`,
+      {
+        email: auth.email(),
+        accountTypeId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};

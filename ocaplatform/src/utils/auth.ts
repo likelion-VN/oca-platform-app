@@ -17,24 +17,6 @@ const auth = {
     _.assign(localStorage, { ...shareData });
   },
 
-  setAuthorizedToken: (authorizedToken: string) => {
-    localStorage.authorizedToken = authorizedToken;
-  },
-
-  authorizedToken: () => localStorage.authorizedToken,
-
-  setUserData: (me: any) => {
-    localStorage.isSuccess = !_.isEmpty(me);
-    localStorage.userId = me?.id;
-    localStorage.username = me?.username;
-    localStorage.firstName = me?.firstName;
-    localStorage.lastName = me?.lastName;
-    localStorage.email = me?.email;
-    localStorage.phone1 = me?.contact?.phone1;
-    localStorage.country = me?.contact?.country;
-    localStorage.roles = JSON.stringify(me?.roles);
-  },
-
   setEmail: (email: string) => {
     localStorage.email = email;
   },
@@ -47,35 +29,23 @@ const auth = {
 
   accessToken: () => localStorage.accessToken,
 
-  setUserId: (userId: string) => {
-    localStorage.userId = userId;
-  },
-
-  userId: () =>
-    // store.getState().me?.id ||
-    localStorage?.userId,
-
-  setRoles: (roles: string) => {
+  setRoles: (roles: number) => {
     localStorage.roles = roles;
   },
 
-  roles: () => (localStorage.roles ? JSON.parse(localStorage.roles) : []),
+  roles: () => localStorage.roles,
 
-  isLoginByGoogle: () =>
-    localStorage.isLoginByGoogle === "true",
+  isLogin: () => {
+    localStorage.isLogin = !!localStorage.email;
+    return localStorage.isLogin === "true"
+  },
 
-  isLoginByLinkedin: () =>
-    localStorage.isLoginByLinkedin === "true",
+  isLoginByGoogle: () => localStorage.isLoginByGoogle === "true",
+
+  isLoginByLinkedin: () => localStorage.isLoginByLinkedin === "true",
 
   logout: () => {
     localStorage.clear();
-  },
-
-  logoutExceptUsername: () => {
-    const { firstName, lastName } = localStorage;
-    localStorage.clear();
-    localStorage.firstName = firstName;
-    localStorage.lastName = lastName;
   },
 };
 
