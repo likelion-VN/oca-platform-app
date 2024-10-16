@@ -3,7 +3,6 @@
 import { MenuProps, Result } from "antd";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
-import auth from "../../utils/auth";
 import { useSetState } from "../../utils/customHook/useSetState";
 import ApplicationPage from "./application/application";
 import "./dashboard.s.scss";
@@ -48,14 +47,12 @@ export default function Dashboard() {
       <div className="dashboard-content">
         <Header toggleCollapsed={toggleCollapsed} />
         <div className="content">
-          {auth.isLogin() && (
-            <SideBar
-              collapsed={state.collapsed}
-              className="nav-bar"
-              selectedKey={state.selectedKey}
-              onSelect={handleSelect}
-            />
-          )}
+          <SideBar
+            collapsed={state.collapsed}
+            className="nav-bar"
+            selectedKey={state.selectedKey}
+            onSelect={handleSelect}
+          />
           <div className="content-detail">{renderPage(state.selectedKey)}</div>
         </div>
       </div>

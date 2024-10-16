@@ -35,9 +35,12 @@ const auth = {
 
   roles: () => localStorage.roles,
 
+  setIsLogin: (isLogin: boolean) => {
+    localStorage.isLogin = isLogin;
+  },
+
   isLogin: () => {
-    localStorage.isLogin = !!localStorage.email;
-    return localStorage.isLogin === "true"
+    return !!localStorage.email;
   },
 
   isLoginByGoogle: () => localStorage.isLoginByGoogle === "true",
