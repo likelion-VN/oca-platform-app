@@ -49,7 +49,6 @@ function InputQuillCustom({
   const quillRef = useRef<ReactQuill>(null); // Tham chiếu đến Quill editor
   useEffect(() => {
     if (quillRef.current && valuePrefix) {
-      console.log(valuePrefix);
       const quill = quillRef.current.getEditor();
 
       // Xóa nội dung hiện tại và chèn prefix không thể chỉnh sửa
@@ -127,7 +126,6 @@ function InputQuillCustom({
       .getText()
       .replace(valuePrefix ? valuePrefix : ("" as string), "")
       .trim();
-    console.log(newText);
     if (value !== newText) {
       onChange && onChange(newText);
       handleChangeMutiple && id && handleChangeMutiple(newText, id.toString());

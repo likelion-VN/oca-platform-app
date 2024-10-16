@@ -274,7 +274,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   };
 
   const handleApply = () => {
-    console.log(state);
     validates();
     if (_.isEmpty(state.errors)) {
       handleClick({ step2: state }, true);

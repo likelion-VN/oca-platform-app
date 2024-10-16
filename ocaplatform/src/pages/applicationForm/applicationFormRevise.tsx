@@ -111,7 +111,6 @@ const ApplicationFormRevise = () => {
   };
 
   const handleApply = async (input: any) => {
-    console.log(input);
     try {
       loadingPageAction(LOADING_TYPES.APPLYING);
       const isSuccess = await handleResubmitLApplicationForm(

@@ -136,7 +136,6 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
         message.warning("Work is over!");
       }
     } catch (error) {
-      console.log("error", { error });
       setState({
         jobCount: 0,
         listJob: [],
@@ -176,7 +175,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   };
 
   const handleViewCompany = () => {
-    console.log("You are click View Company");
+    // console.log("You are click View Company");
   };
 
   const handleSelectTab = (selectTab: number) => {
@@ -221,7 +220,10 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
 
   useEffect(() => {
     if (isActive) {
-      if (applicationGotoRedux.statusId === -1 && _.isEmpty(applicationGotoRedux.listJob)) {
+      if (
+        applicationGotoRedux.statusId === -1 &&
+        _.isEmpty(applicationGotoRedux.listJob)
+      ) {
         setState({ isLoadingList: true, isLoadingDetail: true });
         getListApplicationJob();
       } else {

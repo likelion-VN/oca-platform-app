@@ -166,7 +166,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                 <div>
                   <Checkbox
                     onChange={(e) => {
-                      console.log(e.target.value);
+                      // console.log(e.target.value);
                     }}
                     key={index}
                     value={item.value}
@@ -298,7 +298,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         message.warning("Work is over!");
       }
     } catch (error) {
-      console.log("error", { error });
       setState({
         listJob: [],
         jobDetail: {},
@@ -525,7 +524,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   };
 
   const handleViewCompany = () => {
-    console.log("You are clicking View Company");
+    // console.log("You are clicking View Company");
   };
 
   const handleOpenCancelModal = (isOpenCancelModal: boolean) => {

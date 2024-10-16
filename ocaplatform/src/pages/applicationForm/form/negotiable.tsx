@@ -44,8 +44,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 
   const handleChangeMutiple = (value: string, id: string) => {
     const { currentTasks } = state;
-    console.log(value);
-    console.log(currentTasks);
+
     if (currentTasks.length > 0) {
       const updateTask = _.map(currentTasks, (task) => {
         return task.id.toString() == id
@@ -72,7 +71,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   // xử lí thêm task - làm thêm hàm focus cho nhảy xuống input tiếp theo khi thêm
   const handleAddTaskBelow = useCallback(
     (id: number) => {
-      console.log(state.currentTasks);
       const newId = uuidv4();
       const newTask = {
         id: newId,
@@ -132,8 +130,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   useEffect(() => {
     setState(defaultData);
   }, [defaultData]);
-
-  console.log(state.currentTasks);
 
   return (
     <>
