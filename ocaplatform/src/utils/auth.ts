@@ -17,30 +17,25 @@ const auth = {
     _.assign(localStorage, { ...shareData });
   },
 
-  setEmail: (email: string) => {
-    localStorage.email = email;
-  },
-
-  email: () => localStorage.email,
-
-  setAccessToken: (accessToken: string) => {
-    localStorage.accessToken = accessToken;
-  },
-
-  accessToken: () => localStorage.accessToken,
-
   setRoles: (roles: number) => {
     localStorage.roles = roles;
   },
 
   roles: () => localStorage.roles,
 
-  setIsLogin: (isLogin: boolean) => {
-    localStorage.isLogin = isLogin;
+  setIsLoginLocal: (isLoginLocal: boolean) => {
+    localStorage.isLoginLocal = isLoginLocal;
+  },
+
+  isLoginLocal: () => {
+    return (
+      localStorage.isLoginLocal === true || localStorage.isLoginLocal === "true"
+    );
   },
 
   isLogin: () => {
-    return !!localStorage.email;
+    localStorage.isLogin = !!localStorage.email;
+    return localStorage.isLogin === "true";
   },
 
   isLoginByGoogle: () => localStorage.isLoginByGoogle === "true",

@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { jwtDecode } from "jwt-decode";
 import { Option } from "../interfaces";
 
 const getLabelByValue = (
@@ -19,12 +20,24 @@ const calculateDaysDiff = (date: string, isFullDay = false) => {
     return "Today";
   } else {
     if (isFullDay) {
-      return `${diffInDays} ${diffInDays > 1 ? 'days' : 'day'} ago`;
+      return `${diffInDays} ${diffInDays > 1 ? "days" : "day"} ago`;
     } else {
       return `${diffInDays}d`;
     }
   }
 };
 
-export { calculateDaysDiff, getLabelByValue };
+const isTokenExpired = (token: string) => {
+  if (!token) return true;
 
+  try {
+    const decoded = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    return decoded.exp ? decoded.exp < currentTime : true;
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return true;
+  }
+};
+
+export { calculateDaysDiff, getLabelByValue, isTokenExpired };

@@ -1,11 +1,8 @@
-import _ from "lodash";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleIcon, LinkedinIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
-import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
-import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
 import "./signIn.s.scss";
 
@@ -13,33 +10,47 @@ const LoginPage = () => {
   const loadingPageAction = useActions(loadingPage);
   const navigate = useNavigate();
 
-  const linkedinAuthUrl = `${apiServiceUrl}oauth2/authorization/linkedin`;
-  const googleAuthUrl = `${apiServiceUrl}oauth2/authorization/google`;
+  // const linkedinAuthUrl = `${apiServiceUrl}oauth2/authorization/linkedin`;
+  // const googleAuthUrl = `${apiServiceUrl}oauth2/authorization/google`;
 
   const loginByLinkedin = () => {
-    window.location.href = linkedinAuthUrl;
+    // window.location.href = linkedinAuthUrl;
     // navigate("/create-user");
   };
 
   const loginByGoogle = () => {
-    // *: For production
-    const width = 500;
-    const height = 600;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-    window.open(
-      googleAuthUrl,
-      "Login by Google",
-      `width=${width},height=${height},top=${top},left=${left}`
-    );
+    // *: For productions
+    const clientId = '422066525891-em62unn8kjsk5ui0c5g8u0sq5llp31cs.apps.googleusercontent.com';
+    // const redirectUri = 'https://localhost:3000/login/auth2/code/google';
+    const redirectUri = 'https://www.lion-up.net/login/auth2/code/google';
+    const scope = 'profile email';
+    const responseType = 'token';
+
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+
+    // Open Google login in a new tab
+    window.location.href = googleAuthUrl;
+    // const popup = window.open(
+    //   googleAuthUrl,
+    //   "Login by Google",
+    //   `width=${width},height=${height},top=${top},left=${left}`
+    // );
+
+    // const checkPopup = setInterval(() => {
+    //   if (popup && popup.closed) {
+    //     clearInterval(checkPopup);
+    //   }
+    // }, 1000);
+
     // *: For developer (Please first check and don't push this code to production)
+
     // const accessToken =
-    // "eyJhbGciOiJSUzI1NiIsImtpZCI6ImE1MGY2ZTcwZWY0YjU0OGE1ZmQ5MTQyZWVjZDFmYjhmNTRkY2U5ZWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTUxNzUyODgzNTMwMjA3NTQ2MjMiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoidGh0aWVuMDExMEBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6InhpbmZwdDZwbF9qX0hCUmRGaWlvNnciLCJub25jZSI6Ik9zcGpfMkthWEt3TmxrMGtYanZUdURkQ0IwNWZSZkpqSnlVSW0xWXc2RkEiLCJuYW1lIjoidGh0aWVuMDExMCB0aHRpZW4wMTEwIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xsX2I2aHRsbVBKSnl2SEZUQU1xQVRSZDRNdnJXcGVjTGNBTWlEa3c4TnFhdlFfQT1zOTYtYyIsImdpdmVuX25hbWUiOiJ0aHRpZW4wMTEwIiwiZmFtaWx5X25hbWUiOiJ0aHRpZW4wMTEwIiwiaWF0IjoxNzI5MDU3MDUzLCJleHAiOjE3MjkwNjA2NTN9.GGSvnB-DNBsja7PduHHBf5BFVpEG4cqzOzaLz48Cr1tgjzkDVtRjLTuCgrMUp3Ayon5_bz9OvPKtazc4UKkdgnHjFfolB2jO9oIS5Ac58KTjWT7DsGHDVyQY-TPsZNoQbGC9OUCQ2HZDXTlzRxSTt5DjLpseaztB9tH1cKvdquHosYmtOnoSQ_4M360X1ihTgwQCJERW3cgyFpSblN5HCPVtWZMbGFS0Hy_4auIVxYqhVRsIkEl5XfFePTkKPcTyIFwXjEMAAWtCPeXg_PPGzg1ZuI3Ygwnfsb0S5WeEBOMMXy2OM3_ivtMUkcGcNh7bLqzR98MG2kj5gtbLucR_2w"
+    //   "eyJhbGciOiJSUzI1NiIsImtpZCI6ImE1MGY2ZTcwZWY0YjU0OGE1ZmQ5MTQyZWVjZDFmYjhmNTRkY2U5ZWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTUxNzUyODgzNTMwMjA3NTQ2MjMiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoidGh0aWVuMDExMEBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6ImgzTjVzVFdpdnlfVmdHazhBYlQySFEiLCJub25jZSI6IkZuNVRfOWZ6QXk0dU5aVUhqNmFWMzljNkxTQ1prLVJDbWtQUGhrUzdWdHciLCJuYW1lIjoidGh0aWVuMDExMCB0aHRpZW4wMTEwIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xsX2I2aHRsbVBKSnl2SEZUQU1xQVRSZDRNdnJXcGVjTGNBTWlEa3c4TnFhdlFfQT1zOTYtYyIsImdpdmVuX25hbWUiOiJ0aHRpZW4wMTEwIiwiZmFtaWx5X25hbWUiOiJ0aHRpZW4wMTEwIiwiaWF0IjoxNzI5MDQ4Mjg5LCJleHAiOjE3MjkwNTE4ODl9.S7lN1LHDeQrZP8gOk9pyvkgQjvQeZHJhv9clRr_ro-75TcVeh2wQcmipz3IsaPgxL4gsknuIl3R8AVIxJ9uQrMpfqcSraA0-3mWChS6pTecI4VVrrhv4vLxLGwjVc-JgcvURmSYJ2bdjObJa4QKjTx889AgxC98JzOZcxT3LGxa1UGOjL6jbnETg4R_Y4W3B4ByI3bHZk_8QkiB6y0WD7YPcQTeZ5DLPfdk5H10q9EvgS081wt3EHtlAxM_9bn6fUXiVGsxlKP5fE5tKt7krlF79dZI5Q0mxZvaqorG81OE45wuO4TH-FKFBuybEqqSS1pI56fIkO304XuWcP0J0eA";
     // const email = "thtien0110@likelion.net";
     // const role = 1;
-    // auth.setIsLogin(true);
-    // auth.setEmail(email);
-    // auth.setAccessToken(accessToken);
+    // auth.setIsLoginLocal(true);
+    // document.cookie = `j_user_email=${email}; path=/; secure; SameSite=Strict`;
+    // document.cookie = `j_user_token=${accessToken}; path=/; secure; SameSite=Strict`;
     // if (!_.isEqual(role, 0)) {
     //   auth.setRoles(role);
     //   navigate("/");
@@ -49,26 +60,7 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    const handleReceiveData = (event: MessageEvent) => {
-      if (event.origin === window.location.origin) {
-        const { cookies } = event.data;
-        if (cookies?.j_user_token) {
-          auth.setEmail(cookies.j_user_email);
-          if (!_.isEqual(Number(cookies.j_user_account_type), 0)) {
-            auth.setRoles(Number(cookies.j_user_account_type));
-            navigate("/");
-          } else {
-            navigate("/create-user");
-          }
-        }
-      }
-    };
     loadingPageAction();
-    window.addEventListener("message", handleReceiveData);
-
-    return () => {
-      window.removeEventListener("message", handleReceiveData);
-    };
   }, [navigate]);
 
   return (

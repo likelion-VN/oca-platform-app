@@ -23,4 +23,4 @@ const AuthCallback: React.FC = () => {
   return <div>Processing authentication...</div>;
 };
 
-export default AuthCallback;
+export default AuthCallback; 

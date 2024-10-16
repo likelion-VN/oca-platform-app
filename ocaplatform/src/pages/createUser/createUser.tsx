@@ -16,6 +16,11 @@ import "./createUser.s.scss";
 const CreateUser = () => {
   const loadingPageAction = useActions(loadingPage);
   const navigae = useNavigate();
+  const email =
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("j_user_token="))
+      ?.split("=")[1] || "";
   const [state, setState] = useMergeState({
     activeType: null,
     isOpenConfirmModal: false,
@@ -102,8 +107,8 @@ const CreateUser = () => {
       >
         <div className="modal-exists-title">Company account already exists</div>
         <div className="modal-exists-content">
-          The company account has already been assigned as{" "}
-          {maskEmail(auth.email())}.<br />
+          The company account has already been assigned as {maskEmail(email)}
+          .<br />
           Please check with your HR team and use this account.
         </div>
       </ModalComponent>

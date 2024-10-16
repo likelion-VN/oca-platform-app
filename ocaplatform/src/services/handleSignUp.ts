@@ -1,4 +1,3 @@
-import auth from "../utils/auth";
 import axios from "./axiosConfig";
 
 export const handleSignUp = async (accountTypeId: number) => {
@@ -6,7 +5,10 @@ export const handleSignUp = async (accountTypeId: number) => {
     const response = await axios.post(
       `users/sign-up`,
       {
-        email: auth.email(),
+        email: document.cookie
+        .split('; ')
+        .find(row => row.startsWith('j_user_email='))
+        ?.split('=')[1],
         accountTypeId,
       },
       {
