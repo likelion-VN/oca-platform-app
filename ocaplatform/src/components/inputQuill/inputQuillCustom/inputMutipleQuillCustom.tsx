@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import Quill from "quill";
+import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import Quill from "quill";
 import "./inputQuillCustom.s.scss";
 
 let Delta = Quill.import("delta");
@@ -39,9 +39,7 @@ function InputMutipleQuillCustom({
   disabled,
   value,
   className = "",
-  onKeyDown,
   id,
-  handleChangeMutiple,
 }: InputQuillDefaultProps) {
   const [valueHtml, setValueHtml] = useState(""); // Lưu trữ nội dung đã chỉnh sửa
   const quillRef = useRef<ReactQuill>(null);
@@ -116,7 +114,7 @@ function InputMutipleQuillCustom({
   ) => {
     const textWithoutPrefix = valuePrefix
       ? editor.getText().replace(valuePrefix, "").trim()
-      : editor.getText().trim(); // Nếu không có prefix, chỉ lấy toàn bộ nội dung
+      : editor.getText().trim();
 
     const cleanedContent = textWithoutPrefix.replace(/\n/g, "");
     const newContent = valuePrefix

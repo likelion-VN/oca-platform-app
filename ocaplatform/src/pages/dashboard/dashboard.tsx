@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Drawer, MenuProps, Result } from "antd";
+import { MenuProps, Result } from "antd";
+import DrawerComponent from "../../components/drawer/drawer";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
 import { useSetState } from "../../utils/customHook/useSetState";
 import ApplicationPage from "./application/application";
 import "./dashboard.s.scss";
 import HomePage from "./home/home";
-import DrawerComponent from "../../components/drawer/drawer";
 import Profile from "./profile/profile";
 
 export default function Dashboard() {

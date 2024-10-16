@@ -6,9 +6,8 @@ import dayjs from "dayjs";
 import _ from "lodash";
 import React, { useState } from "react";
 import { Option } from "../../../interfaces";
-import "./inputPrefix.s.scss";
 import InputQuillCustom from "../../inputQuill/inputQuillCustom/inputQuillCustom";
-import InputMutipleQuillCustom from "../../inputQuill/inputQuillCustom/inputMutipleQuillCustom";
+import "./inputPrefix.s.scss";
 
 interface IPropsInputPrefix {
   value?: any;
@@ -48,7 +47,6 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   readOnly = false,
   allowClear = false,
   listDataMutipleInput,
-  idNewTask,
   handleChangeMutiple,
   handleChangeInputQuill,
 }) => {

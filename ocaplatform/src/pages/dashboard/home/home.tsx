@@ -11,17 +11,16 @@ import {
   AutoComplete,
   Button,
   Checkbox,
-  Dropdown,
   Input,
   message,
   Radio,
   Skeleton,
   Space,
-  Tooltip,
+  Tooltip
 } from "antd";
 
 import classNames from "classnames";
-import _, { set } from "lodash";
+import _ from "lodash";
 import {
   BookmarkSimple,
   Clock,
@@ -37,6 +36,7 @@ import { useNavigate } from "react-router-dom";
 import { CalendarDotIcon } from "../../../assets/svg";
 import Badge from "../../../components/badge/badge";
 import ButtonComponent from "../../../components/button/button";
+import DrawerComponent from "../../../components/drawer/drawer";
 import EmptyComponent from "../../../components/empty/empty";
 import ModalComponent from "../../../components/modal/modal";
 import SelectCustom from "../../../components/selectCustom/selectCustom";
@@ -67,7 +67,6 @@ import {
   renderStatusTitle,
 } from "../dashboard.h";
 import "./home.s.scss";
-import DrawerComponent from "../../../components/drawer/drawer";
 
 interface IPropsHome {
   isActive: boolean;
@@ -139,7 +138,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     title: string,
     type: "checkbox" | "radio",
     arrOption: Array<any>,
-    handleCountFilter: () => void
   ) => {
     if (type == "checkbox") {
       return (
@@ -155,9 +153,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               return (
                 <div>
                   <Checkbox
-                    onChange={(e) => {
-                      // console.log(e.target.value);
-                    }}
                     key={index}
                     value={item.value}
                   >
@@ -462,11 +457,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const handleApply = () => {
     const { jobDetail } = state;
     navigate("/application-form", { state: { jobDetail } });
-  };
-
-  const handleCountItemsFilter = () => {
-    // console.log(state.itemsfilter);
-    // setState({ itemsfilter: state.itemsfilter + 1 });
   };
 
   const onChangeJob = (value: string) => {
@@ -1167,19 +1157,16 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                 "Job type",
                 "checkbox",
                 JobTypeOptions,
-                handleCountItemsFilter
               )}
               {renderListFilter(
                 "Application Terms",
                 "radio",
                 ApplicationTermsOptions,
-                handleCountItemsFilter
               )}
               {renderListFilter(
                 "Work Type",
                 "checkbox",
                 WorkTypeOptions,
-                handleCountItemsFilter
               )}
             </div>
           </div>
