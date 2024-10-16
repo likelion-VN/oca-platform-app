@@ -77,7 +77,6 @@ function InputQuillCustom({
           quill.setContents(
             new Delta([
               { insert: { prefix: valuePrefix } },
-              { insert: value },
               ...currentContents.ops.slice(1),
             ])
           );
@@ -131,6 +130,15 @@ function InputQuillCustom({
       handleChangeMutiple && id && handleChangeMutiple(newText, id.toString());
     }
   };
+
+  useEffect(() => {
+    if (!valuePrefix && quillRef.current && value) {
+      const quill = quillRef.current.getEditor();
+
+      // Xóa nội dung hiện tại và chèn prefix không thể chỉnh sửa
+      quill.setContents(new Delta([{ insert: value }]));
+    }
+  }, [value]);
 
   return (
     <div className="customEditor">

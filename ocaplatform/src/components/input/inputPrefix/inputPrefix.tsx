@@ -8,7 +8,6 @@ import React, { useState } from "react";
 import { Option } from "../../../interfaces";
 import "./inputPrefix.s.scss";
 import InputQuillCustom from "../../inputQuill/inputQuillCustom/inputQuillCustom";
-import InputMutipleQuillCustom from "../../inputQuill/inputQuillCustom/inputMutipleQuillCustom";
 
 interface IPropsInputPrefix {
   value?: any;
@@ -269,6 +268,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         return (
           <div className="text-area-input">
             {_.map(listDataMutipleInput, (item, index) => {
+              // console.log(item);
               return (
                 <InputQuillCustom
                   key={index}
