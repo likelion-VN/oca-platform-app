@@ -57,7 +57,6 @@ import { handleSaveJob } from "../../../services/handleSaveJob";
 import updateGotoData from "../../../store/actions/goto";
 import loadingPage from "../../../store/actions/loading";
 import { calculateDaysDiff } from "../../../utils";
-import auth from "../../../utils/auth";
 import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import { formatDate, keyFormatter } from "../../../utils/formatter";
@@ -95,7 +94,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     countryId: homeGotoRedux.countryId,
     searchOptionId: homeGotoRedux.searchOptionId,
   });
-  const isLogin = auth.isLogin();
 
   const [state, setState] = useMergeState({
     searchJob: homeGotoRedux.jobTitle,
@@ -117,14 +115,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     isLoadingDetail: false,
     visible: false,
     isOpenCancelModal: false,
-    openDrawerFindJob: false,
-    openDrawerFilter: false,
-    itemsfilter: {
-      jobType: [],
-      applicationTerms: [],
-      workType: [],
-    },
-    isNavigateModal: false,
   });
 
   const renderValue = (
@@ -531,10 +521,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     setState({ isOpenCancelModal });
   };
 
-  const handleOpenNavigateModal = (isOpenNavigateModal: boolean) => {
-    setState({ isOpenNavigateModal });
-  };
-
   const handleCancel = async (applicationId: number) => {
     handleOpenCancelModal(false);
     loadingPageAction(LOADING_TYPES.CANCELING);
@@ -643,37 +629,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           <div className="title-content">
             Are you sure you want to cancel? Once confirmed, your application
             will be withdrawn from the process.
-          </div>
-        </div>
-      </ModalComponent>
-      <ModalComponent
-        className="modal-cancel"
-        open={state.isOpenNavigateModal}
-        onCancel={() => handleOpenNavigateModal(false)}
-        centered
-        footer={
-          <div className="modal-footer-custom">
-            <ButtonComponent
-              className="confirm-btn"
-              title="Sign in now!"
-              size="large"
-              type="primary"
-              onClick={() => navigate("/sign-in")}
-            />
-            <ButtonComponent
-              className="cancel-btn"
-              title="I will sign up later"
-              size="large"
-              type="default"
-              onClick={() => handleOpenNavigateModal(false)}
-            />
-          </div>
-        }
-      >
-        <div className="modal-content-custom">
-          <div className="title">You are not logged in yet?</div>
-          <div className="title-content">
-            To apply to jobs, you must log in first!
           </div>
         </div>
       </ModalComponent>
@@ -869,16 +824,15 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                   </div>
                   <div className="job-card-right">
                     <div className="job-mark">
-                      {isLogin &&
-                        (job.marked ? (
-                          <BookmarkSimple
-                            size={20}
-                            color="#FF7710"
-                            weight="fill"
-                          />
-                        ) : (
-                          <BookmarkSimple size={20} />
-                        ))}
+                      {job.marked ? (
+                        <BookmarkSimple
+                          size={20}
+                          color="#FF7710"
+                          weight="fill"
+                        />
+                      ) : (
+                        <BookmarkSimple size={20} />
+                      )}
                     </div>
                     <div className="update-time">
                       {calculateDaysDiff(job.postDateTime)}
@@ -947,9 +901,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                     onClick={
                       jobDetail.application?.applicationId
                         ? handleClickReview
-                        : isLogin
-                        ? handleApply
-                        : () => handleOpenNavigateModal(true)
+                        : handleApply
                     }
                   />
                   {(jobDetail.application?.statusId === 1 ||
@@ -966,23 +918,21 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
                       />
                     </Tooltip>
                   )}
-                  {isLogin && (
-                    <ButtonComponent
-                      className="save-btn"
-                      icon={
-                        state.markSave ? (
-                          <BookmarkSimple
-                            size={24}
-                            weight="fill"
-                            color="#FF7710"
-                          />
-                        ) : (
-                          <BookmarkSimple size={24} />
-                        )
-                      }
-                      onClick={() => handleMarkSave(jobDetail.id)}
-                    />
-                  )}
+                  <ButtonComponent
+                    className="save-btn"
+                    icon={
+                      state.markSave ? (
+                        <BookmarkSimple
+                          size={24}
+                          weight="fill"
+                          color="#FF7710"
+                        />
+                      ) : (
+                        <BookmarkSimple size={24} />
+                      )
+                    }
+                    onClick={() => handleMarkSave(jobDetail.id)}
+                  />
                 </div>
                 <div className="job-detail-keys">
                   {_.map(jobDetail.keywords, (keyword) => (
