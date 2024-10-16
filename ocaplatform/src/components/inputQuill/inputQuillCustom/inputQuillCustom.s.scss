@@ -40,15 +40,15 @@
     border-color: $soft-grey;
   }
 
+
   .mutiple-input-quill {
     .ql-snow {
       border-radius: 0px;
       border: none;
 
       .ql-editor {
-        padding: 0px 15px;
+        padding: 0px 15px 5px 15px;
         font-size: 14px;
-        margin-bottom: 5px;
       }
     }
   }

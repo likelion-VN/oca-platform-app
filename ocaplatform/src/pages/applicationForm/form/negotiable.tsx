@@ -131,8 +131,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     setState(defaultData);
   }, [defaultData]);
 
-  console.log(state.jobTitle);
-
   return (
     <>
       <ModalComponent
