@@ -5,31 +5,40 @@
   justify-content: space-between;
   border-bottom: 1px solid $neutral-grey;
   height: 64px;
+
   &-left {
     display: flex;
     width: 146px;
     margin-left: 20px;
     align-items: center;
     column-gap: 16px;
+
     .menu-icon {
       display: flex;
       justify-content: center;
       border-color: transparent;
       margin: 0 8px;
       height: 24px !important;
+
       &:hover {
         border-color: transparent !important;
       }
+
       .ant-btn-icon {
         width: 24px;
       }
     }
   }
+
   &-right {
     display: flex;
     width: 80px;
     align-items: center;
     margin-right: 20px;
     column-gap: 24px;
+
+    .drawer-menu-icon {
+      display: none;
+    }
   }
 }

@@ -10,11 +10,7 @@ export const handleResubmitLApplicationForm = async (
     const response: AxiosResponse<boolean> = await axios.post(
       `applications/${applicationId}/resubmit`,
       requestBody,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+
     );
     return response.data;
   } catch (error) {

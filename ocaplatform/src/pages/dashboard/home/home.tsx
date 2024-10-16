@@ -10,21 +10,25 @@ import {
 import {
   AutoComplete,
   Button,
+  Checkbox,
+  Dropdown,
   Input,
   message,
+  Radio,
   Skeleton,
   Space,
   Tooltip,
 } from "antd";
 
 import classNames from "classnames";
-import _ from "lodash";
+import _, { set } from "lodash";
 import {
   BookmarkSimple,
   Clock,
   FileX,
   Laptop,
   MapPin,
+  SlidersHorizontal,
   UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
@@ -63,6 +67,7 @@ import {
   renderStatusTitle,
 } from "../dashboard.h";
 import "./home.s.scss";
+import DrawerComponent from "../../../components/drawer/drawer";
 
 interface IPropsHome {
   isActive: boolean;
@@ -128,6 +133,65 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     const moreCount = selectedOptions.length - 1;
 
     return `${firstOption} + ${moreCount} more`;
+  };
+
+  const renderListFilter = (
+    title: string,
+    type: "checkbox" | "radio",
+    arrOption: Array<any>,
+    handleCountFilter: () => void
+  ) => {
+    if (type == "checkbox") {
+      return (
+        <div>
+          <div className="list-filter-title">
+            <p>{title}</p>
+            <Checkbox className="btn-clear" indeterminate>
+              Clear
+            </Checkbox>
+          </div>
+          <div className="list-filter-item">
+            {arrOption.map((item, index) => {
+              return (
+                <div>
+                  <Checkbox
+                    onChange={(e) => {
+                      // console.log(e.target.value);
+                    }}
+                    key={index}
+                    value={item.value}
+                  >
+                    {item.label}
+                  </Checkbox>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    } else if (type == "radio") {
+      return (
+        <div>
+          <div className="list-filter-title">
+            <p>{title}</p>
+            <Checkbox className="btn-clear" indeterminate>
+              Clear
+            </Checkbox>
+          </div>
+          <div className="list-filter-item">
+            <div>
+              <Radio.Group>
+                <Space direction="vertical">
+                  {arrOption.map((item, index) => {
+                    return <Radio key={index}>{item.label}</Radio>;
+                  })}
+                </Space>
+              </Radio.Group>
+            </div>
+          </div>
+        </div>
+      );
+    }
   };
 
   const getListAutoComplete = async (text: string) => {
@@ -224,7 +288,6 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         message.warning("Work is over!");
       }
     } catch (error) {
-      console.log("error", { error });
       setState({
         listJob: [],
         jobDetail: {},
@@ -401,6 +464,11 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     navigate("/application-form", { state: { jobDetail } });
   };
 
+  const handleCountItemsFilter = () => {
+    // console.log(state.itemsfilter);
+    // setState({ itemsfilter: state.itemsfilter + 1 });
+  };
+
   const onChangeJob = (value: string) => {
     setState({ searchJob: value });
   };
@@ -446,7 +514,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   };
 
   const handleViewCompany = () => {
-    console.log("You are clicking View Company");
+    // console.log("You are clicking View Company");
   };
 
   const handleOpenCancelModal = (isOpenCancelModal: boolean) => {
@@ -566,6 +634,20 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
       </ModalComponent>
       <div className="home-page">
         <div className="search">
+          <Input
+            readOnly
+            className="input-search-mobile"
+            allowClear
+            value={state.searchJob}
+            size="large"
+            placeholder="Find your perfect experience"
+            prefix={
+              <SearchOutlined style={{ marginRight: 6, color: "#0F172A" }} />
+            }
+            onClick={() => {
+              setState({ openDrawerFindJob: true });
+            }}
+          />
           <AutoComplete
             className="auto-completed-custom"
             style={{ width: 350, fontWeight: 400 }}
@@ -584,7 +666,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
             />
           </AutoComplete>
           <AutoComplete
-            className="auto-completed-custom"
+            className="auto-completed-custom auto-completed-city-state"
             style={{ width: 350, fontWeight: 400 }}
             onSearch={(text) => getListLocation(text)}
             onChange={onChangeLocation}
@@ -648,19 +730,21 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           </div>
           <div className="filter-right">
             {/* <Dropdown
-            overlay={menu}
-            trigger={["click"]}
-            visible={state.visible}
-            onVisibleChange={handleVisibleChange}
-            placement="bottomRight"
-          >
+              // overlay={menu}
+              trigger={["click"]}
+              visible={state.visible}
+              // onVisibleChange={handleVisibleChange}
+              placement="bottomRight"
+            > */}
             <Button
               className="filter-btn"
               icon={<SlidersHorizontal size={20} />}
+              onClick={() => setState({ openDrawerFilter: true })}
             >
               All filter
+              {/* {state.itemsfilter !== 0 && state.itemsfilter} */}
             </Button>
-          </Dropdown> */}
+            {/* </Dropdown> */}
           </div>
         </div>
         {/* <div className="count-jobs">
@@ -1021,6 +1105,100 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
           </div>
         </div>
       </div>
+      <DrawerComponent
+        title="Search Jobs"
+        closeable
+        placement="bottom"
+        className="drawer-search-jobs"
+        size="large"
+        open={state.openDrawerFindJob}
+        onclose={() => setState({ openDrawerFindJob: false })}
+        content={
+          <div className="search-job-content">
+            <AutoComplete
+              className="auto-completed-custom"
+              style={{ width: 350, fontWeight: 400 }}
+              onSearch={(text) => getListAutoComplete(text)}
+              onChange={onChangeJob}
+              options={state.listAutoComplete}
+            >
+              <Input
+                allowClear
+                size="large"
+                placeholder="Find your perfect experience"
+                prefix={
+                  <SearchOutlined
+                    style={{ marginRight: 6, color: "#0F172A" }}
+                  />
+                }
+              />
+            </AutoComplete>
+            <AutoComplete
+              className="auto-completed-custom auto-completed-city-state"
+              style={{ width: 350, fontWeight: 400 }}
+              onSearch={(text) => getListLocation(text)}
+              onChange={onChangeLocation}
+              options={state.listLocation}
+            >
+              <Input
+                allowClear
+                size="large"
+                placeholder="City, state"
+                prefix={
+                  <EnvironmentOutlined
+                    style={{ marginRight: 6, color: "#0F172A" }}
+                  />
+                }
+              />
+            </AutoComplete>
+          </div>
+        }
+      />
+      <DrawerComponent
+        className="drawer-filter-job"
+        onclose={() => setState({ openDrawerFilter: false })}
+        title="Filters"
+        placement="bottom"
+        size="large"
+        content={
+          <div className="drawer-filter-job-body">
+            <div className="list-filter">
+              {renderListFilter(
+                "Job type",
+                "checkbox",
+                JobTypeOptions,
+                handleCountItemsFilter
+              )}
+              {renderListFilter(
+                "Application Terms",
+                "radio",
+                ApplicationTermsOptions,
+                handleCountItemsFilter
+              )}
+              {renderListFilter(
+                "Work Type",
+                "checkbox",
+                WorkTypeOptions,
+                handleCountItemsFilter
+              )}
+            </div>
+          </div>
+        }
+        closeable
+        open={state.openDrawerFilter}
+        footer={
+          <div className="drawer-footer-action">
+            <ButtonComponent
+              className="btn-reset"
+              onClick={() => {
+                // setState({ itemsfilter: 0 });
+              }}
+              title="Reset"
+            />
+            <ButtonComponent className="btn-apply" title="Apply filters" />
+          </div>
+        }
+      />
     </>
   );
 };

@@ -2,26 +2,32 @@
 
 .background-create {
   font-family: "Inter";
+
   .header {
     display: flex;
     align-items: center;
     height: 64px;
     border-bottom: 1px solid $neutral-grey;
+
     img {
       margin-left: 56px;
     }
   }
+
   .create-wrapper {
     display: flex;
     justify-content: center;
+
     .create-content {
       margin-top: 104px;
       text-align: center;
+
       &-title {
         font-size: 38px;
         font-weight: 700;
         line-height: 48px;
       }
+
       &-subtitle {
         margin-top: 17px;
         font-size: 16px;
@@ -29,6 +35,7 @@
         line-height: 24px;
         color: $charcoal-grey;
       }
+
       &-part {
         position: relative;
         height: 56px;
@@ -36,16 +43,19 @@
         justify-content: center;
         align-items: flex-end;
         margin: 8px 0;
+
         .circle {
           width: 56px;
           height: 28px;
           border-radius: 0 0 75px 75px;
           background-color: $bright-orange;
           position: relative;
+
           &-active {
             background-color: $light-peach;
           }
         }
+
         .left-active::before {
           content: "";
           position: absolute;
@@ -57,6 +67,7 @@
           border-bottom-left-radius: 75px;
           clip-path: polygon(0% 0%, 0% 90%, 50% 100%, 100% 0%);
         }
+
         .right-active::after {
           content: "";
           position: absolute;
@@ -69,10 +80,12 @@
           clip-path: polygon(100% 0%, 100% 90%, 50% 100%, 0% 0%);
         }
       }
+
       &-type {
         display: flex;
         column-gap: 24px;
         justify-content: center;
+
         .type-card {
           border: 2px solid $neutral-grey;
           border-radius: 12px;
@@ -80,12 +93,14 @@
           width: fit-content;
           transition: transform 0.3s ease;
           transform-origin: center;
+
           &-title {
             margin-top: 24px;
             font-size: 20px;
             font-weight: 600;
             line-height: 28px;
           }
+
           &-subtitle {
             margin-top: 4px;
             font-size: 14px;
@@ -93,29 +108,35 @@
             line-height: 20px;
             color: $charcoal-grey;
           }
+
           &:hover {
             cursor: pointer;
             transform: scale(1.01);
           }
+
           &-active {
             border-color: $bright-orange;
             background-color: $floral-white;
           }
         }
       }
+
       .create-btn {
         background: $dark-navy-blue;
         color: $off-white;
         margin-top: 48px;
         height: 48px;
+
         span {
           font-size: 16px;
           font-weight: 600;
           line-height: 24px;
         }
+
         &:hover {
           border-color: unset !important;
         }
+
         &:disabled {
           background: $cool-grey !important;
           color: $translucent-white;
@@ -130,31 +151,37 @@
   img {
     margin-top: 40px;
   }
+
   .ant-modal-body {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   .modal-footer-custom {
     display: flex;
     justify-content: center;
     margin-top: 32px;
   }
+
   .confirm-btn {
     background: $bright-orange !important;
     color: $off-white !important;
     width: 162px;
     height: 48px;
+
     &:hover {
       border-color: unset !important;
     }
   }
+
   &-title {
     margin-top: 24px;
     font-size: 24px;
     font-weight: 700;
     line-height: 32px;
   }
+
   &-content {
     margin-top: 16px;
     text-align: center;
@@ -163,3 +190,5 @@
     line-height: 20px;
   }
 }
+
+@import './reponsive.s.scss'

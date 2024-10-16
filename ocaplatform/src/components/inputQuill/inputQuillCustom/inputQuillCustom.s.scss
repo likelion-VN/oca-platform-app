@@ -1,0 +1,53 @@
+.customEditor {
+  .change-value {
+    font-weight: 400;
+
+    strong {
+      color: $dark-crimson;
+      text-decoration: line-through;
+    }
+  }
+
+  .ql-disabled {
+    cursor: not-allowed;
+    background-color: rgba(0, 0, 0, 0.04);
+
+    .ql-editor {
+      pointer-events: none;
+      cursor: not-allowed;
+
+      strong {
+        color: rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+
+  strong {
+    font-weight: 400;
+    color: black;
+    font-size: 14px;
+  }
+
+  p {
+    color: $bright-blue;
+    font-weight: 400;
+  }
+
+  .ql-container {
+    border-radius: 4px;
+    border-color: $soft-grey;
+  }
+
+  .mutiple-input-quill {
+    .ql-snow {
+      border-radius: 0px;
+      border: none;
+
+      .ql-editor {
+        padding: 0px 15px;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

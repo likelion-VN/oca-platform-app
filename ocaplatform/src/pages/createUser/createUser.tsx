@@ -68,12 +68,22 @@ const CreateUser = () => {
           </div>
         }
       >
+        {/* đăng ký thành công  */}
         <img src={Congratulation} alt="congratulation" />
         <div className="modal-success-title">Congratulation!</div>
         <div className="modal-success-content">
           You registered successfully <br />
           Let’s start finding an O-CA program that fits you.
         </div>
+
+        {/* đăng ký thất bại  */}
+        {/* <div className="modal-error-title">
+          Company account <br /> already exists
+        </div>
+        <div className="modal-error-content">
+          The company account has already been assigned as ****@likelion.net.
+          Please check with your HR team and use this account.
+        </div> */}
       </ModalComponent>
       <ModalComponent
         className="modal-exists"
@@ -127,8 +137,10 @@ const CreateUser = () => {
               onClick={() => onActiveType(1)}
             >
               <img src={Individual} alt="individual-icon" />
-              <div className="type-card-title">Individual Account</div>
-              <div className="type-card-subtitle">{`I’m Looking for experience`}</div>
+              <div>
+                <div className="type-card-title">Individual Account</div>
+                <div className="type-card-subtitle">{`I’m Looking for experience`}</div>
+              </div>
             </div>
             <div
               className={classNames(
@@ -138,8 +150,10 @@ const CreateUser = () => {
               onClick={() => onActiveType(2)}
             >
               <img src={Company} alt="company-icon" />
-              <div className="type-card-title">Company Account</div>
-              <div className="type-card-subtitle">{`I’m Offering experience`}</div>
+              <div>
+                <div className="type-card-title">Company Account</div>
+                <div className="type-card-subtitle">{`I’m Offering experience`}</div>
+              </div>
             </div>
           </div>
           <ButtonComponent

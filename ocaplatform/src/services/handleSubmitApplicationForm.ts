@@ -9,11 +9,7 @@ export const handleSubmitLApplicationForm = async (
     const response: AxiosResponse<boolean> = await axios.put(
       `applications`,
       requestBody,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+
     );
     return response.data;
   } catch (error) {

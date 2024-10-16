@@ -11,11 +11,7 @@ export const fetchListJob = async (
     const response: AxiosResponse<JobBody> = await axios.post(
       `jobs?page=${page}&size=${pageSize}`,
       requestBody,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+
     );
     return response.data;
   } catch (error) {
