@@ -3,5 +3,6 @@ export const LOADING_TYPES = {
     APPLYING: 'Applying...',
     UPLOADING: 'Uploading...',
     REMOVING: 'Removing...',
-    CANCELING: 'Canceling...'
+    CANCELING: 'Canceling...',
+    CREATING: 'Creating...'
 }

@@ -1,9 +1,8 @@
-import axios from "axios";
-import { apiServiceUrl } from "../constants";
+import axios from "./axiosConfig";
 
 export const handleDownloadFile = async (id: number) => {
   try {
-    const response = await axios.get(`${apiServiceUrl}attachments/${id}`, {
+    const response = await axios.get(`attachments/${id}`, {
       responseType: "blob",
     });
 

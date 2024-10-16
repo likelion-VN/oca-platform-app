@@ -1,8 +1,8 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import _ from "lodash";
-import { apiServiceUrl } from "../constants";
 import { Option } from "../interfaces";
 import { LocationBody } from "../interfaces/home";
+import axios from "./axiosConfig";
 
 export const fetchListLocation = async (
   searchStr: string,
@@ -12,7 +12,7 @@ export const fetchListLocation = async (
   try {
     const formatStr = _.capitalize(_.toLower(_.trim(searchStr)));
     const response: AxiosResponse<LocationBody> = await axios.get(
-      `${apiServiceUrl}locations?searchStr=${formatStr}&page=${page}&size=${pageSize}`
+      `locations?searchStr=${formatStr}&page=${page}&size=${pageSize}`
     );
     const mappedLocation = _.map(response.data.content, (item) => ({
       label: `${item.city}, ${item.state}`,

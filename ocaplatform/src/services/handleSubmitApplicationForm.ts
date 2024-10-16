@@ -1,13 +1,12 @@
-import axios, { AxiosResponse } from "axios";
-import { apiServiceUrl } from "../constants";
+import { AxiosResponse } from "axios";
 import { RequestApplicationForm } from "../interfaces/applicationForm";
-import { http } from "./config";
+import axios from "./axiosConfig";
 
 export const handleSubmitLApplicationForm = async (
   requestBody: RequestApplicationForm
 ): Promise<boolean | void> => {
   try {
-    const response: AxiosResponse<boolean> = await http.put(
+    const response: AxiosResponse<boolean> = await axios.put(
       `applications`,
       requestBody,
 

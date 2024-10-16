@@ -1,14 +1,13 @@
-import axios, { AxiosResponse } from "axios";
-import { apiServiceUrl } from "../constants";
+import { AxiosResponse } from "axios";
 import { RequestApplicationForm } from "../interfaces/applicationForm";
-import { http } from "./config";
+import axios from "./axiosConfig";
 
 export const handleResubmitLApplicationForm = async (
   applicationId: number,
   requestBody: RequestApplicationForm
 ): Promise<boolean | void> => {
   try {
-    const response: AxiosResponse<boolean> = await http.post(
+    const response: AxiosResponse<boolean> = await axios.post(
       `applications/${applicationId}/resubmit`,
       requestBody,
 

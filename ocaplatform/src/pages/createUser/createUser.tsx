@@ -1,13 +1,20 @@
 import classNames from "classnames";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Company, Congratulation, Individual, Logo } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import ModalComponent from "../../components/modal/modal";
+import { LOADING_TYPES } from "../../constants/loadingTypes";
+import { handleSignUp } from "../../services/handleSignUp";
+import loadingPage from "../../store/actions/loading";
+import auth from "../../utils/auth";
+import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { maskEmail } from "../../utils/formatter";
 import "./createUser.s.scss";
 
 const CreateUser = () => {
+  const loadingPageAction = useActions(loadingPage);
   const navigae = useNavigate();
   const [state, setState] = useMergeState({
     activeType: null,
@@ -15,22 +22,34 @@ const CreateUser = () => {
     isOpenExistsModal: false,
   });
 
-  const onActiveType = (type: string) => {
+  const onActiveType = (type: number) => {
     setState({ activeType: type });
   };
 
-  const onCreateAccount = () => {
-    setState({ isOpenConfirmModal: true });
-    // setState({ isOpenExistsModal: true });
+  const onCreateAccount = async () => {
+    loadingPageAction(LOADING_TYPES.CREATING);
+    const isSuccess = await handleSignUp(state.activeType);
+    if (isSuccess) {
+      loadingPageAction();
+      setState({ isOpenConfirmModal: true });
+    } else {
+      loadingPageAction();
+      setState({ isOpenExistsModal: true });
+    }
   };
 
   const onClickConfirm = () => {
-    navigae("/dashboard");
+    auth.setRoles(state.activeType);
+    navigae("/");
   };
 
   const onClickExists = () => {
     navigae("/sign-in");
-  }
+  };
+
+  useEffect(() => {
+    loadingPageAction();
+  }, []);
 
   return (
     <div className="background-create">
@@ -83,7 +102,8 @@ const CreateUser = () => {
       >
         <div className="modal-exists-title">Company account already exists</div>
         <div className="modal-exists-content">
-          The company account has already been assigned as {maskEmail("developer@likelion.net")}.<br />
+          The company account has already been assigned as{" "}
+          {maskEmail(auth.email())}.<br />
           Please check with your HR team and use this account.
         </div>
       </ModalComponent>
@@ -103,8 +123,8 @@ const CreateUser = () => {
               className={classNames(
                 "circle",
                 state.activeType && "circle-active",
-                state.activeType === "individual" && "left-active",
-                state.activeType === "company" && "right-active"
+                state.activeType === 1 && "left-active",
+                state.activeType === 2 && "right-active"
               )}
             />
           </div>
@@ -112,9 +132,9 @@ const CreateUser = () => {
             <div
               className={classNames(
                 "type-card",
-                state.activeType === "individual" && "type-card-active"
+                state.activeType === 1 && "type-card-active"
               )}
-              onClick={() => onActiveType("individual")}
+              onClick={() => onActiveType(1)}
             >
               <img src={Individual} alt="individual-icon" />
               <div>
@@ -125,9 +145,9 @@ const CreateUser = () => {
             <div
               className={classNames(
                 "type-card",
-                state.activeType === "company" && "type-card-active"
+                state.activeType === 2 && "type-card-active"
               )}
-              onClick={() => onActiveType("company")}
+              onClick={() => onActiveType(2)}
             >
               <img src={Company} alt="company-icon" />
               <div>

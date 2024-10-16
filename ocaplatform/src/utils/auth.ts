@@ -17,29 +17,11 @@ const auth = {
     _.assign(localStorage, { ...shareData });
   },
 
-  setAuthorizedToken: (authorizedToken: string) => {
-    localStorage.authorizedToken = authorizedToken;
+  setEmail: (email: string) => {
+    localStorage.email = email;
   },
 
-  authorizedToken: () => localStorage.authorizedToken,
-
-  setUserData: (me: any) => {
-    localStorage.isSuccess = !_.isEmpty(me);
-    localStorage.userId = me?.id;
-    localStorage.username = me?.username;
-    localStorage.firstName = me?.firstName;
-    localStorage.lastName = me?.lastName;
-    localStorage.email = me?.email;
-    localStorage.phone1 = me?.contact?.phone1;
-    localStorage.country = me?.contact?.country;
-    localStorage.roles = JSON.stringify(me?.roles);
-    localStorage.freshChatRestoreId = me?.freshChatRestoreId;
-    localStorage.willViewTutorialLater = me?.willViewTutorialLater;
-    localStorage.willShowWhatNewPopup = me?.willViewTutorialLater;
-    localStorage.canUseAiViewer = me?.canUseAiViewer;
-    localStorage.isTestAccount = me?.isTestAccount;
-    localStorage.isEmailVerified = me?.isEmailVerified;
-  },
+  email: () => localStorage.email,
 
   setAccessToken: (accessToken: string) => {
     localStorage.accessToken = accessToken;
@@ -47,35 +29,23 @@ const auth = {
 
   accessToken: () => localStorage.accessToken,
 
-  setUserId: (userId: string) => {
-    localStorage.userId = userId;
+  setRoles: (roles: number) => {
+    localStorage.roles = roles;
   },
 
-  userId: () =>
-    // store.getState().me?.id ||
-    localStorage?.userId,
+  roles: () => localStorage.roles,
 
-  setRoles: (roles: string) => {
-    localStorage.roles = JSON.stringify(roles);
+  isLogin: () => {
+    localStorage.isLogin = !!localStorage.email;
+    return localStorage.isLogin === "true"
   },
 
-  roles: () => (localStorage.roles ? JSON.parse(localStorage.roles) : []),
+  isLoginByGoogle: () => localStorage.isLoginByGoogle === "true",
 
-  isLoginByGoogle: () =>
-    localStorage.isLoginByGoogle === "true",
-
-  isLoginByLinkedin: () =>
-    localStorage.isLoginByLinkedin === "true",
+  isLoginByLinkedin: () => localStorage.isLoginByLinkedin === "true",
 
   logout: () => {
     localStorage.clear();
-  },
-
-  logoutExceptUsername: () => {
-    const { firstName, lastName } = localStorage;
-    localStorage.clear();
-    localStorage.firstName = firstName;
-    localStorage.lastName = lastName;
   },
 };
 
