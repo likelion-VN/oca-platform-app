@@ -9,15 +9,25 @@ import SignIn from "./pages/signIn/signIn";
 import auth from "./utils/auth";
 
 function App() {
-  console.log('test', auth.isLogin())
+  // console.log('test', auth.isLogin())
   return (
     <>
       <LoadingPage />
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={auth.isLogin() ? <Dashboard /> : <Navigate to="/sign-in" />} />
-            <Route path="*" element={auth.isLogin() ? <Dashboard /> : <Navigate to="/sign-in" />} />
+            <Route
+              path="/"
+              element={
+                auth.isLogin() ? <Dashboard /> : <Navigate to="/sign-in" />
+              }
+            />
+            <Route
+              path="*"
+              element={
+                auth.isLogin() ? <Dashboard /> : <Navigate to="/sign-in" />
+              }
+            />
             <Route path="sign-in" element={<SignIn />} />
             <Route path="auth-callback" element={<AuthCallback />} />
             <Route path="create-user" element={<CreateUser />} />

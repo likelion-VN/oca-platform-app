@@ -267,6 +267,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         return (
           <div className="text-area-input">
             {_.map(listDataMutipleInput, (item, index) => {
+              // console.log(item);
               return (
                 <InputQuillCustom
                   key={index}
