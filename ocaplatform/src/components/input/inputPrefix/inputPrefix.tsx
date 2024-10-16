@@ -47,7 +47,6 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   readOnly = false,
   allowClear = false,
   listDataMutipleInput,
-  idNewTask,
   handleChangeMutiple,
   handleChangeInputQuill,
 }) => {

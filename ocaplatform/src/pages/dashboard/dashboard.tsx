@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Drawer, MenuProps, Result } from "antd";
+import { MenuProps, Result } from "antd";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
 import { useSetState } from "../../utils/customHook/useSetState";

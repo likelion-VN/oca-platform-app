@@ -11,7 +11,6 @@ import {
   AutoComplete,
   Button,
   Checkbox,
-  Dropdown,
   Input,
   message,
   Radio,
@@ -21,7 +20,7 @@ import {
 } from "antd";
 
 import classNames from "classnames";
-import _, { set } from "lodash";
+import _ from "lodash";
 import {
   BookmarkSimple,
   Clock,
@@ -138,8 +137,8 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const renderListFilter = (
     title: string,
     type: "checkbox" | "radio",
-    arrOption: Array<any>,
-    handleCountFilter: () => void
+    arrOption: Array<any>
+    // handleCountFilter: () => void
   ) => {
     if (type == "checkbox") {
       return (
@@ -155,9 +154,9 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               return (
                 <div>
                   <Checkbox
-                    onChange={(e) => {
-                      // console.log(e.target.value);
-                    }}
+                    // onChange={(e) => {
+                    //   // console.log(e.target.value);
+                    // }}
                     key={index}
                     value={item.value}
                   >
@@ -464,10 +463,10 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
     navigate("/application-form", { state: { jobDetail } });
   };
 
-  const handleCountItemsFilter = () => {
-    // console.log(state.itemsfilter);
-    // setState({ itemsfilter: state.itemsfilter + 1 });
-  };
+  // const handleCountItemsFilter = () => {
+  //   // console.log(state.itemsfilter);
+  //   // setState({ itemsfilter: state.itemsfilter + 1 });
+  // };
 
   const onChangeJob = (value: string) => {
     setState({ searchJob: value });
@@ -1163,24 +1162,13 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
         content={
           <div className="drawer-filter-job-body">
             <div className="list-filter">
-              {renderListFilter(
-                "Job type",
-                "checkbox",
-                JobTypeOptions,
-                handleCountItemsFilter
-              )}
+              {renderListFilter("Job type", "checkbox", JobTypeOptions)}
               {renderListFilter(
                 "Application Terms",
                 "radio",
-                ApplicationTermsOptions,
-                handleCountItemsFilter
+                ApplicationTermsOptions
               )}
-              {renderListFilter(
-                "Work Type",
-                "checkbox",
-                WorkTypeOptions,
-                handleCountItemsFilter
-              )}
+              {renderListFilter("Work Type", "checkbox", WorkTypeOptions)}
             </div>
           </div>
         }

@@ -2,7 +2,7 @@
 
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import _, { set } from "lodash";
+import _ from "lodash";
 import React, { useCallback, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ButtonComponent from "../../../components/button/button";
@@ -27,12 +27,12 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 }) => {
   const [state, setState] = useMergeState({});
 
-  const handleInputChange = (
-    keyValue: string,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setState({ [keyValue]: e.target.value });
-  };
+  // const handleInputChange = (
+  //   keyValue: string,
+  //   e: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setState({ [keyValue]: e.target.value });
+  // };
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
