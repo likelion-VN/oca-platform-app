@@ -10,13 +10,15 @@ const AuthCallback: React.FC = () => {
       allParams[key] = decodeURIComponent(value);
     });
 
+    console.log('test', allParams)
+
     if (allParams.access_token) {
       window.opener?.postMessage(
         { params: allParams },
         window.location.origin
       );
     }
-    window.close();
+    // window.close();
   }, []);
 
   return <div>Processing authentication...</div>;

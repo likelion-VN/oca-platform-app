@@ -10,11 +10,19 @@ const LoginPage = () => {
   const loadingPageAction = useActions(loadingPage);
   // const navigate = useNavigate();
 
-    // const linkedinAuthUrl = `${apiServiceUrl}oauth2/authorization/linkedin`;
+    const linkedinAuthUrl = `${apiServiceUrl}oauth2/authorization/linkedin`;
   const googleAuthUrl = `${apiServiceUrl}oauth2/authorization/google`;
 
   const loginByLinkedin = () => {
-    // window.location.href = linkedinAuthUrl;
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth / 2) - (width / 2);
+    const top = window.screenY + (window.outerHeight / 2) - (height / 2);
+    window.open(
+      linkedinAuthUrl,
+      "Login by Linkedin",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
     // navigate("/create-user");
   };
 

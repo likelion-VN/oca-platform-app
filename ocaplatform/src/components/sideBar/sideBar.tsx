@@ -1,6 +1,5 @@
 import { HomeFilled, ProfileOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu, MenuProps } from "antd";
-import { BookmarkSimple } from "phosphor-react";
 import React from "react";
 import "./sideBar.s.scss";
 
@@ -23,16 +22,16 @@ const SideBar: React.FC<IPropsSideBar> = ({
     { key: "1", icon: <HomeFilled />, label: "Home" },
     { key: "2", icon: <ProfileOutlined />, label: "Application" },
     { key: "3", icon: <UserOutlined />, label: "Profile" },
-    {
-      key: "4",
-      icon:
-        selectedKey === "4" ? (
-          <BookmarkSimple size={16} weight="fill" />
-        ) : (
-          <BookmarkSimple size={16} />
-        ),
-      label: "Saved",
-    },
+    // {
+    //   key: "4",
+    //   icon:
+    //     selectedKey === "4" ? (
+    //       <BookmarkSimple size={16} weight="fill" />
+    //     ) : (
+    //       <BookmarkSimple size={16} />
+    //     ),
+    //   label: "Saved",
+    // },
   ];
   return (
     <Menu
