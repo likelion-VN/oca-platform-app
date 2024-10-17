@@ -163,7 +163,7 @@
             &-logo {
               width: 40px;
               height: 40px;
-              border-radius: 8px;
+              border-radius: 50%;
               object-fit: contain;
             }
             &-info {
@@ -221,9 +221,9 @@
           padding-inline-start: 25px;
         }
       }
-      &-name {
+      &-candidate-name {
         display: flex;
-        .company-logo {
+        .candidate-logo {
           height: 84px;
           width: 84px;
           border-radius: 8px;
@@ -268,6 +268,7 @@
       &-action {
         display: flex;
         margin-top: 16px;
+        column-gap: 16px;
         .application-btn {
           flex: 1;
           background: $bright-orange !important;
@@ -277,22 +278,38 @@
             border-color: $bright-orange !important;
           }
         }
-        .cancel-btn,
-        .save-btn {
+        .view-btn {
+          flex: 1;
           width: 40px;
           height: 40px;
-          margin-left: 16px;
-          background-color: $off-white;
-          border-color: transparent;
+          border-color: $cool-grey;
+          color: $dark-navy-blue;
           &:hover {
+            background-color: $off-white;
             color: unset;
+            border-color: $cool-grey;
           }
         }
       }
       &-keys {
-        margin-top: 24px;
+        margin: 24px 0 16px 0;
       }
-      &-update,
+      &-status {
+        margin-bottom: 12px;
+        padding-top: 16px;
+        border-top: 1px solid $neutral-grey;
+      }
+      &-title {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 32px;
+        .title-sub {
+          font-weight: 600;
+          color: $bright-blue;
+          font-size: 14px;
+          margin-left: 4px;
+        }
+      }
       &-about,
       &-tasks,
       &-qualify {
@@ -408,6 +425,9 @@
             }
           }
         }
+      }
+      &-about {
+        margin-top: 16px;
       }
       &-company {
         margin-top: 17px;

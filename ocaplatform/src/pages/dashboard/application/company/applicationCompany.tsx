@@ -1,23 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import {
-  EnvironmentOutlined,
-  ExportOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
-import { Button, message, Skeleton, Tooltip } from "antd";
+import { EnvironmentOutlined, ExportOutlined } from "@ant-design/icons";
+import { message, Skeleton } from "antd";
 
 import classNames from "classnames";
 import _ from "lodash";
-import {
-  BookmarkSimple,
-  Clock,
-  FileX,
-  Laptop,
-  MapPin,
-  UsersFour,
-} from "phosphor-react";
+import { Clock, Laptop, MapPin, UsersFour } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -38,10 +27,7 @@ import useActions from "../../../../utils/customHook/useActions";
 import useMergeState from "../../../../utils/customHook/useMergeState";
 import { formatDate } from "../../../../utils/formatter";
 import {
-  renderStatus,
-  renderStatusDescription,
-  renderStatusDetail,
-  renderStatusTitle,
+  renderStatus
 } from "../../dashboard.h";
 import "./applicationCompany.s.scss";
 
@@ -49,7 +35,9 @@ interface IPropsApplicationCompany {
   isActive: boolean;
 }
 
-const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({ isActive }) => {
+const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({
+  isActive,
+}) => {
   const dispatch = useDispatch();
   const applicationGotoRedux = useSelector(
     (state: any) => state.goto.application
@@ -410,11 +398,11 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({ isActive }
               <EmptyComponent className="empty-layout" />
             ) : (
               <>
-                <div className="job-detail-name">
+                <div className="job-detail-candidate-name">
                   <img
                     src={jobDetail.job.company.companyAvatarUrl}
                     alt="notification-icon"
-                    className="company-logo"
+                    className="candidate-logo"
                     width={84}
                     height={84}
                   />
@@ -422,18 +410,7 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({ isActive }
                     <div className="title">
                       {jobDetail.job.title}
                       {jobDetail.job.negotiable && (
-                        <>
-                          <span className="title-sub">(Negotiable)</span>
-                          <Tooltip
-                            className="tooltip"
-                            placement="bottom"
-                            title="This indicates that the company is willing to negotiate and adjust the job duties, working hours, duration, and location through discussion"
-                          >
-                            <QuestionCircleOutlined
-                              style={{ fontSize: 16, color: "#0A5CD8" }}
-                            />
-                          </Tooltip>
-                        </>
+                        <span className="title-sub">(Negotiable)</span>
                       )}
                     </div>
                     <div className="company-info">
@@ -454,35 +431,14 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({ isActive }
                 <div ref={topButtonRef} className="job-detail-action">
                   <ButtonComponent
                     className="application-btn"
-                    title="View your application"
+                    title="Review application"
                     onClick={handleOnclick}
                   />
-                  {(jobDetail.statusId === 1 || jobDetail.statusId === 2) && (
-                    <Tooltip
-                      className="tooltip"
-                      title="Cancel your application"
-                      placement="bottom"
-                    >
-                      <Button
-                        className="cancel-btn"
-                        icon={<FileX size={24} />}
-                        onClick={() => handleOpenCancelModal(true)}
-                      />
-                    </Tooltip>
-                  )}
                   <ButtonComponent
-                    className="save-btn"
-                    icon={
-                      state.markSave ? (
-                        <BookmarkSimple
-                          size={24}
-                          weight="fill"
-                          color="#FF7710"
-                        />
-                      ) : (
-                        <BookmarkSimple size={24} />
-                      )
-                    }
+                    className="view-btn"
+                    title="View profile"
+                    icon={<ExportOutlined />}
+                    iconPosition="end"
                     onClick={handleMarkSave}
                   />
                 </div>
@@ -491,32 +447,14 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({ isActive }
                     <Badge title={keyword.name} />
                   ))}
                 </div>
-                <div className="job-detail-update">
-                  <div className="job-detail-title">The latest updated</div>
-                  <div className="job-detail-content">
-                    <div className="application-status-card">
-                      <div className="status-left">
-                        <div className="circle">
-                          <div className="inner-circle"></div>
-                        </div>
-                        <div className="dashed-line"></div>
-                      </div>
-                      <div className="status-right">
-                        <div className="status-action">
-                          {renderStatusDetail(jobDetail.statusId)}
-                          <div className="status-action-date">
-                            {calculateDaysDiff(jobDetail.lastUpdateDate, true)}
-                          </div>
-                        </div>
-                        <div className="status-title">
-                          {renderStatusTitle(jobDetail.statusId)}
-                        </div>
-                        <div className="status-description">
-                          {renderStatusDescription(jobDetail.statusId)}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="job-detail-status">
+                {renderStatus(jobDetail.statusId)}
+                </div>
+                <div className="job-detail-title">
+                  {jobDetail.job.title}
+                  {jobDetail.job.negotiable && (
+                    <span className="title-sub">(Negotiable)</span>
+                  )}
                 </div>
                 <div className="job-detail-about">
                   <div className="job-detail-title">About the job</div>

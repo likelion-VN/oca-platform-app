@@ -265,6 +265,7 @@ const ApplicationFormRevise = () => {
                       : ""
                   }
                   title="Start working date"
+                  placeholder=""
                   subTitle={detailJob.jobNegotiable && "(Negotiable)"}
                   type="date"
                   disabled={!detailJob.jobNegotiable}
@@ -287,6 +288,7 @@ const ApplicationFormRevise = () => {
                   subTitle={detailJob.jobNegotiable && "(Negotiable)"}
                   type="date"
                   disabled={!detailJob.jobNegotiable}
+                  placeholder=""
                   valuePrefix={formatDate(
                     detailJob.workPeriodEnd.delta.company
                   )}

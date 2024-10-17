@@ -194,6 +194,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             title="Start working date"
             subTitle={state.negotiable && "(Negotiable)"}
             type="date"
+            placeholder=""
             disabled={!state.negotiable}
             valuePrefix={formatDate(state.currentStartDate)}
             onChange={(date) => handleDateChange("startDate", date)}
@@ -204,6 +205,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
             subTitle={state.negotiable && "(Negotiable)"}
             type="date"
             disabled={!state.negotiable}
+            placeholder=""
             valuePrefix={formatDate(state.currentEndDate)}
             onChange={(date) => handleDateChange("endDate", date)}
           />

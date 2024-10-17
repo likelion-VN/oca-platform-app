@@ -124,7 +124,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               <span
                 style={{
                   textDecoration: value && "line-through",
-                  color: value && "#B42318",
+                  color: value && "#8F8F8F",
                 }}
               >
                 {valuePrefix}
@@ -171,7 +171,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                     style={{
                       textDecoration:
                         (item.isRemove || item.newTask) && "line-through",
-                      color: (item.isRemove || item.newTask) && "#B42318",
+                      color: (item.isRemove || item.newTask) && "#8F8F8F",
                     }}
                   >
                     {item.description}
@@ -198,7 +198,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 top: "50%",
                 transform: "translateY(-50%)",
                 textDecoration: value && "line-through",
-                color: disabled ? "#00000040" : value && "#B42318",
+                color: disabled ? "#00000040" : value && "#8F8F8F",
                 cursor: disabled ? "not-allowed" : "none",
                 zIndex: 2,
               }}
@@ -252,7 +252,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 <span
                   style={{
                     textDecoration: value && "line-through",
-                    color: value && "#B42318",
+                    color: value && "#8F8F8F",
                   }}
                 >
                   {valuePrefix}
