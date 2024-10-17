@@ -56,10 +56,10 @@ export default function Dashboard() {
       document.cookie
         .split("; ")
         .find((row) => row.startsWith("j_user_token="))
-        ?.split("=")[1] || '';
+        ?.split("=")[1] || "";
     // if (isTokenExpired(token)) {
     if (!!token) {
-      navigate("/sign-in");
+      // navigate("/sign-in");
     }
   }, []);
 

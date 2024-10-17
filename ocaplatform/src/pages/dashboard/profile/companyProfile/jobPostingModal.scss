@@ -1,0 +1,10 @@
+.form-create-job-posting {
+  .double-input {
+    display: flex;
+    column-gap: 24px;
+
+    .input-prefix {
+      flex: 1;
+    }
+  }
+}

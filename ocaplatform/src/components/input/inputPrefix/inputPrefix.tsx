@@ -30,6 +30,7 @@ interface IPropsInputPrefix {
   idNewTask?: string;
   handleChangeMutiple?: (value: string, id: string) => void;
   handleChangeInputQuill?: (value: string) => void;
+  placeholder?: string;
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -49,6 +50,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   listDataMutipleInput,
   handleChangeMutiple,
   handleChangeInputQuill,
+  placeholder,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -109,6 +111,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
           <Input
             value={value}
             onChange={handleInputChange}
+            placeholder={placeholder}
             size="large"
             disabled={disabled}
             allowClear={allowClear}

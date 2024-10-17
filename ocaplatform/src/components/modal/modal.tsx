@@ -8,7 +8,8 @@ interface IPropsModal {
   onOk?: () => void;
   footer?: React.ReactNode;
   centered?: boolean;
-  children?: React.ReactNode; 
+  children?: React.ReactNode;
+  title?: React.ReactNode;
 }
 
 const ModalComponent: React.FC<IPropsModal> = ({
@@ -19,9 +20,11 @@ const ModalComponent: React.FC<IPropsModal> = ({
   footer,
   centered,
   children,
+  title,
 }) => {
   return (
     <Modal
+      title={title}
       className={className}
       open={open}
       onCancel={onCancel}
