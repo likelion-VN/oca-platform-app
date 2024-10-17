@@ -26,7 +26,6 @@ const LoginPage = () => {
       "Login by Linkedin",
       `width=${width},height=${height},top=${top},left=${left}`
     );
-    // navigate("/create-user");
   };
 
   const loginByGoogle = () => {

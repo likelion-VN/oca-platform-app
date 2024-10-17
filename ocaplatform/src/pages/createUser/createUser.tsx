@@ -40,7 +40,7 @@ const CreateUser = () => {
   };
 
   const onClickConfirm = () => {
-    navigae("/");
+    navigae("/dash-board");
   };
 
   const onClickExists = () => {
