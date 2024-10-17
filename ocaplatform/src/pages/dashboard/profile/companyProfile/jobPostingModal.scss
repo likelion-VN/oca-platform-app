@@ -1,10 +1,28 @@
-.form-create-job-posting {
-  .double-input {
-    display: flex;
-    column-gap: 24px;
+.modal-form-create-job-posting {
+  width: 680px !important;
 
-    .input-prefix {
-      flex: 1;
+  .ant-modal-content {
+    width: 100%;
+  }
+
+  .form-create-job-posting {
+    form {
+      .input-prefix {
+        margin-bottom: 25px;
+
+        .title {
+          font-size: 14px;
+        }
+      }
+
+      .double-input {
+        display: flex;
+        column-gap: 24px;
+
+        .input-prefix {
+          flex: 1;
+        }
+      }
     }
   }
 }

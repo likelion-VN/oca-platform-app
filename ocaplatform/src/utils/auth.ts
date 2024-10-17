@@ -49,6 +49,8 @@ const auth = {
 
   isLoginByLinkedin: () => localStorage.isLoginByLinkedin === "true",
 
+  clearLocalStorage: () => localStorage.clear(),
+
   logout: () => {
     localStorage.clear();
   },

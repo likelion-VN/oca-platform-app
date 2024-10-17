@@ -310,7 +310,7 @@ const ProfileCompanyView = (props: Props) => {
             <ButtonComponent title="Send" />
           </div>
         }
-        className=""
+        className="modal-form-create-job-posting"
         open={state.openCreateJobModal}
         children={<JobPostingModal />}
       />

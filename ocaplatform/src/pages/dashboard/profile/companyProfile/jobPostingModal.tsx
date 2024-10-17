@@ -2,6 +2,7 @@ import React from "react";
 import InputPrefix from "../../../../components/input/inputPrefix/inputPrefix";
 import "./jobPostingModal.scss";
 import { Checkbox } from "antd";
+import CheckBoxTooltip from "../../../../components/checkbox/checkBox";
 type Props = {};
 
 const JobPostingModal = (props: Props) => {
@@ -12,7 +13,12 @@ const JobPostingModal = (props: Props) => {
           type="input"
           title="Job Title"
           placeholder="Enter job title"
-          subTitle={<Checkbox>Negotiable</Checkbox>}
+          subTitle={
+            <CheckBoxTooltip
+              tooltipContent="If selected, candidates can make adjustments and submit a revised offer."
+              checkBoxContent="Negotiable"
+            />
+          }
         />
         <InputPrefix
           type="input"
@@ -23,32 +29,67 @@ const JobPostingModal = (props: Props) => {
           <InputPrefix
             title="Start working date"
             type="date"
-            subTitle={<Checkbox>Negotiable</Checkbox>}
+            placeholder="MM/DD/YYYY"
+            subTitle={
+              <CheckBoxTooltip
+                tooltipContent="If selected, candidates can make adjustments and submit a revised offer."
+                checkBoxContent="Negotiable"
+              />
+            }
           />
           <InputPrefix
             title="End working date"
             type="date"
-            subTitle={<Checkbox>Negotiable</Checkbox>}
+            placeholder="MM/DD/YYYY"
+            subTitle={
+              <CheckBoxTooltip
+                tooltipContent="If selected, candidates can make adjustments and submit a revised offer."
+                checkBoxContent="Negotiable"
+              />
+            }
           />
         </div>
         <div className="double-input">
           <InputPrefix
             title="Workplace type"
-            type="date"
-            subTitle={<Checkbox>Negotiable</Checkbox>}
+            type="select"
+            placeholder="Select workplace type"
+            subTitle={
+              <CheckBoxTooltip
+                tooltipContent="If selected, candidates can make adjustments and submit a revised offer."
+                checkBoxContent="Negotiable"
+              />
+            }
           />
           <InputPrefix
             title="Hours per week"
-            type="date"
-            subTitle={<Checkbox>Negotiable</Checkbox>}
+            type="input"
+            placeholder="Enter number of hours (e.g., 40)"
+            subTitle={
+              <CheckBoxTooltip
+                tooltipContent="If selected, candidates can make adjustments and submit a revised offer."
+                checkBoxContent="Negotiable"
+              />
+            }
           />
         </div>
         <InputPrefix
           title="Task"
           type="text-area-input"
-          subTitle={<Checkbox>Negotiable</Checkbox>}
+          placeholder="Enter task details here..."
+          subTitle={
+            <CheckBoxTooltip
+              tooltipContent="If selected, candidates can make adjustments and submit a revised offer."
+              checkBoxContent="Negotiable"
+            />
+          }
         />
-        <InputPrefix title="About the job" type="text-area-input" />
+
+        <InputPrefix
+          title="About the job"
+          placeholder="Enter a description..."
+          type="text-area-input"
+        />
       </form>
     </div>
   );
