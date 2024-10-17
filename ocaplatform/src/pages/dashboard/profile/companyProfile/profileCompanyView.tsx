@@ -61,8 +61,17 @@ const items: CollapseProps["items"] = [
 
 const ProfileCompanyView = (props: Props) => {
   const [state, setState] = useMergeState({
-    openCreateJobModal: true,
+    openCreateJobModal: false,
   });
+
+  const handleShowModalCreateJob = () => {
+    setState({ openCreateJobModal: true });
+  };
+
+  const handleCloseModalCreateJob = () => {
+    setState({ openCreateJobModal: false });
+  };
+
   return (
     <>
       <div className="company-profile">
@@ -96,6 +105,7 @@ const ProfileCompanyView = (props: Props) => {
               <div className="company-header-action-button">
                 <ButtonComponent
                   className="btn-post-job"
+                  onClick={handleShowModalCreateJob}
                   title="Post a job"
                   iconPosition="end"
                   icon={<img src={iconPlus} />}
@@ -306,6 +316,7 @@ const ProfileCompanyView = (props: Props) => {
           </div>
         }
         centered
+        onCancel={handleCloseModalCreateJob}
         footer={
           <div>
             <ButtonComponent
