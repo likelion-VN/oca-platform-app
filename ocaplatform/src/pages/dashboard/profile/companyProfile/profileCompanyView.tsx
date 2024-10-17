@@ -299,15 +299,20 @@ const ProfileCompanyView = (props: Props) => {
       </div>
       <ModalComponent
         title={
-          <div>
-            <p>Create a job posting</p>
+          <div
+            style={{ textAlign: "center", fontSize: "20px", fontWeight: 600 }}
+          >
+            Create a job posting
           </div>
         }
         centered
         footer={
           <div>
-            <ButtonComponent title="Cancel" />
-            <ButtonComponent title="Send" />
+            <ButtonComponent
+              className="btn-create-posting-cancel"
+              title="Cancel"
+            />
+            <ButtonComponent className="btn-create-posting-send" title="Send" />
           </div>
         }
         className="modal-form-create-job-posting"
