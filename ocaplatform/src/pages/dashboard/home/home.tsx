@@ -27,8 +27,7 @@ import {
   FileX,
   Laptop,
   MapPin,
-  SlidersHorizontal,
-  UsersFour,
+  UsersFour
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -735,14 +734,14 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               // onVisibleChange={handleVisibleChange}
               placement="bottomRight"
             > */}
-            <Button
+            {/* <Button
               className="filter-btn"
               icon={<SlidersHorizontal size={20} />}
               onClick={() => setState({ openDrawerFilter: true })}
             >
               All filter
-              {/* {state.itemsfilter !== 0 && state.itemsfilter} */}
-            </Button>
+              {state.itemsfilter !== 0 && state.itemsfilter}
+            </Button> */}
             {/* </Dropdown> */}
           </div>
         </div>

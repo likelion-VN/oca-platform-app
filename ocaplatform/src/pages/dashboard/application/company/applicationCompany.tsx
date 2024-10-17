@@ -21,35 +21,35 @@ import {
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CalendarDotIcon } from "../../../assets/svg";
-import Badge from "../../../components/badge/badge";
-import ButtonComponent from "../../../components/button/button";
-import EmptyComponent from "../../../components/empty/empty";
-import ModalComponent from "../../../components/modal/modal";
-import { LOADING_TYPES } from "../../../constants/loadingTypes";
-import { ApplicationTab } from "../../../constants/selectOptions";
-import { fetchApplicationDetailJob } from "../../../services/fetchDetailApplicationJob";
-import { fetchListApplicationJob } from "../../../services/fetchListApplicationJob";
-import { handleCancelApplication } from "../../../services/handleCancelApplication";
-import updateGotoData from "../../../store/actions/goto";
-import loadingPage from "../../../store/actions/loading";
-import { calculateDaysDiff } from "../../../utils";
-import useActions from "../../../utils/customHook/useActions";
-import useMergeState from "../../../utils/customHook/useMergeState";
-import { formatDate } from "../../../utils/formatter";
+import { CalendarDotIcon } from "../../../../assets/svg";
+import Badge from "../../../../components/badge/badge";
+import ButtonComponent from "../../../../components/button/button";
+import EmptyComponent from "../../../../components/empty/empty";
+import ModalComponent from "../../../../components/modal/modal";
+import { LOADING_TYPES } from "../../../../constants/loadingTypes";
+import { ApplicationTab } from "../../../../constants/selectOptions";
+import { fetchApplicationDetailJob } from "../../../../services/fetchDetailApplicationJob";
+import { fetchListApplicationJob } from "../../../../services/fetchListApplicationJob";
+import { handleCancelApplication } from "../../../../services/handleCancelApplication";
+import updateGotoData from "../../../../store/actions/goto";
+import loadingPage from "../../../../store/actions/loading";
+import { calculateDaysDiff } from "../../../../utils";
+import useActions from "../../../../utils/customHook/useActions";
+import useMergeState from "../../../../utils/customHook/useMergeState";
+import { formatDate } from "../../../../utils/formatter";
 import {
   renderStatus,
   renderStatusDescription,
   renderStatusDetail,
   renderStatusTitle,
-} from "../dashboard.h";
-import "./application.s.scss";
+} from "../../dashboard.h";
+import "./applicationCompany.s.scss";
 
-interface IPropsApplication {
+interface IPropsApplicationCompany {
   isActive: boolean;
 }
 
-const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
+const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({ isActive }) => {
   const dispatch = useDispatch();
   const applicationGotoRedux = useSelector(
     (state: any) => state.goto.application
@@ -303,7 +303,7 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
           </div>
         </div>
       </ModalComponent>
-      <div className="application-page">
+      <div className="application-company-page">
         <div className="filter-tab">
           {_.map(ApplicationTab, (tab) => (
             <div
@@ -655,4 +655,4 @@ const ApplicationPage: React.FC<IPropsApplication> = ({ isActive }) => {
   );
 };
 
-export default ApplicationPage;
+export default ApplicationCompanyPage;

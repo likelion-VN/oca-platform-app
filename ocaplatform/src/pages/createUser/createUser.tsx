@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import Cookies from 'js-cookie';
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Company, Congratulation, Individual, Logo } from "../../assets/svg";
@@ -7,7 +8,7 @@ import ModalComponent from "../../components/modal/modal";
 import { LOADING_TYPES } from "../../constants/loadingTypes";
 import { handleSignUp } from "../../services/handleSignUp";
 import loadingPage from "../../store/actions/loading";
-import { clearAllCookies, getCookieValue } from "../../utils";
+import { clearAllCookies } from "../../utils";
 import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
@@ -17,7 +18,7 @@ import "./createUser.s.scss";
 const CreateUser = () => {
   const loadingPageAction = useActions(loadingPage);
   const navigae = useNavigate();
-  const email = getCookieValue("user_email") || '';
+  const email = decodeURIComponent(Cookies.get("user_email") || '');
   const [state, setState] = useMergeState({
     activeType: null,
     isOpenConfirmModal: false,
@@ -71,22 +72,12 @@ const CreateUser = () => {
           </div>
         }
       >
-        {/* đăng ký thành công  */}
         <img src={Congratulation} alt="congratulation" />
         <div className="modal-success-title">Congratulation!</div>
         <div className="modal-success-content">
           You registered successfully <br />
           Let’s start finding an O-CA program that fits you.
         </div>
-
-        {/* đăng ký thất bại  */}
-        {/* <div className="modal-error-title">
-          Company account <br /> already exists
-        </div>
-        <div className="modal-error-content">
-          The company account has already been assigned as ****@likelion.net.
-          Please check with your HR team and use this account.
-        </div> */}
       </ModalComponent>
       <ModalComponent
         className="modal-exists"
