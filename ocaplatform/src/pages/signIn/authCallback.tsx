@@ -1,23 +1,29 @@
+import _ from "lodash";
 import { useEffect } from "react";
 
+interface ParsedUrlParams {
+  [key: string]: string | null;
+}
+
 const AuthCallback: React.FC = () => {
+  const parseUrl = (url: string): ParsedUrlParams => {
+    const urlObj = new URL(url);
+
+    const params: ParsedUrlParams = {};
+
+    urlObj.searchParams.forEach((value, key) => {
+      params[key] = decodeURIComponent(value);
+    });
+
+    return params;
+  };
+
   useEffect(() => {
-    const parseUrlParams = () => {
-      const params = new URLSearchParams(window.location.hash.slice(1));
-      const allParams: { [key: string]: string | null } = {};
-
-      params.forEach((value, key) => {
-        allParams[key] = decodeURIComponent(value);
-      });
-
-      return allParams;
-    };
-
-    const allParams = parseUrlParams();
+    const allParams = parseUrl(window.location.href);
 
     console.log("test", allParams);
 
-    if (allParams.access_token) {
+    if (!_.isEmpty(allParams)) {
       window.opener?.postMessage({ params: allParams }, window.location.origin);
     }
     // window.close();
