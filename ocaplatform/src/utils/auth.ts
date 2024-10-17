@@ -17,11 +17,17 @@ const auth = {
     _.assign(localStorage, { ...shareData });
   },
 
-  setRoles: (roles: number) => {
-    localStorage.roles = roles;
+  setCompanyUser: (companyUser: boolean) => {
+    localStorage.isCompanyUser = companyUser
   },
 
-  roles: () => localStorage.roles,
+  isCompanyUser: () => localStorage.isCompanyUser,
+
+  setCandidateUser: (candidateUser: boolean) => {
+    localStorage.isCandidateUser = candidateUser
+  },
+
+  isCandidateUser: () => localStorage.isCandidateUser,
 
   setIsLoginLocal: (isLoginLocal: boolean) => {
     localStorage.isLoginLocal = isLoginLocal;

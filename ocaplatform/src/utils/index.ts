@@ -27,10 +27,14 @@ const calculateDaysDiff = (date: string, isFullDay = false) => {
   }
 };
 
-const getAccessToken = () => {
+const getCookieValue = (name: string): string | null => {
   const value = `; ${document.cookie}`;
-  const parts = value.split(`; access_token=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift();
+  const parts = value.split(`; ${name}=`);
+
+  if (parts.length === 2) {
+    return decodeURIComponent(parts.pop()?.split(';').shift() || '');
+  }
+
   return null;
 };
 
@@ -47,5 +51,5 @@ const isTokenExpired = (token: string) => {
   }
 };
 
-export { calculateDaysDiff, getAccessToken, getLabelByValue, isTokenExpired };
+export { calculateDaysDiff, getCookieValue, getLabelByValue, isTokenExpired };
 

@@ -1,23 +1,26 @@
+import _ from "lodash";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { GoogleIcon, LinkedinIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
+import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
 import "./signIn.s.scss";
 
 const LoginPage = () => {
   const loadingPageAction = useActions(loadingPage);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const linkedinAuthUrl = `${apiServiceUrl}oauth2/authorization/linkedin`;
+  const linkedinAuthUrl = `${apiServiceUrl}oauth2/authorization/linkedin`;
   const googleAuthUrl = `${apiServiceUrl}oauth2/authorization/google`;
 
   const loginByLinkedin = () => {
     const width = 500;
     const height = 600;
-    const left = window.screenX + (window.outerWidth / 2) - (width / 2);
-    const top = window.screenY + (window.outerHeight / 2) - (height / 2);
+    const left = window.screenX + window.outerWidth / 2 - width / 2;
+    const top = window.screenY + window.outerHeight / 2 - height / 2;
     window.open(
       linkedinAuthUrl,
       "Login by Linkedin",
@@ -29,8 +32,8 @@ const LoginPage = () => {
   const loginByGoogle = () => {
     const width = 500;
     const height = 600;
-    const left = window.screenX + (window.outerWidth / 2) - (width / 2);
-    const top = window.screenY + (window.outerHeight / 2) - (height / 2);
+    const left = window.screenX + window.outerWidth / 2 - width / 2;
+    const top = window.screenY + window.outerHeight / 2 - height / 2;
     window.open(
       googleAuthUrl,
       "Login by Google",
@@ -42,16 +45,21 @@ const LoginPage = () => {
     const handleReceiveData = (event: MessageEvent) => {
       if (event.origin === window.location.origin) {
         const { params } = event.data;
-        console.log('test', params)
-        // if (cookies?.j_user_token) {
-        //   // auth.setEmail(cookies.j_user_email);
-        //   if (!_.isEqual(Number(cookies.j_user_account_type), 0)) {
-        //     // auth.setRoles(Number(cookies.j_user_account_type));
-        //     navigate("/dash-board");
-        //   } else {
-        //     navigate("/create-user");
-        //   }
-        // }
+        if (!_.isEmpty(params)) {
+          auth.setIsLogin(true);
+          document.cookie = `user_token=${params.idToken}; path=/; secure; HttpOnly`;
+          document.cookie = `user_email=${encodeURIComponent(params.email)}; path=/; secure; HttpOnly`;
+          if (params.account_type !== "0") {
+            if (params.account_type === "1") {
+              auth.setCandidateUser(true);
+            } else {
+              auth.setCompanyUser(true);
+            }
+            navigate("/dash-board");
+          } else {
+            navigate("/create-user");
+          }
+        }
       }
     };
     loadingPageAction();

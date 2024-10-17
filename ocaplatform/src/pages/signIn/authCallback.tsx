@@ -21,12 +21,10 @@ const AuthCallback: React.FC = () => {
   useEffect(() => {
     const allParams = parseUrl(window.location.href);
 
-    console.log("test", allParams);
-
     if (!_.isEmpty(allParams)) {
       window.opener?.postMessage({ params: allParams }, window.location.origin);
     }
-    // window.close();
+    window.close();
   }, []);
 
   return <div>Processing authentication...</div>;

@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { MenuProps, Result } from "antd";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import DrawerComponent from "../../components/drawer/drawer";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
@@ -13,7 +11,7 @@ import HomePage from "./home/home";
 import Profile from "./profile/profile";
 
 export default function Dashboard() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [state, setState] = useSetState({
     collapsed: false,
     selectedKey: "1",
@@ -51,17 +49,17 @@ export default function Dashboard() {
     }
   };
 
-  useEffect(() => {
-    const token =
-      document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("j_user_token="))
-        ?.split("=")[1] || '';
-    // if (isTokenExpired(token)) {
-    if (!!token) {
-      navigate("/sign-in");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token =
+  //     document.cookie
+  //       .split("; ")
+  //       .find((row) => row.startsWith("j_user_token="))
+  //       ?.split("=")[1] || '';
+  //   // if (isTokenExpired(token)) {
+  //   if (!!token) {
+  //     navigate("/sign-in");
+  //   }
+  // }, []);
 
   return (
     <div className="dashboard-layout">
