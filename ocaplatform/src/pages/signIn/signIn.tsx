@@ -47,8 +47,8 @@ const LoginPage = () => {
         const { params } = event.data;
         if (!_.isEmpty(params)) {
           auth.setIsLogin(true);
-          document.cookie = `user_token=${params.idToken}; path=/; secure; HttpOnly`;
-          document.cookie = `user_email=${encodeURIComponent(params.email)}; path=/; secure; HttpOnly`;
+          document.cookie = `user_token=${params.idToken}; path=/; secure`;
+          document.cookie = `user_email=${encodeURIComponent(params.email)}; path=/; secure`;
           if (params.account_type !== "0") {
             if (params.account_type === "1") {
               auth.setCandidateUser(true);
