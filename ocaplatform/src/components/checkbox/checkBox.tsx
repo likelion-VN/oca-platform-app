@@ -1,5 +1,4 @@
 import { Checkbox, Tooltip } from "antd";
-import React from "react";
 
 interface ICheckBoxProps {
   tooltipContent: string;

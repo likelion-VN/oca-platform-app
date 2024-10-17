@@ -1,21 +1,19 @@
-import bannerCompanyHeader from "./../../../../assets/demoStatic/banner.png";
-import avatarCompany from "./../../../../assets/demoStatic/avatar.png";
-import bellCompany from "./../../../../assets/demoStatic/BellRinging.png";
+import { Collapse, CollapseProps, Dropdown, MenuProps } from "antd";
 import ButtonComponent from "../../../../components/button/button";
-import iconPlus from "./../../../../assets/demoStatic/plus.png";
-import iconEdit from "./../../../../assets/demoStatic/edit.png";
-import iconPlusCircle from "./../../../../assets/demoStatic/plusCircle.png";
-import iconEditCircle from "./../../../../assets/demoStatic/editCircle.png";
-import iconSetting from "./../../../../assets/demoStatic/setting.png";
+import ModalComponent from "../../../../components/modal/modal";
+import useMergeState from "../../../../utils/customHook/useMergeState";
 import arrowRight from "./../../../../assets/demoStatic/ArrowRight.png";
+import avatarCompany from "./../../../../assets/demoStatic/avatar.png";
+import bannerCompanyHeader from "./../../../../assets/demoStatic/banner.png";
+import bellCompany from "./../../../../assets/demoStatic/BellRinging.png";
 import iconCloseJob from "./../../../../assets/demoStatic/closeJob.png";
 import iconDelete from "./../../../../assets/demoStatic/delete.png";
-import { Collapse, CollapseProps, Dropdown, MenuProps } from "antd";
-import ModalComponent from "../../../../components/modal/modal";
+import iconEdit from "./../../../../assets/demoStatic/edit.png";
+import iconEditCircle from "./../../../../assets/demoStatic/editCircle.png";
+import iconPlus from "./../../../../assets/demoStatic/plus.png";
+import iconPlusCircle from "./../../../../assets/demoStatic/plusCircle.png";
+import iconSetting from "./../../../../assets/demoStatic/setting.png";
 import JobPostingModal from "./jobPostingModal";
-import useMergeState from "../../../../utils/customHook/useMergeState";
-
-type Props = {};
 
 const itemsDropdown: MenuProps["items"] = [
   {
@@ -59,7 +57,7 @@ const items: CollapseProps["items"] = [
   },
 ];
 
-const ProfileCompanyView = (props: Props) => {
+const ProfileCompanyView = () => {
   const [state, setState] = useMergeState({
     openCreateJobModal: false,
   });
@@ -149,7 +147,7 @@ const ProfileCompanyView = (props: Props) => {
           </div>
           <Collapse
             className="company-detail-collapse"
-            expandIcon={({ isActive }) => {
+            expandIcon={() => {
               return <img src={iconPlusCircle} />;
             }}
             expandIconPosition="end"

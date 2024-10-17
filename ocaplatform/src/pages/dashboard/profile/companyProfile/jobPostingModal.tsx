@@ -1,11 +1,8 @@
-import React from "react";
+import CheckBoxTooltip from "../../../../components/checkbox/checkBox";
 import InputPrefix from "../../../../components/input/inputPrefix/inputPrefix";
 import "./jobPostingModal.scss";
-import { Checkbox } from "antd";
-import CheckBoxTooltip from "../../../../components/checkbox/checkBox";
-type Props = {};
 
-const JobPostingModal = (props: Props) => {
+const JobPostingModal = () => {
   return (
     <div className="form-create-job-posting">
       <InputPrefix
