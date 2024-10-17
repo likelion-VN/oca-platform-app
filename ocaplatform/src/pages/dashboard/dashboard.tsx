@@ -1,20 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { MenuProps } from "antd";
+import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DrawerComponent from "../../components/drawer/drawer";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
-import { getCookieValue, isTokenExpired } from "../../utils";
+import { clearAllCookies, isTokenExpired } from "../../utils";
+import auth from "../../utils/auth";
 import { useSetState } from "../../utils/customHook/useSetState";
-import ApplicationPage from "./application/application";
+import ApplicationCandidatePage from "./application/candidate/applicationCandidate";
+import ApplicationCompanyPage from "./application/company/applicationCompany";
 import "./dashboard.s.scss";
 import HomePage from "./home/home";
 import Profile from "./profile/profile";
 
-export default function Dashboard() {
+const Dashboard = () => {
   const navigate = useNavigate();
+  const isCompanyUser = auth.isCompanyUser();
   const [state, setState] = useSetState({
     collapsed: false,
     selectedKey: "1",
@@ -36,7 +40,11 @@ export default function Dashboard() {
   const renderPage = (key: string) => {
     switch (key) {
       case "2": {
-        return <ApplicationPage isActive={state.selectedKey === "2"} />;
+        if (isCompanyUser) {
+          return <ApplicationCompanyPage isActive={state.selectedKey === '2'}/>
+        } else {
+          return <ApplicationCandidatePage isActive={state.selectedKey === "2"} />;
+        }
       }
       case "3": {
         return <Profile isActive={state.selectedKey === "3"} />;
@@ -53,12 +61,16 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const token = getCookieValue("user_token");
+    const token = Cookies.get("user_token");
     if (!!token) {
       if (isTokenExpired(token)) {
+        auth.clearLocalStorage();
+        clearAllCookies();
         navigate("/sign-in");
       }
     } else {
+      auth.clearLocalStorage();
+      clearAllCookies();
       navigate("/sign-in");
     }
   }, []);
@@ -94,4 +106,6 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;

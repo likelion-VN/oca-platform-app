@@ -1,4 +1,4 @@
-import { getCookieValue } from "../utils";
+import Cookies from 'js-cookie';
 import axios from "./axiosConfig";
 
 export const handleSignUp = async (accountTypeId: number) => {
@@ -6,7 +6,7 @@ export const handleSignUp = async (accountTypeId: number) => {
     const response = await axios.post(
       `users/sign-up`,
       {
-        email: getCookieValue('user_email'),
+        email: decodeURIComponent(Cookies.get('user_email') || ''),
         accountTypeId,
       },
       {

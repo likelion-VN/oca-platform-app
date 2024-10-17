@@ -28,17 +28,6 @@ const calculateDaysDiff = (date: string, isFullDay = false) => {
   }
 };
 
-const getCookieValue = (name: string): string | null => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-
-  if (parts.length === 2) {
-    return decodeURIComponent(parts.pop()?.split(";").shift() || "");
-  }
-
-  return null;
-};
-
 const isTokenExpired = (token: string) => {
   if (!token) return true;
 
@@ -60,11 +49,4 @@ const clearAllCookies = () => {
   });
 };
 
-export {
-  calculateDaysDiff,
-  clearAllCookies,
-  getCookieValue,
-  getLabelByValue,
-  isTokenExpired
-};
-
+export { calculateDaysDiff, clearAllCookies, getLabelByValue, isTokenExpired };
