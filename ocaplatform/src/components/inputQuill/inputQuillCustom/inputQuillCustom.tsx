@@ -108,10 +108,23 @@ function InputQuillCustom({
       const newContent = `<p><strong>${valuePrefix}</strong><span> ${textWithoutPrefix}</span></p>`; // Tạo cấu trúc mới
 
       // kiểm tra nếu có nội dung mới thì thêm class change-value vào thẻ strong
+      console.log(textWithoutPrefix);
       if (textWithoutPrefix) {
-        document
-          .querySelector(".customEditor .ql-editor strong")
-          ?.classList.add("change-value");
+        // xử lí thay thế dùng ref gọi tới editor và dom tới
+        if (quillRef.current) {
+          console.log(
+            quillRef.current
+              .getEditor()
+              .root.querySelector(".customEditor .ql-editor strong")
+          );
+          quillRef.current
+            .getEditor()
+            .root.querySelector(".customEditor .ql-editor strong")
+            ?.classList.add("change-value");
+        }
+        // document
+        //   .querySelector(".customEditor .ql-editor strong")
+        //   ?.classList.add("change-value");
       }
 
       if (valueHtml !== newContent) {
