@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { apiServiceUrl } from '../constants';
+import { getCookieValue } from '../utils';
 
 const axiosInstance = axios.create({
   baseURL: apiServiceUrl,
@@ -9,10 +10,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const publicEndpoints = [''];
     if (!publicEndpoints.includes(config.url!)) {
-      const token = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('j_user_token='))
-        ?.split('=')[1];
+      const token = getCookieValue('user_token')
 
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;

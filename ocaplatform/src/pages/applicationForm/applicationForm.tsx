@@ -80,7 +80,7 @@ const ApplicationForm = () => {
   };
 
   const onBackToHome = () => {
-    navigate("/");
+    navigate("/dash-board");
   };
 
   const handleApply = async (input: any) => {

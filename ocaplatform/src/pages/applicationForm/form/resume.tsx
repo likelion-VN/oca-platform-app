@@ -302,7 +302,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
 
   const handleConfirm = () => {
     handleOpenSuccessModal(false);
-    navigate("/");
+    navigate("/dash-board");
   };
 
   useEffect(() => {

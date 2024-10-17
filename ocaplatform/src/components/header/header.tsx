@@ -2,7 +2,6 @@ import { BellOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 import React from "react";
 import { Logo } from "../../assets/svg";
-import auth from "../../utils/auth";
 import ButtonComponent from "../button/button";
 import "./header.s.scss";
 
@@ -16,13 +15,11 @@ const Header: React.FC<IPropsHeader> = ({ toggleCollapsed, toggleDrawer }) => {
     <div>
       <div className="header">
         <div className="header-left">
-          {auth.isLogin() && (
-            <ButtonComponent
-              className="menu-icon"
-              icon={<MenuOutlined size={24} />}
-              onClick={toggleCollapsed}
-            />
-          )}
+          <ButtonComponent
+            className="menu-icon"
+            icon={<MenuOutlined size={24} />}
+            onClick={toggleCollapsed}
+          />
           <img src={Logo} alt="logo" className="logo" />
         </div>
         <div className="header-right">

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { MenuProps, Result } from "antd";
+import { MenuProps } from "antd";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DrawerComponent from "../../components/drawer/drawer";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
+import { getCookieValue, isTokenExpired } from "../../utils";
 import { useSetState } from "../../utils/customHook/useSetState";
 import ApplicationPage from "./application/application";
 import "./dashboard.s.scss";
@@ -40,11 +41,11 @@ export default function Dashboard() {
       case "3": {
         return <Profile isActive={state.selectedKey === "3"} />;
       }
-      case "4": {
-        return (
-          <Result status="403" subTitle="This page will be updated soon!" />
-        );
-      }
+      // case "4": {
+      //   return (
+      //     <Result status="403" subTitle="This page will be updated soon!" />
+      //   );
+      // }
       default: {
         return <HomePage isActive={state.selectedKey === "1"} />;
       }
@@ -52,14 +53,13 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const token =
-      document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("j_user_token="))
-        ?.split("=")[1] || "";
-    // if (isTokenExpired(token)) {
+    const token = getCookieValue("user_token");
     if (!!token) {
-      // navigate("/sign-in");
+      if (isTokenExpired(token)) {
+        navigate("/sign-in");
+      }
+    } else {
+      navigate("/sign-in");
     }
   }, []);
 

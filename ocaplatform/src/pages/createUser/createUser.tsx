@@ -7,7 +7,7 @@ import ModalComponent from "../../components/modal/modal";
 import { LOADING_TYPES } from "../../constants/loadingTypes";
 import { handleSignUp } from "../../services/handleSignUp";
 import loadingPage from "../../store/actions/loading";
-import auth from "../../utils/auth";
+import { getCookieValue } from "../../utils";
 import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { maskEmail } from "../../utils/formatter";
@@ -16,11 +16,7 @@ import "./createUser.s.scss";
 const CreateUser = () => {
   const loadingPageAction = useActions(loadingPage);
   const navigae = useNavigate();
-  const email =
-    document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("j_user_token="))
-      ?.split("=")[1] || "";
+  const email = getCookieValue("user_email") || '';
   const [state, setState] = useMergeState({
     activeType: null,
     isOpenConfirmModal: false,
@@ -44,8 +40,7 @@ const CreateUser = () => {
   };
 
   const onClickConfirm = () => {
-    auth.setRoles(state.activeType);
-    navigae("/");
+    navigae("/dash-board");
   };
 
   const onClickExists = () => {
