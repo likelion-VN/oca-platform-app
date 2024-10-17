@@ -282,7 +282,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               return (
                 <InputQuillCustom
                   key={index}
-                  id={item.id}
+                  id={item.idNewTask}
                   className="mutiple-input-quill"
                   disabled={disabled}
                   valuePrefix={item.description}
