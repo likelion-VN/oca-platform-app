@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { MenuProps, Result } from "antd";
+import { MenuProps } from "antd";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DrawerComponent from "../../components/drawer/drawer";
@@ -41,11 +41,11 @@ export default function Dashboard() {
       case "3": {
         return <Profile isActive={state.selectedKey === "3"} />;
       }
-      case "4": {
-        return (
-          <Result status="403" subTitle="This page will be updated soon!" />
-        );
-      }
+      // case "4": {
+      //   return (
+      //     <Result status="403" subTitle="This page will be updated soon!" />
+      //   );
+      // }
       default: {
         return <HomePage isActive={state.selectedKey === "1"} />;
       }
@@ -58,6 +58,7 @@ export default function Dashboard() {
       if (isTokenExpired(token)) {
         navigate("/sign-in");
       }
+    } else {
       navigate("/sign-in");
     }
   }, []);
