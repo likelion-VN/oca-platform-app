@@ -33,11 +33,12 @@ const auth = {
     );
   },
 
-  isLogin: () => {
-    localStorage.isLogin = !!localStorage.email;
-    return localStorage.isLogin === "true";
+  setIsLogin: (isLogin: boolean) => {
+    localStorage.isLogin = isLogin;
   },
 
+  isLogin: () => localStorage.isLogin,
+  
   isLoginByGoogle: () => localStorage.isLoginByGoogle === "true",
 
   isLoginByLinkedin: () => localStorage.isLoginByLinkedin === "true",

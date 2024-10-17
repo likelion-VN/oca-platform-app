@@ -27,6 +27,13 @@ const calculateDaysDiff = (date: string, isFullDay = false) => {
   }
 };
 
+const getAccessToken = () => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; access_token=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+  return null;
+};
+
 const isTokenExpired = (token: string) => {
   if (!token) return true;
 
@@ -40,4 +47,5 @@ const isTokenExpired = (token: string) => {
   }
 };
 
-export { calculateDaysDiff, getLabelByValue, isTokenExpired };
+export { calculateDaysDiff, getAccessToken, getLabelByValue, isTokenExpired };
+

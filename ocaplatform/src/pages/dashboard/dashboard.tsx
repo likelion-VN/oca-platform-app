@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import DrawerComponent from "../../components/drawer/drawer";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
-import { isTokenExpired } from "../../utils";
 import { useSetState } from "../../utils/customHook/useSetState";
 import ApplicationPage from "./application/application";
 import "./dashboard.s.scss";
@@ -58,7 +57,8 @@ export default function Dashboard() {
         .split("; ")
         .find((row) => row.startsWith("j_user_token="))
         ?.split("=")[1] || '';
-    if (isTokenExpired(token)) {
+    // if (isTokenExpired(token)) {
+    if (!!token) {
       navigate("/sign-in");
     }
   }, []);

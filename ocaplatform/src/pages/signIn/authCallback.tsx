@@ -1,19 +1,18 @@
-import _ from "lodash";
 import { useEffect } from "react";
 
 const AuthCallback: React.FC = () => {
   useEffect(() => {
-    const allCookies: { [key: string]: string } = {};
+    const params = new URLSearchParams(window.location.hash.slice(1));
 
-    const cookies = document.cookie.split("; ");
-    _.forEach(cookies, (cookie) => {
-      const [name, value] = cookie.split("=");
-      allCookies[name] = decodeURIComponent(value);
+    const allParams: { [key: string]: string | null } = {};
+    
+    params.forEach((value, key) => {
+      allParams[key] = decodeURIComponent(value);
     });
 
-    if (!_.isNil(allCookies.j_user_token)) {
+    if (allParams.access_token) {
       window.opener?.postMessage(
-        { cookies: allCookies },
+        { params: allParams },
         window.location.origin
       );
     }
