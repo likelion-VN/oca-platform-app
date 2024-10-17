@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Option } from "../interfaces";
 
@@ -32,7 +33,7 @@ const getCookieValue = (name: string): string | null => {
   const parts = value.split(`; ${name}=`);
 
   if (parts.length === 2) {
-    return decodeURIComponent(parts.pop()?.split(';').shift() || '');
+    return decodeURIComponent(parts.pop()?.split(";").shift() || "");
   }
 
   return null;
@@ -51,5 +52,19 @@ const isTokenExpired = (token: string) => {
   }
 };
 
-export { calculateDaysDiff, getCookieValue, getLabelByValue, isTokenExpired };
+const clearAllCookies = () => {
+  const allCookies = Cookies.get();
+
+  Object.keys(allCookies).forEach((cookieName) => {
+    Cookies.remove(cookieName);
+  });
+};
+
+export {
+  calculateDaysDiff,
+  clearAllCookies,
+  getCookieValue,
+  getLabelByValue,
+  isTokenExpired
+};
 

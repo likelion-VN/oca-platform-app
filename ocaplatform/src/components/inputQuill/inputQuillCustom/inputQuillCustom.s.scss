@@ -53,7 +53,7 @@
 
   .mutiple-input-quill {
     .ql-container {
-      height: 21px;
+      height: unset;
     }
     .ql-disabled {
       background-color: transparent;
@@ -61,10 +61,17 @@
     .ql-snow {
       border-radius: 0px;
       border: none;
-
+      min-height: unset;
+      height: unset;
+      .ql-blank {
+        height: unset;
+      }
       .ql-editor {
         font-size: 14px;
-        padding: 0;
+        p {
+          line-height: 20px;
+          padding: 0;
+        }
       }
     }
   }

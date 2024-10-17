@@ -7,7 +7,8 @@ import ModalComponent from "../../components/modal/modal";
 import { LOADING_TYPES } from "../../constants/loadingTypes";
 import { handleSignUp } from "../../services/handleSignUp";
 import loadingPage from "../../store/actions/loading";
-import { getCookieValue } from "../../utils";
+import { clearAllCookies, getCookieValue } from "../../utils";
+import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { maskEmail } from "../../utils/formatter";
@@ -44,6 +45,8 @@ const CreateUser = () => {
   };
 
   const onClickExists = () => {
+    auth.clearLocalStorage();
+    clearAllCookies();
     navigae("/sign-in");
   };
 

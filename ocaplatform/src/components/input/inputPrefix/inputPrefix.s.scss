@@ -75,15 +75,15 @@
       &:first-child {
         padding-top: 7px;
       }
+      &:last-child {
+        padding-bottom: 7px;
+      }
     }
 
     &-disabled {
       background-color: $soft-shadow-black;
     }
   }
-
-
-
 }
 
 .ant-picker-cell-selected .ant-picker-cell-inner {
