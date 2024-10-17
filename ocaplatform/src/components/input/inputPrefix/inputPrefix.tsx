@@ -2,6 +2,7 @@
 import { AutoComplete, DatePicker, Input, Tooltip } from "antd";
 import { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
 import TextArea from "antd/es/input/TextArea";
+import classNames from "classnames";
 import dayjs from "dayjs";
 import _ from "lodash";
 import React, { useState } from "react";
@@ -265,9 +266,8 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         );
       case "mutiple-input-quill":
         return (
-          <div className="text-area-input">
+          <div className={classNames("text-area-input", disabled && 'text-area-input-disabled')}>
             {_.map(listDataMutipleInput, (item, index) => {
-              // console.log(item);
               return (
                 <InputQuillCustom
                   key={index}

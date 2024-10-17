@@ -103,7 +103,7 @@ const ApplicationFormRevise = () => {
   };
 
   const onBackToHome = () => {
-    navigate("/");
+    navigate("/dash-board");
   };
 
   const handleRevise = () => {
