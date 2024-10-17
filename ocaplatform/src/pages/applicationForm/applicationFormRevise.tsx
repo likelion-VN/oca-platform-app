@@ -337,7 +337,7 @@ const ApplicationFormRevise = () => {
                 disabled
                 type="text-area"
               />
-              <InputPrefix
+              {/* <InputPrefix
                 value={_.map(detailJob.tasks, (task) => ({
                   ...task.delta.company,
                   newTask: task.delta.candidate?.description,
@@ -355,7 +355,28 @@ const ApplicationFormRevise = () => {
                     ? () => handleOpenModal(true)
                     : undefined
                 }
-              />
+              /> */}
+              <div
+                onClick={
+                  detailJob.jobNegotiable
+                    ? () => handleOpenModal(true)
+                    : undefined
+                }
+              >
+                <InputPrefix
+                  title="Task"
+                  type="mutiple-input-quill"
+                  disabled={!detailJob.jobNegotiable}
+                  listDataMutipleInput={_.map(detailJob.tasks, (task) => ({
+                    ...task.delta.company,
+                    newTask: task.delta.candidate?.description,
+                    isRemove:
+                      task.negotiable &&
+                      _.isEmpty(task.delta.candidate.description),
+                  }))}
+                  subTitle={detailJob.jobNegotiable && "(Negotiable)"}
+                />
+              </div>
               <InputPrefix
                 value={_.map(
                   detailJob.job.qualifications,

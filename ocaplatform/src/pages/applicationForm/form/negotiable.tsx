@@ -27,13 +27,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 }) => {
   const [state, setState] = useMergeState({});
 
-  // const handleInputChange = (
-  //   keyValue: string,
-  //   e: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   setState({ [keyValue]: e.target.value });
-  // };
-
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const validInput = /^[0-9]*$/.test(value);
@@ -47,7 +40,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 
     if (currentTasks.length > 0) {
       const updateTask = _.map(currentTasks, (task) => {
-        return task.id.toString() == id
+        return task.idNewTask.toString() == id
           ? { ...task, newTask: value, isRemove: false }
           : task;
       });

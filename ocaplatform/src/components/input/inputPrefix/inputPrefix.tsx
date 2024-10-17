@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AutoComplete, DatePicker, Input, Tooltip } from "antd";
+import { AutoComplete, DatePicker, Input, Select, Tooltip } from "antd";
 import { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
 import TextArea from "antd/es/input/TextArea";
 import classNames from "classnames";
@@ -31,6 +31,8 @@ interface IPropsInputPrefix {
   idNewTask?: string;
   handleChangeMutiple?: (value: string, id: string) => void;
   handleChangeInputQuill?: (value: string) => void;
+  placeholder?: string;
+  autoSize?: { minRows: number; maxRows: number };
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -50,6 +52,8 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   listDataMutipleInput,
   handleChangeMutiple,
   handleChangeInputQuill,
+  placeholder,
+  autoSize,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -110,6 +114,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
           <Input
             value={value}
             onChange={handleInputChange}
+            placeholder={placeholder}
             size="large"
             disabled={disabled}
             allowClear={allowClear}
@@ -135,8 +140,9 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 ? _.map(value, (item) => item.description).join("\n")
                 : value
             }
+            placeholder={placeholder}
             onChange={handleInputChange}
-            autoSize={{ minRows: 2, maxRows: 3 }}
+            autoSize={autoSize ? autoSize : { minRows: 2, maxRows: 3 }}
             disabled={disabled}
           />
         );
@@ -214,7 +220,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 height: "40px",
               }}
               value={value ? dayjs(value) : null}
-              placeholder=""
+              placeholder={placeholder}
               onChange={handleDateChange}
               allowClear={allowClear}
             />
@@ -266,12 +272,17 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         );
       case "mutiple-input-quill":
         return (
-          <div className={classNames("text-area-input", disabled && 'text-area-input-disabled')}>
+          <div
+            className={classNames(
+              "text-area-input",
+              disabled && "text-area-input-disabled"
+            )}
+          >
             {_.map(listDataMutipleInput, (item, index) => {
               return (
                 <InputQuillCustom
                   key={index}
-                  id={item.id}
+                  id={item.idNewTask}
                   className="mutiple-input-quill"
                   disabled={disabled}
                   valuePrefix={item.description}
@@ -286,6 +297,15 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               );
             })}
           </div>
+        );
+      case "select-normal":
+        return (
+          <Select
+            className="select-normal-field"
+            onChange={onChange}
+            options={options}
+            placeholder={placeholder}
+          />
         );
       default:
         return <></>;

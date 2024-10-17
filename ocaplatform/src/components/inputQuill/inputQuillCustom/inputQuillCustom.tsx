@@ -99,19 +99,27 @@ function InputQuillCustom({
     _source: any,
     editor: ReactQuill.UnprivilegedEditor
   ) => {
+    // Lưu lại vị trí con trỏ hiện tại
+
     if (valuePrefix) {
       const textWithoutPrefix = editor
         .getText()
         .replace(valuePrefix as string, "")
         .trim();
-      // const cleanedContent = textWithoutPrefix.replace(/\n/g, "");
       const newContent = `<p><strong>${valuePrefix}</strong><span> ${textWithoutPrefix}</span></p>`; // Tạo cấu trúc mới
 
       // kiểm tra nếu có nội dung mới thì thêm class change-value vào thẻ strong
       if (textWithoutPrefix) {
-        document
-          .querySelector(".customEditor .ql-editor strong")
-          ?.classList.add("change-value");
+        // xử lí thay thế dùng ref gọi tới editor và dom tới
+        if (quillRef.current) {
+          const editorRoot = quillRef.current.getEditor().root;
+          const strongElement = editorRoot.querySelector(
+            ".customEditor .ql-editor strong"
+          );
+          if (strongElement) {
+            strongElement.classList.add("change-value");
+          }
+        }
       }
 
       if (valueHtml !== newContent) {
@@ -121,6 +129,7 @@ function InputQuillCustom({
       const textWithoutPrefix = editor.getText().trim();
       setValueHtml(`<p><span>${textWithoutPrefix}</span></p>`);
     }
+
     const newText = editor
       .getText()
       .replace(valuePrefix ? valuePrefix : ("" as string), "")
@@ -130,6 +139,66 @@ function InputQuillCustom({
       handleChangeMutiple && id && handleChangeMutiple(newText, id.toString());
     }
   };
+
+  useEffect(() => {
+    if (value && quillRef.current) {
+      // xử lí kiểm tra thực hiện đưa con trỏ vào phía sau phần nội dung
+      const quill = quillRef.current.getEditor();
+      const textWithoutPrefix = quillRef.current.getEditor().getText().trim();
+      quill.setSelection(textWithoutPrefix.length, 0, "silent");
+    }
+  }, [value]);
+
+  // const handleChange = (
+  //   _value: string,
+  //   _delta: any,
+  //   _source: any,
+  //   editor: ReactQuill.UnprivilegedEditor
+  // ) => {
+  //   if (valuePrefix) {
+  //     const textWithoutPrefix = editor
+  //       .getText()
+  //       .replace(valuePrefix as string, "")
+  //       .trim();
+  //     // const cleanedContent = textWithoutPrefix.replace(/\n/g, "");
+  //     const newContent = `<p><strong>${valuePrefix}</strong><span> ${textWithoutPrefix}</span></p>`; // Tạo cấu trúc mới
+
+  //     // kiểm tra nếu có nội dung mới thì thêm class change-value vào thẻ strong
+  //     console.log(textWithoutPrefix);
+  //     if (textWithoutPrefix) {
+  //       // xử lí thay thế dùng ref gọi tới editor và dom tới
+  //       if (quillRef.current) {
+  //         console.log(
+  //           quillRef.current
+  //             .getEditor()
+  //             .root.querySelector(".customEditor .ql-editor strong")
+  //         );
+  //         quillRef.current
+  //           .getEditor()
+  //           .root.querySelector(".customEditor .ql-editor strong")
+  //           ?.classList.add("change-value");
+  //       }
+  //       // document
+  //       //   .querySelector(".customEditor .ql-editor strong")
+  //       //   ?.classList.add("change-value");
+  //     }
+
+  //     if (valueHtml !== newContent) {
+  //       setValueHtml(newContent);
+  //     }
+  //   } else {
+  //     const textWithoutPrefix = editor.getText().trim();
+  //     setValueHtml(`<p><span>${textWithoutPrefix}</span></p>`);
+  //   }
+  //   const newText = editor
+  //     .getText()
+  //     .replace(valuePrefix ? valuePrefix : ("" as string), "")
+  //     .trim();
+  //   if (value !== newText) {
+  //     onChange && onChange(newText);
+  //     handleChangeMutiple && id && handleChangeMutiple(newText, id.toString());
+  //   }
+  // };
 
   useEffect(() => {
     if (!valuePrefix && quillRef.current && value) {
