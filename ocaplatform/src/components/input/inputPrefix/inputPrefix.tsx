@@ -307,6 +307,16 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             placeholder={placeholder}
           />
         );
+      case "select-mutiple":
+        return (
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Please select"
+            options={options}
+          />
+        );
       default:
         return <></>;
     }

@@ -104,7 +104,7 @@ const ApplicationFormRevise = () => {
   };
 
   const onBackToHome = () => {
-    safeNavigate("/dash-board");
+    safeNavigate("/application");
   };
 
   const handleRevise = () => {
@@ -159,6 +159,7 @@ const ApplicationFormRevise = () => {
             handleClick={handleClick}
             handleCancel={onBackToHome}
             handleOpenSuccessModal={handleOpenSuccessModal}
+            isSuccess={state.isSuccess}
           />
         );
       }
@@ -181,7 +182,6 @@ const ApplicationFormRevise = () => {
   }, [state.detailJob]);
 
   const { detailJob } = state || {};
-
   return (
     <>
       <ModalComponent
@@ -372,7 +372,7 @@ const ApplicationFormRevise = () => {
                   disabled={!detailJob.jobNegotiable}
                   listDataMutipleInput={_.map(detailJob.tasks, (task) => ({
                     ...task.delta.company,
-                    newTask: task.delta.candidate?.description,
+                    newTask: task.delta.candidate?.description || "",
                     isRemove:
                       task.negotiable &&
                       _.isEmpty(task.delta.candidate.description),
