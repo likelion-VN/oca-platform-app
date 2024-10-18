@@ -1,4 +1,3 @@
-import { message } from "antd";
 import Cookies from "js-cookie";
 import _ from "lodash";
 import { useEffect } from "react";
@@ -6,7 +5,6 @@ import { GoogleIcon, LinkedinIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
-import { isTokenExpired } from "../../utils";
 import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
 import { safeNavigate } from "../../utils/helper";
@@ -32,34 +30,34 @@ const LoginPage = () => {
 
   const loginByGoogle = () => {
     // *: For production
-    // const width = 500;
-    // const height = 600;
-    // const left = window.screenX + window.outerWidth / 2 - width / 2;
-    // const top = window.screenY + window.outerHeight / 2 - height / 2;
-    // window.open(
-    //   googleAuthUrl,
-    //   "Login by Google",
-    //   `width=${width},height=${height},top=${top},left=${left}`
-    // );
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + window.outerWidth / 2 - width / 2;
+    const top = window.screenY + window.outerHeight / 2 - height / 2;
+    window.open(
+      googleAuthUrl,
+      "Login by Google",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
 
     // *: For developer
-    auth.setIsLogin(true);
-    const idToken =
-    'eyJhbGciOiJSUzI1NiIsImtpZCI6ImE1MGY2ZTcwZWY0YjU0OGE1ZmQ5MTQyZWVjZDFmYjhmNTRkY2U5ZWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTUxNzUyODgzNTMwMjA3NTQ2MjMiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoidGh0aWVuMDExMEBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IndSTFBtemFaZExpUzExeEloakhtc1EiLCJub25jZSI6ImRLUzFRUlRtRGMteUpXVk1LcUhNWmE3ZmZWX1FVcDAzeXpEZ0NOSm9tN1kiLCJuYW1lIjoidGh0aWVuMDExMCB0aHRpZW4wMTEwIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xsX2I2aHRsbVBKSnl2SEZUQU1xQVRSZDRNdnJXcGVjTGNBTWlEa3c4TnFhdlFfQT1zOTYtYyIsImdpdmVuX25hbWUiOiJ0aHRpZW4wMTEwIiwiZmFtaWx5X25hbWUiOiJ0aHRpZW4wMTEwIiwiaWF0IjoxNzI5MjIzMTY5LCJleHAiOjE3MjkyMjY3Njl9.3cJzFk4xKPAbqzYZszPPr2Y3Ex0XDZJXEQFSMinjX3yoNZZsXdiuCdVpfiAWl46lu0xiQMoNaQphk9U0nBa3K8004gBVD8HB9NZOIDydkHIl18fXJB-ilLDp43blvvASnUsEuc8YL9JO_OFYKt5-vMEGztbEP-y09YqBoz5HrdjMkPRdI26gPFxcweS1gMvLb5cJ7Zqw0cmC782HsmbaLtO0c_4kKzQ0gvDOc9RJJz3Zhm08OabgrfgpIut7xMerDZaYUIs_mx-ZDlS-8Y751NgToIO74syrz0O83xTDBM4KB-wYH5hxKVJPtbg1oGy1fovX1MZwYyEv3sLob54V6g'
-    const email = "thtien0110@likelion.net";
-    Cookies.set("user_token", idToken, { path: "/", secure: true });
-    Cookies.set("user_email", encodeURIComponent(email), {
-      path: "/",
-      secure: true,
-    });
-    // Set accout type
-    // auth.setCandidateUser(true);
-    auth.setCompanyUser(true);
-    if (isTokenExpired(idToken)) {
-      message.error("Token is expired! Get another token to login!");
-    } else {
-      safeNavigate("/dash-board");
-    }
+    // auth.setIsLogin(true);
+    // const idToken =
+    // 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImE1MGY2ZTcwZWY0YjU0OGE1ZmQ5MTQyZWVjZDFmYjhmNTRkY2U5ZWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTUxNzUyODgzNTMwMjA3NTQ2MjMiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoidGh0aWVuMDExMEBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6InhMZy1PTlhPMkdWeTRJdUNsalpSYmciLCJub25jZSI6IkQyU3RXT0VTM2s2R2NlM1RvMU1GMDBadTNPcjFTRDFRUDN6djg0NC1MTVUiLCJuYW1lIjoidGh0aWVuMDExMCB0aHRpZW4wMTEwIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xsX2I2aHRsbVBKSnl2SEZUQU1xQVRSZDRNdnJXcGVjTGNBTWlEa3c4TnFhdlFfQT1zOTYtYyIsImdpdmVuX25hbWUiOiJ0aHRpZW4wMTEwIiwiZmFtaWx5X25hbWUiOiJ0aHRpZW4wMTEwIiwiaWF0IjoxNzI5MjM1NTM4LCJleHAiOjE3MjkyMzkxMzh9.roNThH5mSuEqkGIGClHgimFZeUhj8UmTBK_0M5CM5dLTQ6L7V0um-kXVyKsjYXXs8TFCSn5mXPlMcDFa4NpsTJ3QvG5LwQAAB4eSUuyT4oaG4i90qL6q14TE8iNr_-8_KmHeddg5GZ9IbXjcfX68CxqKUaeiuGdNmGRQFXoGZYjHHssyHAyEKTz4wmGTvGiUBbz42Gy5KTtd92pajg-o6N4GM0cQyREY8IqtkgEqHHkr6cqYLUXu9urYnlV5BScUE0rS_oBs8W_bksp6lEQbs15dSEq7F5bHtOCDh_n3xsKabEnuB4it6FlTUPmhENB6sUOXtBQlnqzmFHEPX3r5AQ'
+    // const email = "thtien0110@likelion.net";
+    // Cookies.set("user_token", idToken, { path: "/", secure: true });
+    // Cookies.set("user_email", encodeURIComponent(email), {
+    //   path: "/",
+    //   secure: true,
+    // });
+    // // Set accout type
+    // // auth.setCandidateUser(true);
+    // auth.setCompanyUser(true);
+    // if (isTokenExpired(idToken)) {
+    //   message.error("Token is expired! Get another token to login!");
+    // } else {
+    //   safeNavigate("/dash-board");
+    // }
   };
 
   useEffect(() => {
