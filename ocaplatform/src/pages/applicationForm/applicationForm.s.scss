@@ -391,25 +391,12 @@
   }
 }
 
-.ant-dropdown {
-  &-menu {
-    // padding: 0 !important;
-    &-item {
-      // padding: 0 !important;
-    }
-    &-title-content {
-      button {
-        width: 100%;
-        border-color: transparent;
-        justify-content: flex-start;
-        &:hover {
-          border-radius: 0 !important;
-          border-color: transparent !important;
-          color: unset !important;
-          background-color: $smoke-white !important;
-        }
-      }
-    }
+.resume-action {
+  .menu-resume-item {
+    padding: 6px 8px !important;
+  }
+  svg {
+    margin-right: 8px;
   }
 }
 

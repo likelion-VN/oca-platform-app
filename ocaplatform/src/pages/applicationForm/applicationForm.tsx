@@ -77,6 +77,7 @@ const ApplicationForm = () => {
       jobTypeId: detailJob.jobType.id,
     });
     setState({ isLoading: false });
+    loadingPageAction();
   };
 
   const onBackToHome = () => {

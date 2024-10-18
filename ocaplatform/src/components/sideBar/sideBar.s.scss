@@ -2,6 +2,7 @@
 
 .ant-menu-inline-collapsed {
   width: 80px;
+
   .ant-menu-item {
     display: flex;
     padding-inline: calc(50% - 24px);
@@ -11,22 +12,56 @@
     width: 48px;
     height: 44px;
     color: #666666;
+    padding: 0;
+    padding-left: 0 !important;
+    justify-content: center;
+
     &:first-child {
       margin: 16px 16px 8px 16px;
     }
+
     &:last-child {
       margin: 8px 16px 16px 16px;
       align-items: center;
+
       .ant-menu-item-icon {
         min-width: 16px;
       }
     }
+
     &:not(:first-child):not(:last-child) {
       margin: 0 16px 8px 16px;
     }
-    &-selected {
+
+    .ant-menu-title-content {
+      a {
+        display: flex;
+        width: 40px;
+        justify-content: center;
+
+        .content-navlink {
+          display: none;
+        }
+      }
+    }
+
+    &.ant-menu-item-selected {
+      background-color: unset;
+
+      &:hover {
+        background-color: $light-peach;
+        color: $bright-orange;
+
+      }
+    }
+
+
+
+    .active-item-sidebar {
       color: $bright-orange;
       background-color: $light-peach;
+
+
     }
   }
 }
@@ -35,30 +70,64 @@
   width: 312px;
   font-family: "Inter";
   font-weight: 500;
+
   .ant-menu-item {
     margin-inline: 0;
     margin-block: 0;
     width: calc(100% - 32px);
     border-radius: 4px;
-    padding-left: 16px !important;
+    padding: 0;
+    padding-left: 0 !important;
+
     height: 44px;
     color: $charcoal-grey;
+
     &:first-child {
       margin: 16px 16px 8px 16px;
     }
+
     &:last-child {
       margin: 8px 16px 16px 16px;
     }
+
     &:not(:first-child):not(:last-child) {
       margin: 0 16px 8px 16px;
     }
-    &-selected {
+
+    .ant-menu-title-content {
+      width: 100%;
+      margin-left: 0;
+
+      a {
+        display: flex;
+        justify-content: start;
+        width: 100%;
+        padding-left: 16px !important;
+
+        span {
+          margin-right: 10px;
+        }
+      }
+    }
+
+
+
+    &.ant-menu-item-selected {
+      background-color: unset;
+
+      &:hover {
+        background-color: $light-peach;
+        color: $bright-orange;
+
+      }
+    }
+
+    .active-item-sidebar {
       color: $bright-orange;
       background-color: $light-peach;
     }
-    .ant-menu-title-content {
-      margin-inline-start: 32px;
-    }
+
+
   }
 }
 

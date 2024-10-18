@@ -1,12 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { EnvironmentOutlined, ExportOutlined } from "@ant-design/icons";
+import { ExportOutlined } from "@ant-design/icons";
 import { message, Skeleton } from "antd";
 
 import classNames from "classnames";
 import _ from "lodash";
-import { Clock, Laptop, MapPin, UsersFour } from "phosphor-react";
+import {
+  Clock,
+  GraduationCap,
+  Laptop,
+  MapPin,
+  UsersFour,
+} from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CalendarDotIcon } from "../../../../assets/svg";
@@ -309,11 +315,11 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
             </>
           )}
         </div>
-        <div className="application-jobs">
+        <div className="application-candidate">
           <div
             ref={divRef}
             className={classNames(
-              "job-list",
+              "candidate-list",
               !_.isEmpty(state.listJob) && state.listJob.length > 4
                 ? state.hasShadowTop && state.hasShadowBottom
                   ? "shadow-top-bottom"
@@ -325,7 +331,7 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
           >
             {state.isLoadingList ? (
               _.map(new Array(5), (_item, index) => (
-                <div className="job-card" key={index}>
+                <div className="candidate-card" key={index}>
                   <Skeleton active title={false} paragraph={{ rows: 3 }} />
                 </div>
               ))
@@ -335,17 +341,17 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
               _.map(state.listJob, (job, index) => (
                 <div
                   className={classNames(
-                    "job-card",
-                    index === state.indexActive && "job-card-active"
+                    "candidate-card",
+                    index === state.indexActive && "candidate-card-active"
                   )}
                   key={index}
                   onClick={() => handleActiveCard(index, job.applicationId)}
                 >
-                  <div className="job-card-left">
+                  <div className="candidate-card-left">
                     <div className="red-dot"></div>
                   </div>
-                  <div className="job-card-mid">
-                    <div className="job-title">
+                  <div className="candidate-card-mid">
+                    <div className="candidate-title">
                       <div className="title">
                         {job.jobTitle}
                         {job.negotiable && (
@@ -353,22 +359,20 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
                         )}
                       </div>
                     </div>
-                    <div className="company">
+                    <div className="candidate">
                       <img
                         src={job.companyAvatarUrl}
                         alt="notification-icon"
-                        className="company-logo"
+                        className="candidate-logo"
                         width={40}
                         height={40}
                       />
-                      <div className="company-info">
-                        <div className="company-info-name">
+                      <div className="candidate-info">
+                        <div className="candidate-info-name">
                           {job.companyName}
                         </div>
-                        <div className="company-info-state">
-                          {_.compact([job.cityName, job.countryName]).join(
-                            ", "
-                          )}
+                        <div className="candidate-info-state">
+                          Stanford University
                         </div>
                       </div>
                     </div>
@@ -376,7 +380,7 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
                       {renderStatus(job.statusId)}
                     </div>
                   </div>
-                  <div className="job-card-right">
+                  <div className="candidate-card-right">
                     <div className="update-time">
                       {calculateDaysDiff(job.postDateTime)}
                     </div>
@@ -396,29 +400,19 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
                   <img
                     src={jobDetail.job.company.companyAvatarUrl}
                     alt="notification-icon"
-                    className="candidate-logo"
+                    className="candidate-avatar"
                     width={84}
                     height={84}
                   />
-                  <div className="job-title">
-                    <div className="title">
-                      {jobDetail.job.title}
-                      {jobDetail.job.negotiable && (
-                        <span className="title-sub">(Negotiable)</span>
-                      )}
+                  <div className="candidate-description">
+                    <div className="title">{jobDetail.job.title}</div>
+                    <div className="candidate-info-education">
+                      <GraduationCap size={16} color="#FF7710" />
+                      Stanford University - Humanities and Art
                     </div>
-                    <div className="company-info">
-                      <div className="company-info-name">
-                        {jobDetail.job.company.name}
-                      </div>
-                      <div className="company-info-state">
-                        <EnvironmentOutlined className="icon" />
-                        {_.compact([
-                          jobDetail.job.location.city,
-                          // jobDetail.job.location.state,
-                          jobDetail.job.location.country,
-                        ]).join(", ")}
-                      </div>
+                    <div className="candidate-info-detail">
+                      Design enthusiast from Stanford, ready to innovate in
+                      product design
                     </div>
                   </div>
                 </div>

@@ -121,7 +121,19 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   };
 
   useEffect(() => {
-    setState(defaultData);
+    if (defaultData.currentTasks.length == 0) {
+      const newId = uuidv4();
+      const newTask = {
+        id: newId,
+        description: "",
+        newTask: "",
+        isRemove: false,
+      };
+      const newDefaultData = defaultData.currentTasks.push(newTask);
+      setState(newDefaultData);
+    } else {
+      setState(defaultData);
+    }
   }, [defaultData]);
 
   return (
