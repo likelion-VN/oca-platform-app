@@ -11,7 +11,6 @@ import dayjs from "dayjs";
 import _ from "lodash";
 import { ArrowLeft, Plus, PlusCircle, XCircle } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { SuccessIconGif } from "../../../assets/gif";
 import ButtonComponent from "../../../components/button/button";
 import InputDefault from "../../../components/input/inputDefault/inputDefault";
@@ -24,6 +23,7 @@ import { handleUploadFile } from "../../../services/handleUploadFile";
 import loadingPage from "../../../store/actions/loading";
 import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
+import { safeNavigate } from "../../../utils/helper";
 import { validateEmail, validatePhoneNumber } from "../../../utils/validation";
 
 interface ResumeFormProps {
@@ -42,7 +42,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   isSuccess = false,
 }) => {
   const loadingPageAction = useActions(loadingPage);
-  const navigate = useNavigate();
   const dataAttachment = useRef<any[]>([]);
   const chosseFileErrorMessage = useRef<string | null>(null);
   const dropFileErrorMessage = useRef<string | null>(null);
@@ -302,7 +301,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
 
   const handleConfirm = () => {
     handleOpenSuccessModal(false);
-    navigate("/dash-board");
+    safeNavigate("/dash-board");
   };
 
   useEffect(() => {

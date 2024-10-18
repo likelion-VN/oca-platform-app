@@ -22,14 +22,14 @@ class PrefixBlot extends Embed {
 
 PrefixBlot.blotName = "prefix";
 PrefixBlot.tagName = "strong"; // Định nghĩa thẻ HTML sẽ sử dụng (strong)
-Quill.register(PrefixBlot); // Đăng ký blot
+Quill.register(PrefixBlot);
 
 interface InputQuillDefaultProps {
   valuePrefix?: string;
   value: string;
   disabled: boolean;
   onChange?: (value: string) => void;
-  id?: string; // uuid hoặc id số từ BE
+  id?: string;
   onKeyDown?: (e: any) => void;
   className?: string;
   handleChangeMutiple?: (value: string, id: string) => void;

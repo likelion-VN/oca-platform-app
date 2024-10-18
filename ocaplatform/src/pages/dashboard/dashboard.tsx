@@ -3,13 +3,13 @@
 import { MenuProps } from "antd";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import DrawerComponent from "../../components/drawer/drawer";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
 import { clearAllCookies, isTokenExpired } from "../../utils";
 import auth from "../../utils/auth";
 import { useSetState } from "../../utils/customHook/useSetState";
+import { safeNavigate } from "../../utils/helper";
 import ApplicationCandidatePage from "./application/candidate/applicationCandidate";
 import ApplicationCompanyPage from "./application/company/applicationCompany";
 import "./dashboard.s.scss";
@@ -17,7 +17,6 @@ import HomePage from "./home/home";
 import Profile from "./profile/profile";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const isCompanyUser = auth.isCompanyUser();
   const [state, setState] = useSetState({
     collapsed: false,
@@ -66,12 +65,12 @@ const Dashboard = () => {
       if (isTokenExpired(token)) {
         auth.clearLocalStorage();
         clearAllCookies();
-        navigate("/sign-in");
+        safeNavigate("/sign-in");
       }
     } else {
       auth.clearLocalStorage();
       clearAllCookies();
-      navigate("/sign-in");
+      safeNavigate("/sign-in");
     }
   }, []);
 

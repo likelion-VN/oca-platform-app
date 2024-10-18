@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import _ from "lodash";
 import { ArrowLeft } from "phosphor-react";
 import { useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { CheckIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import { LOADING_TYPES } from "../../constants/loadingTypes";
@@ -14,6 +14,7 @@ import { handleSubmitLApplicationForm } from "../../services/handleSubmitApplica
 import loadingPage from "../../store/actions/loading";
 import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
+import { safeNavigate } from "../../utils/helper";
 import { newFormDataFormatter } from "./applicationForm.h";
 import "./applicationForm.s.scss";
 import NegotiableForm from "./form/negotiable";
@@ -21,7 +22,6 @@ import ResumeForm from "./form/resume";
 
 const ApplicationForm = () => {
   const loadingPageAction = useActions(loadingPage);
-  const navigate = useNavigate();
   const location = useLocation();
   const { jobDetail } = location.state || {};
   const newForm = useRef({
@@ -80,7 +80,7 @@ const ApplicationForm = () => {
   };
 
   const onBackToHome = () => {
-    navigate("/dash-board");
+    safeNavigate("/dash-board");
   };
 
   const handleApply = async (input: any) => {

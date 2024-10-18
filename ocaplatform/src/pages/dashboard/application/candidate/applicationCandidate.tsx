@@ -20,7 +20,6 @@ import {
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { CalendarDotIcon } from "../../../../assets/svg";
 import Badge from "../../../../components/badge/badge";
 import ButtonComponent from "../../../../components/button/button";
@@ -37,6 +36,7 @@ import { calculateDaysDiff } from "../../../../utils";
 import useActions from "../../../../utils/customHook/useActions";
 import useMergeState from "../../../../utils/customHook/useMergeState";
 import { formatDate } from "../../../../utils/formatter";
+import { safeNavigate } from "../../../../utils/helper";
 import {
   renderStatus,
   renderStatusDescription,
@@ -56,7 +56,6 @@ const ApplicationCandidatePage: React.FC<IPropsApplicationCandidate> = ({ isActi
   );
   const loadingPageAction = useActions(loadingPage);
 
-  const navigate = useNavigate();
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
@@ -152,7 +151,7 @@ const ApplicationCandidatePage: React.FC<IPropsApplicationCandidate> = ({ isActi
 
   const handleOnclick = () => {
     const { jobDetail } = state;
-    navigate("/application-form-revise", {
+    safeNavigate("/application-form-revise", {
       state: { jobDetailReview: jobDetail },
     });
   };
