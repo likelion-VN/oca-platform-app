@@ -127,7 +127,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
         dataAttachment.current = [...dataAttachment.current, { id, ...file }];
       }
       loadingPageAction();
-
       return false;
     },
     showUploadList: false,
@@ -164,12 +163,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     },
     onChange: (info) => {
       const { file, fileList } = info;
-
-      //* Case: remove file
-      if (file.status === "removed") {
-        handleChangeAttachment(fileList);
-        return;
-      }
 
       const fileIndex = fileList.findIndex((item) => item.uid === file.uid);
       const hasInvalidTypeFile = fileList.find((file) => {

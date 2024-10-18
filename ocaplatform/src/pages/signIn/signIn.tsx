@@ -7,8 +7,8 @@ import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
 import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
-import "./signIn.s.scss";
 import { safeNavigate } from "../../utils/helper";
+import "./signIn.s.scss";
 
 const LoginPage = () => {
   const loadingPageAction = useActions(loadingPage);

@@ -10,14 +10,12 @@ import { clearAllCookies, isTokenExpired } from "../../utils";
 import auth from "../../utils/auth";
 import { useSetState } from "../../utils/customHook/useSetState";
 import { safeNavigate } from "../../utils/helper";
-import ApplicationCandidatePage from "./application/candidate/applicationCandidate";
-import ApplicationCompanyPage from "./application/company/applicationCompany";
+import ApplicationPage from "./application/applicationPage";
 import "./dashboard.s.scss";
 import HomePage from "./home/home";
 import Profile from "./profile/profile";
 
 const Dashboard = () => {
-  const isCompanyUser = auth.isCompanyUser();
   const [state, setState] = useSetState({
     collapsed: false,
     selectedKey: "1",
@@ -39,11 +37,7 @@ const Dashboard = () => {
   const renderPage = (key: string) => {
     switch (key) {
       case "2": {
-        if (isCompanyUser) {
-          return <ApplicationCompanyPage />;
-        } else {
-          return <ApplicationCandidatePage />;
-        }
+          return <ApplicationPage />;
       }
       case "3": {
         return <Profile />;
