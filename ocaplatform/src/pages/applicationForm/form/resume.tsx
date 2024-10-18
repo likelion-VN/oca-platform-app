@@ -5,7 +5,15 @@ import {
   EllipsisOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { Card, Dropdown, List, Menu, message, Upload, UploadProps } from "antd";
+import {
+  Card,
+  Dropdown,
+  List,
+  MenuProps,
+  message,
+  Upload,
+  UploadProps,
+} from "antd";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import _ from "lodash";
@@ -51,7 +59,6 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     selectedResumeId: null,
     isOpenRemoveModal: false,
     isOpenApplyModal: false,
-    isLoadingUpload: false,
     errors: {},
     clickedId: null,
   });
@@ -273,24 +280,35 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     handleOpenApplyModal(false);
   };
 
-  const menu = (
-    <Menu className="menu-dropdown">
-      <Menu.Item>
-        <ButtonComponent
-          title="View resume"
-          icon={<EyeOutlined />}
-          onClick={() => handleDownloadFile(state.clickedId)}
-        />
-      </Menu.Item>
-      <Menu.Item>
-        <ButtonComponent
-          title="Remove resume"
-          icon={<DeleteOutlined />}
-          onClick={() => handleOpenRemoveModal(true)}
-        />
-      </Menu.Item>
-    </Menu>
-  );
+  const items: MenuProps["items"] = [
+    {
+      className: "menu-resume-item",
+      label: (
+        <>
+          <EyeOutlined /> View resume
+        </>
+      ),
+      key: "0",
+      onClick: async () => {
+        loadingPageAction(LOADING_TYPES.LOADING);
+        try {
+          await handleDownloadFile(state.clickedId);
+        } finally {
+          loadingPageAction();
+        }
+      },
+    },
+    {
+      className: "menu-resume-item",
+      label: (
+        <>
+          <DeleteOutlined /> Delete resume
+        </>
+      ),
+      key: "1",
+      onClick: () => handleOpenRemoveModal(true),
+    },
+  ];
 
   const handleConfirm = () => {
     handleOpenSuccessModal(false);
@@ -462,7 +480,8 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
                       </div>
                       <div className="resume-item-right">
                         <Dropdown
-                          overlay={menu}
+                          overlayClassName="resume-action"
+                          menu={{ items }}
                           trigger={["click"]}
                           placement="bottomRight"
                         >

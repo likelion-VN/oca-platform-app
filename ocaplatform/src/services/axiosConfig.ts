@@ -17,7 +17,7 @@ axiosInstance.interceptors.request.use(
       const token = Cookies.get("user_token");
       if (token) {
         if (isTokenExpired(token)) {
-          message.error('Login session has expired! Please log in again!')
+          message.error('Login session has expired! Please login again!')
           safeNavigate('/sign-in')
         } else {
           if (!config.headers) {

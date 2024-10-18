@@ -91,12 +91,12 @@
       }
     }
   }
-  .application-jobs {
+  .application-candidate {
     display: grid;
     grid-template-columns: 435px 1fr;
     gap: 24px;
     height: 87.5%;
-    .job-list {
+    .candidate-list {
       display: flex;
       flex-direction: column;
       row-gap: 12px;
@@ -119,7 +119,7 @@
         transition: box-shadow 0.3s ease;
       }
 
-      .job-card {
+      .candidate-card {
         display: flex;
         border: 1px solid $neutral-grey;
         border-radius: 4px;
@@ -143,7 +143,7 @@
         }
         &-mid {
           flex: 1;
-          .job-title {
+          .candidate-title {
             display: flex;
             margin-bottom: 12px;
             .title {
@@ -157,7 +157,7 @@
               }
             }
           }
-          .company {
+          .candidate {
             display: flex;
             margin-bottom: 12px;
             &-logo {
@@ -223,44 +223,39 @@
       }
       &-candidate-name {
         display: flex;
-        .candidate-logo {
+        .candidate-avatar {
           height: 84px;
           width: 84px;
           border-radius: 8px;
           align-self: center;
           object-fit: contain;
         }
-        .job-title {
+        .candidate-description {
           margin-left: 12px;
           align-self: center;
           .title {
             font-size: 24px;
             font-weight: 700;
             line-height: 32px;
-            &-sub {
-              font-weight: 600;
-              color: $bright-blue;
-              font-size: 14px;
-              margin-left: 4px;
-            }
-            .tooltip {
-              margin-left: 4px;
-            }
           }
-          .company-info {
-            display: flex;
-            color: $charcoal-grey;
-            font-size: 14px;
-            font-weight: 400;
-            &-name {
-              border-right: 1px solid $off-white;
-              padding-right: 8px;
-            }
-            &-state {
-              padding-left: 8px;
-              .icon {
+          .candidate-info {
+            &-education {
+              svg {
                 margin-right: 4px;
               }
+              display: flex;
+              align-items: center;
+              margin-top: 4px;
+              font-size: 12px;
+              font-weight: 500;
+              line-height: 16px;
+              color: $charcoal-grey;
+            }
+            &-detail {
+              margin-top: 12px;
+              color: $dark-navy-blue;
+              font-weight: 400;
+              font-size: 14px;
             }
           }
         }

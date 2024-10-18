@@ -100,6 +100,7 @@ const ApplicationFormRevise = () => {
       jobTypeId: detailJob.jobType?.id || 0,
       applicationId: detailJob.applicationId || 0,
     });
+    loadingPageAction();
   };
 
   const onBackToHome = () => {
