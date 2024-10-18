@@ -1,17 +1,17 @@
+import Cookies from "js-cookie";
 import _ from "lodash";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { GoogleIcon, LinkedinIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
 import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
+import { safeNavigate } from "../../utils/helper";
 import "./signIn.s.scss";
 
 const LoginPage = () => {
   const loadingPageAction = useActions(loadingPage);
-  const navigate = useNavigate();
 
   const linkedinAuthUrl = `${apiServiceUrl}oauth2/authorization/linkedin`;
   const googleAuthUrl = `${apiServiceUrl}oauth2/authorization/google`;
@@ -41,15 +41,23 @@ const LoginPage = () => {
     );
 
     // *: For developer
+    // auth.setIsLogin(true);
     // const idToken =
-    // 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImE1MGY2ZTcwZWY0YjU0OGE1ZmQ5MTQyZWVjZDFmYjhmNTRkY2U5ZWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTUxNzUyODgzNTMwMjA3NTQ2MjMiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoidGh0aWVuMDExMEBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Ik9LR1otWjNuRW45TnotREJ0UlZwUUEiLCJub25jZSI6Il9ERWpnc0UyQURYMHJVTVlPUWU1WURwc2Q2UlZJcmRjMEdBUENoNDhaM0EiLCJuYW1lIjoidGh0aWVuMDExMCB0aHRpZW4wMTEwIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xsX2I2aHRsbVBKSnl2SEZUQU1xQVRSZDRNdnJXcGVjTGNBTWlEa3c4TnFhdlFfQT1zOTYtYyIsImdpdmVuX25hbWUiOiJ0aHRpZW4wMTEwIiwiZmFtaWx5X25hbWUiOiJ0aHRpZW4wMTEwIiwiaWF0IjoxNzI5MTY1MjMyLCJleHAiOjE3MjkxNjg4MzJ9.OtfR_odiVNt22m0N6yF0Av65AfdSZfFAs1Uw8LlHS_prUvPBXphf1CxI-LeC-lhR2lHe_FrkXI8TWpg6PrjzMdvKnkP9llvEiHt767EgZK_mUxcnl4WPXJWDkaa0bnP8XefQvZeG12yx8m0dIXAqJHe3QXNGGdUacxhj7CATAIRvAWOYT2kStof60w-wKsZ9K0js_EXwhWaRU8t71lwFEpFIc_83yXN-z7n3xW_2flMRAMF3PP436FxmibxO5ciBxdKzej-E2KIqnYy_OMx8Ko-GVKfDcPzBo3k-plNUYqGMpPee_CFip4z91NYWEumvTJMM-5xn-i8Rwqt9qsUlSA'
+    // 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImE1MGY2ZTcwZWY0YjU0OGE1ZmQ5MTQyZWVjZDFmYjhmNTRkY2U5ZWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTUxNzUyODgzNTMwMjA3NTQ2MjMiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoidGh0aWVuMDExMEBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6InhMZy1PTlhPMkdWeTRJdUNsalpSYmciLCJub25jZSI6IkQyU3RXT0VTM2s2R2NlM1RvMU1GMDBadTNPcjFTRDFRUDN6djg0NC1MTVUiLCJuYW1lIjoidGh0aWVuMDExMCB0aHRpZW4wMTEwIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xsX2I2aHRsbVBKSnl2SEZUQU1xQVRSZDRNdnJXcGVjTGNBTWlEa3c4TnFhdlFfQT1zOTYtYyIsImdpdmVuX25hbWUiOiJ0aHRpZW4wMTEwIiwiZmFtaWx5X25hbWUiOiJ0aHRpZW4wMTEwIiwiaWF0IjoxNzI5MjM1NTM4LCJleHAiOjE3MjkyMzkxMzh9.roNThH5mSuEqkGIGClHgimFZeUhj8UmTBK_0M5CM5dLTQ6L7V0um-kXVyKsjYXXs8TFCSn5mXPlMcDFa4NpsTJ3QvG5LwQAAB4eSUuyT4oaG4i90qL6q14TE8iNr_-8_KmHeddg5GZ9IbXjcfX68CxqKUaeiuGdNmGRQFXoGZYjHHssyHAyEKTz4wmGTvGiUBbz42Gy5KTtd92pajg-o6N4GM0cQyREY8IqtkgEqHHkr6cqYLUXu9urYnlV5BScUE0rS_oBs8W_bksp6lEQbs15dSEq7F5bHtOCDh_n3xsKabEnuB4it6FlTUPmhENB6sUOXtBQlnqzmFHEPX3r5AQ'
     // const email = "thtien0110@likelion.net";
-    // document.cookie = `user_token=${idToken}; path=/; secure`;
-    // document.cookie = `user_email=${encodeURIComponent(email)}; path=/; secure`;
+    // Cookies.set("user_token", idToken, { path: "/", secure: true });
+    // Cookies.set("user_email", encodeURIComponent(email), {
+    //   path: "/",
+    //   secure: true,
+    // });
     // // Set accout type
-    // auth.setCandidateUser(true);
-    // // auth.setCompanyUser(true);
-    // navigate("/dash-board");
+    // // auth.setCandidateUser(true);
+    // auth.setCompanyUser(true);
+    // if (isTokenExpired(idToken)) {
+    //   message.error("Token is expired! Get another token to login!");
+    // } else {
+    //   safeNavigate("/dash-board");
+    // }
   };
 
   useEffect(() => {
@@ -58,19 +66,23 @@ const LoginPage = () => {
         const { params } = event.data;
         if (!_.isEmpty(params)) {
           auth.setIsLogin(true);
-          document.cookie = `user_token=${params.idToken}; path=/; secure`;
-          document.cookie = `user_email=${encodeURIComponent(
-            params.email
-          )}; path=/; secure`;
+          Cookies.set("user_token", params.idToken, {
+            path: "/",
+            secure: true,
+          });
+          Cookies.set("user_email", encodeURIComponent(params.email), {
+            path: "/",
+            secure: true,
+          });
           if (params.account_type !== "0") {
             if (params.account_type === "1") {
               auth.setCandidateUser(true);
             } else {
               auth.setCompanyUser(true);
             }
-            navigate("/dash-board");
+            safeNavigate("/dash-board");
           } else {
-            navigate("/create-user");
+            safeNavigate("/create-user");
           }
         }
       }

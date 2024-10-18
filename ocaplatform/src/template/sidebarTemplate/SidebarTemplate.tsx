@@ -1,29 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { MenuProps } from "antd";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import DrawerComponent from "../../components/drawer/drawer";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import "./sidebarTemplate.scss";
+import auth from "../../utils/auth";
+import { clearAllCookies, isTokenExpired } from "../../utils";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
-import { clearAllCookies, isTokenExpired } from "../../utils";
-import auth from "../../utils/auth";
-import { useSetState } from "../../utils/customHook/useSetState";
+import DrawerComponent from "../../components/drawer/drawer";
 import { safeNavigate } from "../../utils/helper";
-import ApplicationPage from "./application/applicationPage";
-import "./dashboard.s.scss";
-import HomePage from "./home/home";
-import Profile from "./profile/profile";
+import useMergeState from "../../utils/customHook/useMergeState";
 
-const Dashboard = () => {
-  const [state, setState] = useSetState({
+const SidebarTemplate = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [state, setState] = useMergeState({
     collapsed: false,
     selectedKey: "1",
     openDrawer: false,
   });
 
+  useEffect(() => {
+    if (location.pathname == "/") {
+      navigate("/sign-in");
+    }
+  }, [location.pathname]);
+
   const toggleCollapsed = () => {
-    setState((prevState: any) => ({ collapsed: !prevState.collapsed }));
+    setState({ collapsed: !state.collapsed });
   };
 
   const handleSelect: MenuProps["onSelect"] = (info) => {
@@ -32,25 +36,6 @@ const Dashboard = () => {
 
   const toggleDrawer = () => {
     setState((prevState: any) => ({ openDrawer: !prevState.openDrawer }));
-  };
-
-  const renderPage = (key: string) => {
-    switch (key) {
-      case "2": {
-          return <ApplicationPage />;
-      }
-      case "3": {
-        return <Profile />;
-      }
-      // case "4": {
-      //   return (
-      //     <Result status="403" subTitle="This page will be updated soon!" />
-      //   );
-      // }
-      default: {
-        return <HomePage />;
-      }
-    }
   };
 
   useEffect(() => {
@@ -79,7 +64,9 @@ const Dashboard = () => {
             selectedKey={state.selectedKey}
             onSelect={handleSelect}
           />
-          <div className="content-detail">{renderPage(state.selectedKey)}</div>
+          <div className="content-detail">
+            <Outlet />
+          </div>
         </div>
         <DrawerComponent
           open={state.openDrawer}
@@ -101,4 +88,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default SidebarTemplate;

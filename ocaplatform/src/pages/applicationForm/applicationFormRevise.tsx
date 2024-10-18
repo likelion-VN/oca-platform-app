@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import _ from "lodash";
 import { ArrowLeft } from "phosphor-react";
 import { useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { CheckIcon, EditFormIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import InputDefault from "../../components/input/inputDefault/inputDefault";
@@ -21,6 +21,7 @@ import { getLabelByValue } from "../../utils";
 import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { formatDate } from "../../utils/formatter";
+import { safeNavigate } from "../../utils/helper";
 import { newFormDataFormatter } from "./applicationForm.h";
 import "./applicationFormRevise.s.scss";
 import NegotiableForm from "./form/negotiable";
@@ -28,7 +29,6 @@ import ResumeForm from "./form/resume";
 
 const ApplicationFormRevise = () => {
   const loadingPageAction = useActions(loadingPage);
-  const navigate = useNavigate();
   const location = useLocation();
   const { jobDetailReview } = location.state || {};
   const newForm = useRef({
@@ -103,7 +103,7 @@ const ApplicationFormRevise = () => {
   };
 
   const onBackToHome = () => {
-    navigate("/dash-board");
+    safeNavigate("/dash-board");
   };
 
   const handleRevise = () => {

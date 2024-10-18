@@ -1,7 +1,10 @@
 import { BellOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
+import { Avatar, Dropdown, MenuProps } from "antd";
 import React from "react";
-import { Logo } from "../../assets/svg";
+import { BackRightIcon, UserIcon } from "../../assets/svg";
+import { clearAllCookies } from "../../utils";
+import auth from "../../utils/auth";
+import { safeNavigate } from "../../utils/helper";
 import ButtonComponent from "../button/button";
 import "./header.s.scss";
 
@@ -11,6 +14,39 @@ interface IPropsHeader {
 }
 
 const Header: React.FC<IPropsHeader> = ({ toggleCollapsed, toggleDrawer }) => {
+  const handleViewProfile = () => {
+    safeNavigate("/profile");
+  };
+
+  const handleLogout = () => {
+    auth.clearLocalStorage();
+    clearAllCookies();
+    safeNavigate("/sign-in");
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      className: "menu-user-item",
+      label: (
+        <>
+          <img src={UserIcon} alt="user-icon" /> Profile
+        </>
+      ),
+      key: "0",
+      onClick: handleViewProfile,
+    },
+    {
+      className: "menu-user-item",
+      label: (
+        <>
+          <img src={BackRightIcon} alt="back-right-icon" /> Log out
+        </>
+      ),
+      key: "1",
+      onClick: handleLogout,
+    },
+  ];
+
   return (
     <div>
       <div className="header">
@@ -20,11 +56,17 @@ const Header: React.FC<IPropsHeader> = ({ toggleCollapsed, toggleDrawer }) => {
             icon={<MenuOutlined size={24} />}
             onClick={toggleCollapsed}
           />
-          <img src={Logo} alt="logo" className="logo" />
+          <div className="text">LION-UP</div>
         </div>
         <div className="header-right">
           <BellOutlined />
-          <Avatar size={32} icon={<UserOutlined />} className="avatar" />
+          <Dropdown
+            overlayClassName="menu-user"
+            menu={{ items }}
+            trigger={["click"]}
+          >
+            <Avatar size={32} icon={<UserOutlined />} className="avatar" />
+          </Dropdown>
           <ButtonComponent
             className="drawer-menu-icon"
             icon={<MenuOutlined size={24} />}

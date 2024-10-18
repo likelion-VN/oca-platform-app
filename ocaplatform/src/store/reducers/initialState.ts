@@ -17,11 +17,14 @@ export default {
       listLocation: [],
       listJob: [],
       jobDetail: {},
+      count: null,
     },
     application: {
       statusId: -1,
       listJob: [],
-      jobDetail: {}
+      jobDetail: {},
+      count: null,
+
     }
   },
   me: {},

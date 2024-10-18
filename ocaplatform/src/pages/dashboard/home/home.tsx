@@ -16,7 +16,7 @@ import {
   Radio,
   Skeleton,
   Space,
-  Tooltip
+  Tooltip,
 } from "antd";
 
 import classNames from "classnames";
@@ -27,11 +27,10 @@ import {
   FileX,
   Laptop,
   MapPin,
-  UsersFour
+  UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { CalendarDotIcon } from "../../../assets/svg";
 import Badge from "../../../components/badge/badge";
 import ButtonComponent from "../../../components/button/button";
@@ -59,6 +58,7 @@ import { calculateDaysDiff } from "../../../utils";
 import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import { formatDate, keyFormatter } from "../../../utils/formatter";
+import { safeNavigate } from "../../../utils/helper";
 import {
   renderStatus,
   renderStatusDescription,
@@ -68,15 +68,14 @@ import {
 import "./home.s.scss";
 
 interface IPropsHome {
-  isActive: boolean;
+  // isActive: boolean;
 }
 
-const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
+const HomePage: React.FC<IPropsHome> = () => {
   const dispatch = useDispatch();
   const homeGotoRedux = useSelector((state: any) => state.goto.home);
   const loadingPageAction = useActions(loadingPage);
 
-  const navigate = useNavigate();
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
@@ -256,12 +255,12 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
               listJob: data.content,
               jobDetail: dataDetail,
               markSave: dataDetail?.marked,
-
               indexActive: 0,
             });
             _.assign(updateHomeGoto, {
               listJob: data.content,
               jobDetail: dataDetail,
+              count: data.totalElements,
             });
             totalElements.current = data.totalElements;
           }
@@ -439,7 +438,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   const handleClickReview = async () => {
     const { applicationId } = state.jobDetail.application || {};
     const jobDetailReview = await fetchApplicationDetailJob(applicationId);
-    navigate("/application-form-revise", {
+    safeNavigate("/application-form-revise", {
       state: { jobDetailReview },
     });
   };
@@ -459,7 +458,7 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
 
   const handleApply = () => {
     const { jobDetail } = state;
-    navigate("/application-form", { state: { jobDetail } });
+    safeNavigate("/application-form", { state: { jobDetail } });
   };
 
   // const handleCountItemsFilter = () => {
@@ -553,16 +552,14 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   };
 
   useEffect(() => {
-    if (isActive) {
-      if (_.isEmpty(homeGotoRedux.listJob)) {
-        setState({ isLoadingList: true, isLoadingDetail: true });
-        getListJob();
-      } else {
-        totalElements.current = homeGotoRedux.listJob.length;
-      }
-      loadingPageAction();
+    if (_.isEmpty(homeGotoRedux.listJob)) {
+      setState({ isLoadingList: true, isLoadingDetail: true });
+      getListJob();
+    } else {
+      totalElements.current = homeGotoRedux.listJob.length;
     }
-  }, [isActive]);
+    loadingPageAction();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

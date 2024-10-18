@@ -9,7 +9,6 @@ import _ from "lodash";
 import { Clock, Laptop, MapPin, UsersFour } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { CalendarDotIcon } from "../../../../assets/svg";
 import Badge from "../../../../components/badge/badge";
 import ButtonComponent from "../../../../components/button/button";
@@ -26,25 +25,21 @@ import { calculateDaysDiff } from "../../../../utils";
 import useActions from "../../../../utils/customHook/useActions";
 import useMergeState from "../../../../utils/customHook/useMergeState";
 import { formatDate } from "../../../../utils/formatter";
-import {
-  renderStatus
-} from "../../dashboard.h";
+import { safeNavigate } from "../../../../utils/helper";
+import { renderStatus } from "../../dashboard.h";
 import "./applicationCompany.s.scss";
 
 interface IPropsApplicationCompany {
-  isActive: boolean;
+  // isActive: boolean;
 }
 
-const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({
-  isActive,
-}) => {
+const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
   const dispatch = useDispatch();
   const applicationGotoRedux = useSelector(
     (state: any) => state.goto.application
   );
   const loadingPageAction = useActions(loadingPage);
 
-  const navigate = useNavigate();
   const divRef = useRef<HTMLDivElement>(null);
   const topButtonRef = useRef<HTMLDivElement>(null);
   const jobDetailRef = useRef<HTMLDivElement>(null);
@@ -140,7 +135,7 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({
 
   const handleOnclick = () => {
     const { jobDetail } = state;
-    navigate("/application-form-revise", {
+    safeNavigate("/application-form-revise", {
       state: { jobDetailReview: jobDetail },
     });
   };
@@ -207,23 +202,22 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({
   };
 
   useEffect(() => {
-    if (isActive) {
-      if (
-        applicationGotoRedux.statusId === -1 &&
-        _.isEmpty(applicationGotoRedux.listJob)
-      ) {
-        setState({ isLoadingList: true, isLoadingDetail: true });
-        getListApplicationJob();
-      } else {
-        setState({
-          listJob: applicationGotoRedux.listJob,
-          jobDetail: applicationGotoRedux.jobDetail,
-          selectTab: applicationGotoRedux.statusId,
-        });
-        totalElements.current = applicationGotoRedux.listJob.length;
-      }
+    if (
+      applicationGotoRedux.statusId === -1 &&
+      _.isEmpty(applicationGotoRedux.listJob)
+    ) {
+      setState({ isLoadingList: true, isLoadingDetail: true });
+      getListApplicationJob();
+    } else {
+      setState({
+        listJob: applicationGotoRedux.listJob,
+        jobDetail: applicationGotoRedux.jobDetail,
+        selectTab: applicationGotoRedux.statusId,
+      });
+      totalElements.current = applicationGotoRedux.listJob.length;
     }
-  }, [isActive]);
+    loadingPageAction();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -448,7 +442,7 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({
                   ))}
                 </div>
                 <div className="job-detail-status">
-                {renderStatus(jobDetail.statusId)}
+                  {renderStatus(jobDetail.statusId)}
                 </div>
                 <div className="job-detail-title">
                   {jobDetail.job.title}
