@@ -16,7 +16,7 @@ import {
   Radio,
   Skeleton,
   Space,
-  Tooltip
+  Tooltip,
 } from "antd";
 
 import classNames from "classnames";
@@ -27,7 +27,7 @@ import {
   FileX,
   Laptop,
   MapPin,
-  UsersFour
+  UsersFour,
 } from "phosphor-react";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,10 +68,10 @@ import {
 import "./home.s.scss";
 
 interface IPropsHome {
-  isActive: boolean;
+  // isActive: boolean;
 }
 
-const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
+const HomePage: React.FC<IPropsHome> = () => {
   const dispatch = useDispatch();
   const homeGotoRedux = useSelector((state: any) => state.goto.home);
   const loadingPageAction = useActions(loadingPage);
@@ -553,16 +553,14 @@ const HomePage: React.FC<IPropsHome> = ({ isActive }) => {
   };
 
   useEffect(() => {
-    if (isActive) {
-      if (_.isEmpty(homeGotoRedux.listJob)) {
-        setState({ isLoadingList: true, isLoadingDetail: true });
-        getListJob();
-      } else {
-        totalElements.current = homeGotoRedux.listJob.length;
-      }
-      loadingPageAction();
+    if (_.isEmpty(homeGotoRedux.listJob)) {
+      setState({ isLoadingList: true, isLoadingDetail: true });
+      getListJob();
+    } else {
+      totalElements.current = homeGotoRedux.listJob.length;
     }
-  }, [isActive]);
+    loadingPageAction();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

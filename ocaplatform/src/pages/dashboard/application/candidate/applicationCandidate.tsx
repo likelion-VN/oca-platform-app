@@ -45,11 +45,9 @@ import {
 } from "../../dashboard.h";
 import "./applicationCandidate.s.scss";
 
-interface IPropsApplicationCandidate {
-  isActive: boolean;
-}
+interface IPropsApplicationCandidate {}
 
-const ApplicationCandidatePage: React.FC<IPropsApplicationCandidate> = ({ isActive }) => {
+const ApplicationCandidatePage: React.FC<IPropsApplicationCandidate> = () => {
   const dispatch = useDispatch();
   const applicationGotoRedux = useSelector(
     (state: any) => state.goto.application
@@ -219,23 +217,21 @@ const ApplicationCandidatePage: React.FC<IPropsApplicationCandidate> = ({ isActi
   };
 
   useEffect(() => {
-    if (isActive) {
-      if (
-        applicationGotoRedux.statusId === -1 &&
-        _.isEmpty(applicationGotoRedux.listJob)
-      ) {
-        setState({ isLoadingList: true, isLoadingDetail: true });
-        getListApplicationJob();
-      } else {
-        setState({
-          listJob: applicationGotoRedux.listJob,
-          jobDetail: applicationGotoRedux.jobDetail,
-          selectTab: applicationGotoRedux.statusId,
-        });
-        totalElements.current = applicationGotoRedux.listJob.length;
-      }
+    if (
+      applicationGotoRedux.statusId === -1 &&
+      _.isEmpty(applicationGotoRedux.listJob)
+    ) {
+      setState({ isLoadingList: true, isLoadingDetail: true });
+      getListApplicationJob();
+    } else {
+      setState({
+        listJob: applicationGotoRedux.listJob,
+        jobDetail: applicationGotoRedux.jobDetail,
+        selectTab: applicationGotoRedux.statusId,
+      });
+      totalElements.current = applicationGotoRedux.listJob.length;
     }
-  }, [isActive]);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
