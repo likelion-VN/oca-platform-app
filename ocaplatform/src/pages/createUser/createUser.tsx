@@ -1,7 +1,6 @@
 import classNames from "classnames";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Company, Congratulation, Individual, Logo } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import ModalComponent from "../../components/modal/modal";
@@ -14,11 +13,11 @@ import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { maskEmail } from "../../utils/formatter";
 import "./createUser.s.scss";
+import { safeNavigate } from "../../utils/helper";
 
 const CreateUser = () => {
   const loadingPageAction = useActions(loadingPage);
-  const navigae = useNavigate();
-  const email = decodeURIComponent(Cookies.get("user_email") || '');
+  const email = decodeURIComponent(Cookies.get("user_email") || "");
   const [state, setState] = useMergeState({
     activeType: null,
     isOpenConfirmModal: false,
@@ -42,13 +41,13 @@ const CreateUser = () => {
   };
 
   const onClickConfirm = () => {
-    navigae("/dash-board");
+    safeNavigate("/dash-board");
   };
 
   const onClickExists = () => {
     auth.clearLocalStorage();
     clearAllCookies();
-    navigae("/sign-in");
+    safeNavigate("/sign-in");
   };
 
   useEffect(() => {

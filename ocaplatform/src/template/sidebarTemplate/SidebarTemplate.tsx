@@ -1,24 +1,30 @@
-import React from "react";
 import { MenuProps } from "antd";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import "./sidebarTemplate.scss";
 import auth from "../../utils/auth";
-import { useSetState } from "../../utils/customHook/useSetState";
 import { clearAllCookies, isTokenExpired } from "../../utils";
 import Header from "../../components/header/header";
 import SideBar from "../../components/sideBar/sideBar";
 import DrawerComponent from "../../components/drawer/drawer";
-type Props = {};
+import { safeNavigate } from "../../utils/helper";
+import useMergeState from "../../utils/customHook/useMergeState";
 
-const SidebarTemplate = (props: Props) => {
+const SidebarTemplate = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [state, setState] = useSetState({
+  const [state, setState] = useMergeState({
     collapsed: false,
     selectedKey: "1",
     openDrawer: false,
   });
+
+  useEffect(() => {
+    if (location.pathname == "/") {
+      navigate("/sign-in");
+    }
+  }, []);
 
   const toggleCollapsed = () => {
     setState((prevState: any) => ({ collapsed: !prevState.collapsed }));
@@ -38,12 +44,12 @@ const SidebarTemplate = (props: Props) => {
       if (isTokenExpired(token)) {
         auth.clearLocalStorage();
         clearAllCookies();
-        navigate("/sign-in");
+        safeNavigate("/sign-in");
       }
     } else {
       auth.clearLocalStorage();
       clearAllCookies();
-      navigate("/sign-in");
+      safeNavigate("/sign-in");
     }
   }, []);
 
