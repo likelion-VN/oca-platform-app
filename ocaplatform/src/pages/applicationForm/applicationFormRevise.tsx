@@ -180,7 +180,7 @@ const ApplicationFormRevise = () => {
   }, [state.detailJob]);
 
   const { detailJob } = state || {};
-
+  console.log(detailJob.tasks);
   return (
     <>
       <ModalComponent
@@ -371,7 +371,7 @@ const ApplicationFormRevise = () => {
                   disabled={!detailJob.jobNegotiable}
                   listDataMutipleInput={_.map(detailJob.tasks, (task) => ({
                     ...task.delta.company,
-                    newTask: task.delta.candidate?.description,
+                    newTask: task.delta.candidate?.description || "",
                     isRemove:
                       task.negotiable &&
                       _.isEmpty(task.delta.candidate.description),

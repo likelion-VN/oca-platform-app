@@ -22,18 +22,45 @@ const SideBar: React.FC<IPropsSideBar> = ({
   const items: MenuItem[] = [
     {
       key: "1",
-      icon: <HomeFilled />,
-      label: <NavLink to="/dash-board">Home</NavLink>,
+      label: (
+        <NavLink
+          className={({ isActive }) => {
+            return isActive ? "active-item-sidebar" : "";
+          }}
+          to="/dash-board"
+        >
+          <HomeFilled />
+          <span className="content-navlink">Home</span>
+        </NavLink>
+      ),
     },
     {
       key: "2",
-      icon: <ProfileOutlined />,
-      label: <NavLink to="/application">Application</NavLink>,
+      label: (
+        <NavLink
+          className={({ isActive }) => {
+            return isActive ? "active-item-sidebar" : "";
+          }}
+          to="/application"
+        >
+          <ProfileOutlined />
+          <span className="content-navlink">Application</span>
+        </NavLink>
+      ),
     },
     {
       key: "3",
-      icon: <UserOutlined />,
-      label: <NavLink to="/profile">Profile</NavLink>,
+      label: (
+        <NavLink
+          className={({ isActive }) => {
+            return isActive ? "active-item-sidebar" : "";
+          }}
+          to="/profile"
+        >
+          <UserOutlined />
+          <span className="content-navlink">Profile</span>
+        </NavLink>
+      ),
     },
     // {
     //   key: "4",
