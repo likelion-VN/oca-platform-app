@@ -1,0 +1,266 @@
+@media screen and (max-width: 576px) {
+  .dashboard-layout {
+
+    .header {
+      .header-left {
+        button {
+          display: none;
+        }
+      }
+
+      .header-right {
+        width: 130px;
+
+        .drawer-menu-icon {
+          display: inline-block;
+          border: none;
+          outline: none;
+        }
+      }
+    }
+
+    .content {
+      .nav-bar {
+        display: none;
+      }
+
+      .content-detail {
+        padding: 16px;
+        box-sizing: border-box;
+
+        .home-page {
+
+          .search {
+            .search-btn {
+              display: none;
+            }
+
+            .auto-completed-custom {
+              display: none;
+            }
+
+            .input-search-mobile {
+              display: flex;
+            }
+          }
+
+          .jobs {
+            grid-template-columns: 1fr;
+            // height: 100%;
+
+            // .job-list {
+            //   overflow-y: unset;
+            // }
+          }
+
+          .filter {
+            margin: 20px 0 15px 0;
+
+            .filter-left {
+              display: none;
+            }
+          }
+        }
+
+        .job-detail {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .dashboard-drawer {
+    .ant-drawer-header-title {
+      justify-content: end;
+    }
+
+    .ant-drawer-body {
+      .ant-menu {
+        border-inline-end: none;
+        width: 100%;
+      }
+
+      .drawer-side-bar {
+        .ant-menu-item {
+          margin-left: 0;
+          margin-right: 0;
+          width: 100%;
+        }
+      }
+    }
+
+  }
+
+  .drawer-search-jobs {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+
+    .ant-drawer-header {
+      .ant-drawer-header-title {
+        flex-direction: row-reverse;
+        font-size: 18px;
+        line-height: 28px;
+
+        .ant-drawer-close {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .ant-drawer-body {
+      padding: 20px 16px 0 16px;
+
+
+      .search-job-content {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+
+        .ant-input-affix-wrapper {
+          background-color: $off-white;
+          border-radius: 4px;
+          height: 40px;
+          border: 1px solid $neutral-grey;
+          outline: none;
+
+          &:focus-within {
+            border-color: $dark-navy-blue;
+            box-shadow: none;
+            outline: none;
+          }
+        }
+      }
+
+
+    }
+  }
+
+  .drawer-filter-job {
+    .ant-drawer-header {
+      .ant-drawer-header-title {
+        flex-direction: row-reverse;
+
+        .ant-drawer-close {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .ant-drawer-body {
+      .list-filter {
+        .list-filter-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          p {
+            font-size: 14px;
+            font-weight: 600;
+            color: $dark-navy-blue;
+          }
+
+          .btn-clear {
+            margin-bottom: 0;
+
+            .ant-checkbox {
+              display: none;
+            }
+
+            border: none;
+            font-size: 14px;
+            color: #706F74;
+          }
+        }
+
+
+      }
+
+
+      margin-bottom: 20px;
+
+      .ant-checkbox-wrapper {
+        margin-bottom: 15px;
+
+        .ant-checkbox {
+          width: 18px;
+          height: 18px;
+
+          .ant-checkbox-inner {
+            border: 1px solid $cool-grey;
+            width: 18px;
+            height: 18px;
+            border-radius: 2px;
+          }
+
+        }
+
+        .ant-checkbox-checked {
+          .ant-checkbox-inner {
+            border: 1.5px solid $bright-orange;
+            background-color: $bright-orange !important;
+          }
+        }
+      }
+
+      .ant-radio-wrapper {
+        margin-bottom: 10px;
+
+        .ant-radio {
+          width: 18px;
+          height: 18px;
+
+          .ant-radio-input {
+            width: 18px;
+            height: 18px;
+          }
+
+          .ant-radio-inner {
+            border: 1px solid $cool-grey;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+          }
+
+        }
+
+        .ant-radio-checked {
+          .ant-radio-inner {
+            border: 1.5px solid $bright-orange;
+            background-color: unset !important;
+
+            &::after {
+              transform: scale(0.55);
+              background-color: $bright-orange;
+            }
+          }
+        }
+      }
+
+
+    }
+
+    .ant-drawer-footer {
+      border-top: unset;
+      padding-bottom: 40px;
+
+      .drawer-footer-action {
+        display: flex;
+        justify-content: space-between;
+
+        .btn-reset {
+          border-color: transparent;
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .btn-apply {
+          background-color: $bright-orange;
+          color: $pure-white;
+          border-color: $bright-orange;
+          font-weight: 600;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

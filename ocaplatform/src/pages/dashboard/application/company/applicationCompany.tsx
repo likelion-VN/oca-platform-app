@@ -26,18 +26,14 @@ import useActions from "../../../../utils/customHook/useActions";
 import useMergeState from "../../../../utils/customHook/useMergeState";
 import { formatDate } from "../../../../utils/formatter";
 import { safeNavigate } from "../../../../utils/helper";
-import {
-  renderStatus
-} from "../../dashboard.h";
+import { renderStatus } from "../../dashboard.h";
 import "./applicationCompany.s.scss";
 
 interface IPropsApplicationCompany {
-  isActive: boolean;
+  // isActive: boolean;
 }
 
-const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({
-  isActive,
-}) => {
+const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
   const dispatch = useDispatch();
   const applicationGotoRedux = useSelector(
     (state: any) => state.goto.application
@@ -206,23 +202,21 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({
   };
 
   useEffect(() => {
-    if (isActive) {
-      if (
-        applicationGotoRedux.statusId === -1 &&
-        _.isEmpty(applicationGotoRedux.listJob)
-      ) {
-        setState({ isLoadingList: true, isLoadingDetail: true });
-        getListApplicationJob();
-      } else {
-        setState({
-          listJob: applicationGotoRedux.listJob,
-          jobDetail: applicationGotoRedux.jobDetail,
-          selectTab: applicationGotoRedux.statusId,
-        });
-        totalElements.current = applicationGotoRedux.listJob.length;
-      }
+    if (
+      applicationGotoRedux.statusId === -1 &&
+      _.isEmpty(applicationGotoRedux.listJob)
+    ) {
+      setState({ isLoadingList: true, isLoadingDetail: true });
+      getListApplicationJob();
+    } else {
+      setState({
+        listJob: applicationGotoRedux.listJob,
+        jobDetail: applicationGotoRedux.jobDetail,
+        selectTab: applicationGotoRedux.statusId,
+      });
+      totalElements.current = applicationGotoRedux.listJob.length;
     }
-  }, [isActive]);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -447,7 +441,7 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = ({
                   ))}
                 </div>
                 <div className="job-detail-status">
-                {renderStatus(jobDetail.statusId)}
+                  {renderStatus(jobDetail.statusId)}
                 </div>
                 <div className="job-detail-title">
                   {jobDetail.job.title}
