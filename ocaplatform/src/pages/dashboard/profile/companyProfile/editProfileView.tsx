@@ -6,9 +6,6 @@ import avatarUpload from "./../../../../assets/demoStatic/Avatars.png";
 import demoBackgroundPhoto from "./../../../../assets/demoStatic/demoBackground.png";
 import InputPrefix from "../../../../components/input/inputPrefix/inputPrefix";
 import avatarCompany from "./../../../../assets/demoStatic/avatar.png";
-const onChange = (key: string) => {
-  console.log(key);
-};
 
 const items: TabsProps["items"] = [
   {
@@ -249,7 +246,7 @@ const items: TabsProps["items"] = [
 const EditProfileView = () => {
   return (
     <div>
-      <Tabs defaultActiveKey="2" items={items} onChange={onChange} />
+      <Tabs defaultActiveKey="2" items={items} />
     </div>
   );
 };

@@ -294,7 +294,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
 
   const handleConfirm = () => {
     handleOpenSuccessModal(false);
-    safeNavigate("/dash-board");
+    safeNavigate("/application");
   };
 
   useEffect(() => {

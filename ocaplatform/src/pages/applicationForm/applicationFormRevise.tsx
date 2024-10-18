@@ -103,7 +103,7 @@ const ApplicationFormRevise = () => {
   };
 
   const onBackToHome = () => {
-    safeNavigate("/dash-board");
+    safeNavigate("/application");
   };
 
   const handleRevise = () => {
@@ -158,6 +158,7 @@ const ApplicationFormRevise = () => {
             handleClick={handleClick}
             handleCancel={onBackToHome}
             handleOpenSuccessModal={handleOpenSuccessModal}
+            isSuccess={state.isSuccess}
           />
         );
       }
@@ -180,7 +181,6 @@ const ApplicationFormRevise = () => {
   }, [state.detailJob]);
 
   const { detailJob } = state || {};
-  console.log(detailJob.tasks);
   return (
     <>
       <ModalComponent
