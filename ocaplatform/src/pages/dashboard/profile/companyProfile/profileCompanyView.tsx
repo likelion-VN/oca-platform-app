@@ -15,6 +15,7 @@ import iconPlusCircle from "./../../../../assets/demoStatic/plusCircle.png";
 import iconSetting from "./../../../../assets/demoStatic/setting.png";
 // import JobPostingModal from "./jobPostingModal";
 import EditProfileView from "./editProfileView";
+import CompleteProfile from "./completeProfile";
 
 const itemsDropdown: MenuProps["items"] = [
   {
@@ -329,7 +330,7 @@ const ProfileCompanyView = () => {
         open={state.openCreateJobModal}
         children={<JobPostingModal />}
       /> */}
-      <ModalComponent
+      {/* <ModalComponent
         title={
           <div
             style={{ textAlign: "center", fontSize: "20px", fontWeight: 600 }}
@@ -348,6 +349,24 @@ const ProfileCompanyView = () => {
         className="modal-form-edit-profile"
         open={state.openCreateJobModal}
         children={<EditProfileView />}
+      /> */}
+      <ModalComponent
+        title={""}
+        centered
+        onCancel={handleCloseModalCreateJob}
+        footer={
+          <div className="footer-form-edit-profile">
+            <ButtonComponent
+              onClick={handleCloseModalCreateJob}
+              className="btn-edit-cancel"
+              title="Cancel"
+            />
+            <ButtonComponent className="btn-edit-save" title="Edit profile" />
+          </div>
+        }
+        className="modal-form-edit-profile"
+        open={state.openCreateJobModal}
+        children={<CompleteProfile />}
       />
     </>
   );
