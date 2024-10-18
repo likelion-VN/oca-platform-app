@@ -14,6 +14,7 @@ import iconPlus from "./../../../../assets/demoStatic/plus.png";
 import iconPlusCircle from "./../../../../assets/demoStatic/plusCircle.png";
 import iconSetting from "./../../../../assets/demoStatic/setting.png";
 import JobPostingModal from "./jobPostingModal";
+import EditProfileView from "./editProfileView";
 
 const itemsDropdown: MenuProps["items"] = [
   {
@@ -59,7 +60,7 @@ const items: CollapseProps["items"] = [
 
 const ProfileCompanyView = () => {
   const [state, setState] = useMergeState({
-    openCreateJobModal: false,
+    openCreateJobModal: true,
   });
 
   const handleShowModalCreateJob = () => {
@@ -305,7 +306,7 @@ const ProfileCompanyView = () => {
           </div>
         </div>
       </div>
-      <ModalComponent
+      {/* <ModalComponent
         title={
           <div
             style={{ textAlign: "center", fontSize: "20px", fontWeight: 600 }}
@@ -327,6 +328,26 @@ const ProfileCompanyView = () => {
         className="modal-form-create-job-posting"
         open={state.openCreateJobModal}
         children={<JobPostingModal />}
+      /> */}
+      <ModalComponent
+        title={
+          <div
+            style={{ textAlign: "center", fontSize: "20px", fontWeight: 600 }}
+          >
+            Edit Profile
+          </div>
+        }
+        centered
+        onCancel={handleCloseModalCreateJob}
+        footer={
+          <div className="footer-form-edit-profile">
+            <ButtonComponent className="btn-edit-cancel" title="Cancel" />
+            <ButtonComponent className="btn-edit-save" title="Save" />
+          </div>
+        }
+        className="modal-form-edit-profile"
+        open={state.openCreateJobModal}
+        children={<EditProfileView />}
       />
     </>
   );
