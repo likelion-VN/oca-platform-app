@@ -20,7 +20,7 @@ const Header: React.FC<IPropsHeader> = ({ toggleCollapsed, toggleDrawer }) => {
             icon={<MenuOutlined size={24} />}
             onClick={toggleCollapsed}
           />
-          <img src={Logo} alt="logo" className="logo" />
+          <div className="text">LION-UP</div>
         </div>
         <div className="header-right">
           <BellOutlined />

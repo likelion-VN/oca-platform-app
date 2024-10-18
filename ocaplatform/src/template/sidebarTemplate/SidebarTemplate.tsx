@@ -24,10 +24,10 @@ const SidebarTemplate = () => {
     if (location.pathname == "/") {
       navigate("/sign-in");
     }
-  }, []);
+  }, [location.pathname]);
 
   const toggleCollapsed = () => {
-    setState((prevState: any) => ({ collapsed: !prevState.collapsed }));
+    setState({ collapsed: !state.collapsed });
   };
 
   const handleSelect: MenuProps["onSelect"] = (info) => {
