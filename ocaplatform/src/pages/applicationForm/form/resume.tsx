@@ -128,13 +128,21 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     name: "file",
     accept: ".doc,.docx,.pdf",
     beforeUpload: async (file) => {
-      loadingPageAction(LOADING_TYPES.UPLOADING);
-      const id = await handleUploadFile(file);
-      if (id) {
-        dataAttachment.current = [...dataAttachment.current, { id, ...file }];
+      const fileExt = `.${file.name.split(".").pop()?.toLowerCase()}`;
+      const isInvalidFileType = !ACCEPT_FILE_TYPES.includes(fileExt);
+      const isOversizeFile = file.size > MAX_FILE_SIZE;
+
+      if (isInvalidFileType || isOversizeFile) {
+        return false;
+      } else {
+        loadingPageAction(LOADING_TYPES.UPLOADING);
+        const id = await handleUploadFile(file);
+        if (id) {
+          dataAttachment.current = [...dataAttachment.current, { id, ...file }];
+        }
+        loadingPageAction();
+        return false;
       }
-      loadingPageAction();
-      return false;
     },
     showUploadList: false,
     onDrop: (e) => {
