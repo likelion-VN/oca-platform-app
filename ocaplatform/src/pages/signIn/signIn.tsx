@@ -1,4 +1,3 @@
-import { message } from "antd";
 import Cookies from "js-cookie";
 import _ from "lodash";
 import { useEffect } from "react";
@@ -6,7 +5,6 @@ import { GoogleIcon, LinkedinIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import { apiServiceUrl } from "../../constants";
 import loadingPage from "../../store/actions/loading";
-import { isTokenExpired } from "../../utils";
 import auth from "../../utils/auth";
 import useActions from "../../utils/customHook/useActions";
 import { safeNavigate } from "../../utils/helper";
