@@ -216,6 +216,7 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
       });
       totalElements.current = applicationGotoRedux.listJob.length;
     }
+    loadingPageAction();
   }, []);
 
   useEffect(() => {
