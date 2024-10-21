@@ -30,15 +30,15 @@ const LoginPage = () => {
 
   const loginByGoogle = () => {
     // *: For production
-    // const width = 500;
-    // const height = 600;
-    // const left = window.screenX + window.outerWidth / 2 - width / 2;
-    // const top = window.screenY + window.outerHeight / 2 - height / 2;
-    // window.open(
-    //   googleAuthUrl,
-    //   "Login by Google",
-    //   `width=${width},height=${height},top=${top},left=${left}`
-    // );
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + window.outerWidth / 2 - width / 2;
+    const top = window.screenY + window.outerHeight / 2 - height / 2;
+    window.open(
+      googleAuthUrl,
+      "Login by Google",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
     // *: For developer
     auth.setIsLogin(true);
     const idToken =

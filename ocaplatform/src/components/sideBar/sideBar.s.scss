@@ -51,17 +51,12 @@
       &:hover {
         background-color: $light-peach;
         color: $bright-orange;
-
       }
     }
-
-
 
     .active-item-sidebar {
       color: $bright-orange;
       background-color: $light-peach;
-
-
     }
   }
 }
@@ -110,15 +105,12 @@
       }
     }
 
-
-
     &.ant-menu-item-selected {
       background-color: unset;
 
       &:hover {
         background-color: $light-peach;
         color: $bright-orange;
-
       }
     }
 
@@ -126,8 +118,6 @@
       color: $bright-orange;
       background-color: $light-peach;
     }
-
-
   }
 }
 
