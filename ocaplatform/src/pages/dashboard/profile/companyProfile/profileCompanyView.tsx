@@ -16,6 +16,8 @@ import iconSetting from "./../../../../assets/demoStatic/setting.png";
 // import JobPostingModal from "./jobPostingModal";
 import EditProfileView from "./editProfileView";
 import CompleteProfile from "./completeProfile";
+import CloseThisJob from "./closeThisJob";
+import StatusPost from "./statusPost";
 
 const itemsDropdown: MenuProps["items"] = [
   {
@@ -350,7 +352,7 @@ const ProfileCompanyView = () => {
         open={state.openCreateJobModal}
         children={<EditProfileView />}
       /> */}
-      <ModalComponent
+      {/* <ModalComponent
         title={""}
         centered
         onCancel={handleCloseModalCreateJob}
@@ -361,12 +363,46 @@ const ProfileCompanyView = () => {
               className="btn-edit-cancel"
               title="Cancel"
             />
-            <ButtonComponent className="btn-edit-save" title="Edit profile" />
+            <ButtonComponent
+              className="btn-edit-profile"
+              title="Edit profile"
+            />
           </div>
         }
-        className="modal-form-edit-profile"
+        className="modal-complete-profile"
         open={state.openCreateJobModal}
         children={<CompleteProfile />}
+      /> */}
+      {/* <ModalComponent
+        title={""}
+        centered
+        onCancel={handleCloseModalCreateJob}
+        footer={
+          <div className="footer-close-this-job">
+            <ButtonComponent className="btn-close-job" title="Close job" />
+            <ButtonComponent
+              onClick={handleCloseModalCreateJob}
+              className="btn-edit-cancel"
+              title="Cancel"
+            />
+          </div>
+        }
+        className="modal-close-this-job"
+        open={state.openCreateJobModal}
+        children={<CloseThisJob />}
+      /> */}
+      <ModalComponent
+        title={""}
+        centered
+        onCancel={handleCloseModalCreateJob}
+        footer={
+          <div className="footer-status-post">
+            <ButtonComponent className="btn-oke" title="OK" />
+          </div>
+        }
+        className="modal-status-post"
+        open={state.openCreateJobModal}
+        children={<StatusPost />}
       />
     </>
   );

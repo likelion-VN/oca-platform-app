@@ -1,0 +1,48 @@
+.modal-status-post {
+  width: 370px !important;
+
+  .ant-modal-body {
+    text-align: center;
+
+    img {
+      margin-bottom: 30px;
+      margin-top: 40px;
+    }
+
+    h3 {
+      margin: 0;
+      margin-bottom: 25px;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32px;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      margin: 0;
+      margin-bottom: 40px;
+    }
+  }
+
+  .ant-modal-footer {
+    .footer-status-post {
+      display: flex;
+      justify-content: center;
+
+      button {
+        width: 180px;
+        height: 48px;
+        background-color: #FF7710;
+        border: none;
+        color: white;
+
+        &:hover {
+          background-color: #FF7710;
+          color: white;
+        }
+      }
+    }
+  }
+}

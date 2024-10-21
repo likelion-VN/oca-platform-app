@@ -1,0 +1,48 @@
+.modal-complete-profile {
+  width: 404px !important;
+
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 32px;
+    margin-top: 30px;
+  }
+
+  p {
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .footer-form-edit-profile {
+    display: flex;
+    column-gap: 15px;
+
+    button {
+      flex: 1;
+
+
+      &.btn-edit-profile {
+        background-color: #FF7710;
+        border: none;
+        color: white;
+
+        &:hover {
+          background-color: #FF7710;
+          color: white;
+        }
+      }
+    }
+
+    .btn-edit-cancel {
+      margin-right: 15px;
+      color: #0F172A;
+      font-weight: 600;
+
+      &:hover {
+        border: 1px solid #A3A3A3;
+        color: #0F172A;
+      }
+    }
+  }
+}
