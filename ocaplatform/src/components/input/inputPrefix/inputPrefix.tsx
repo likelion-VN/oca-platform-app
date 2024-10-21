@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AutoComplete, DatePicker, Input, Select, Tooltip } from "antd";
+import {
+  AutoComplete,
+  DatePicker,
+  Input,
+  Select,
+  SelectProps,
+  Tooltip,
+} from "antd";
 import { DatePickerProps, RangePickerProps } from "antd/es/date-picker";
 import TextArea from "antd/es/input/TextArea";
 import classNames from "classnames";
@@ -33,6 +40,10 @@ interface IPropsInputPrefix {
   handleChangeInputQuill?: (value: string) => void;
   placeholder?: string;
   autoSize?: { minRows: number; maxRows: number };
+  filterOption?: (inputValue: string, option: any) => boolean;
+  classNameCustom: string;
+  tagRender?: SelectProps["tagRender"];
+  labelInValue?: boolean;
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -54,6 +65,9 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   handleChangeInputQuill,
   placeholder,
   autoSize,
+  filterOption,
+  classNameCustom,
+  tagRender,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -311,10 +325,14 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         return (
           <Select
             mode="multiple"
+            className={`select-mutiple-field ${classNameCustom}`}
             allowClear
+            tagRender={tagRender}
             style={{ width: "100%" }}
-            placeholder="Please select"
+            placeholder={placeholder}
             options={options}
+            filterOption={filterOption}
+            onChange={onChange}
           />
         );
       default:
