@@ -2,15 +2,16 @@ import { useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import LoadingPage from "./components/loading/loading";
 import ApplicationForm from "./pages/applicationForm/applicationForm";
+import ApplicationFormReview from "./pages/applicationForm/applicationFormReview";
 import ApplicationFormRevise from "./pages/applicationForm/applicationFormRevise";
 import CreateUser from "./pages/createUser/createUser";
-import AuthCallback from "./pages/signIn/authCallback";
-import SignIn from "./pages/signIn/signIn";
-import { setNavigate } from "./utils/helper";
-import SidebarTemplate from "./template/sidebarTemplate/SidebarTemplate";
-import Profile from "./pages/dashboard/profile/profile";
 import ApplicationPage from "./pages/dashboard/application/applicationPage";
 import HomePage from "./pages/dashboard/home/home";
+import Profile from "./pages/dashboard/profile/profile";
+import AuthCallback from "./pages/signIn/authCallback";
+import SignIn from "./pages/signIn/signIn";
+import SidebarTemplate from "./template/sidebarTemplate/SidebarTemplate";
+import { setNavigate } from "./utils/helper";
 const App: React.FC = () => {
   const navigate = useNavigate();
 
@@ -37,6 +38,10 @@ const App: React.FC = () => {
           <Route
             path="application-form-revise"
             element={<ApplicationFormRevise />}
+          />
+          <Route
+            path="application-form-review"
+            element={<ApplicationFormReview />}
           />
         </Routes>
       </div>

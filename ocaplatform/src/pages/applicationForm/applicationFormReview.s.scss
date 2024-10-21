@@ -25,14 +25,63 @@
 
     .content-title {
       margin: 24px 0;
-      text-align: center;
-
-      .title-step {
+      display: flex;
+      justify-content: space-between;
+      width: 736px;
+      .job-title {
         font-size: 24px;
         font-weight: 700;
         line-height: 32px;
-        margin-bottom: 8px;
-        color: $dark-navy-blue;
+      }
+      .title-sub {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 600;
+        color: $bright-blue;
+      }
+    }
+
+    .info-candidate {
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid $neutral-grey;
+      padding: 24px 40px;
+      border-radius: 12px;
+      width: 656px;
+      margin-bottom: 12px;
+      .info-detail {
+        display: flex;
+        .candidate-avatar {
+          border-radius: 8px;
+          align-self: center;
+          object-fit: contain;
+        }
+        .candidate-description {
+          margin-left: 12px;
+          align-self: center;
+          .title {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+          }
+          .candidate-info {
+            &-education {
+              svg {
+                margin-right: 4px;
+              }
+              display: flex;
+              align-items: center;
+              margin-top: 4px;
+              font-size: 12px;
+              font-weight: 500;
+              line-height: 16px;
+              color: $charcoal-grey;
+            }
+          }
+        }
+      }
+      .view-btn {
+        align-self: center;
       }
     }
 
@@ -44,7 +93,7 @@
       padding: 32px 40px;
       border-radius: 12px;
       width: 656px;
-      height: calc(100vh - 297px);
+      height: calc(100vh - 407px);
       overflow-y: auto;
 
       .double-input {
@@ -248,83 +297,6 @@
           }
         }
 
-        .resume-list {
-          display: flex;
-          margin-top: 12px;
-
-          .ant-list {
-            width: 100%;
-
-            .ant-list-items {
-              display: flex;
-              flex-direction: column;
-              row-gap: 12px;
-
-              .ant-list-item {
-                border-bottom: none;
-                padding: 0;
-                cursor: pointer;
-
-                .ant-card {
-                  border-color: $neutral-grey;
-                  width: 100%;
-                  border-radius: 4px !important;
-
-                  &:hover {
-                    border-color: $bright-orange;
-                  }
-
-                  .ant-card-body {
-                    padding: 12px 14px;
-
-                    .resume-item {
-                      display: flex;
-                      align-items: center;
-                      justify-content: space-between;
-
-                      &-left {
-                        display: flex;
-                        align-items: center;
-
-                        .resume-description {
-                          margin-left: 6px;
-
-                          .resume-title {
-                            font-size: 14px;
-                            font-weight: 600;
-                            line-height: 20px;
-                          }
-
-                          .resume-modified {
-                            font-size: 12px;
-                            font-weight: 400;
-                            line-height: 16px;
-                            color: $silver-grey;
-                          }
-                        }
-                      }
-
-                      &-right {
-                        .more-action-btn {
-                          height: 14px;
-                          border-color: transparent !important;
-                          box-shadow: unset;
-                          background: transparent;
-                        }
-                      }
-                    }
-                  }
-
-                  &.active {
-                    background: $light-peach;
-                    border-color: $bright-orange;
-                  }
-                }
-              }
-            }
-          }
-        }
-
         .ant-upload {
           width: 100%;
 
@@ -369,13 +341,6 @@
             }
           }
         }
-
-        .msg-error {
-          font-size: 12px;
-          font-weight: 500;
-          color: $crimson-red;
-          margin-top: 5px;
-        }
       }
 
       .multiple-input {
@@ -390,21 +355,7 @@
           .input-default {
             flex: 1;
           }
-
-          .detroy-icon {
-            display: flex;
-            align-items: center;
-          }
         }
-      }
-
-      .add-btn {
-        color: $bright-orange;
-        width: fit-content;
-        text-align: start;
-        padding: 0;
-        font-weight: 600;
-        margin-top: 12px;
       }
     }
   }
@@ -418,34 +369,26 @@
     &-left {
       display: flex;
       align-self: center;
-
-      .go-back-btn {
-        color: $dark-navy-blue !important;
-        padding-right: 0;
-        padding-left: 0;
-      }
     }
 
     &-right {
       display: flex;
       column-gap: 24px;
 
-      .btn-cancel {
+      .reject-btn {
+        width: 90px;
+        border-color: $tomato-red;
+        color: $dark-crimson;
         &:hover {
-          border-color: $soft-grey;
-          color: rgba(0, 0, 0, 0.88);
+          color: $dark-crimson;
+          border-color: $tomato-red;
         }
       }
-
-      .continue-btn,
-      .apply-btn {
-        background: $bright-orange !important;
-      }
-
-      .continue-btn {
-        &:disabled {
-          background: $cool-grey !important;
-          color: $translucent-white;
+      .select-btn {
+        width: 185px;
+        background-color: $dark-navy-blue;
+        &:hover {
+          background-color: $dark-navy-blue;
         }
       }
     }
