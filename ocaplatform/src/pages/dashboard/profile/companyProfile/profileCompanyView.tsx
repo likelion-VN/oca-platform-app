@@ -14,7 +14,6 @@ import iconPlus from "./../../../../assets/demoStatic/plus.png";
 import iconPlusCircle from "./../../../../assets/demoStatic/plusCircle.png";
 import iconSetting from "./../../../../assets/demoStatic/setting.png";
 // import JobPostingModal from "./jobPostingModal";
-import EditProfileView from "./editProfileView";
 import CompleteProfile from "./completeProfile";
 
 const itemsDropdown: MenuProps["items"] = [

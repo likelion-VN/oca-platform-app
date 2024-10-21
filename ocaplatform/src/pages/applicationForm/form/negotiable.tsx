@@ -81,7 +81,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         setState({ newTaskId: newId });
       }
     },
-    [state.currentTasks, setState]
+    [state.currentTasks]
   );
 
   const handleKeyDown = useCallback(

@@ -1,8 +1,5 @@
-import React from "react";
 
-type Props = {};
-
-const CompleteProfile = (props: Props) => {
+const CompleteProfile = () => {
   return <div>CompleteProfile</div>;
 };
 

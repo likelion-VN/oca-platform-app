@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { ExportOutlined } from "@ant-design/icons";
-import { message, Skeleton } from "antd";
+import { Skeleton } from "antd";
 
 import classNames from "classnames";
 import _ from "lodash";
@@ -121,8 +121,6 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
         dispatch(updateGotoData("application", updateApplicationGoto));
         pageCurrent.current = newPage;
         setState(newState);
-      } else {
-        message.warning("Work is over!");
       }
     } catch (error) {
       setState({
