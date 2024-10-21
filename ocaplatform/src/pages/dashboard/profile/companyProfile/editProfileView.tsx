@@ -1,11 +1,11 @@
 import { Tabs, Upload, type TabsProps } from "antd";
-import "./editProfileView.scss";
 import ButtonComponent from "../../../../components/button/button";
-import iconLinkedin from "./../../../../assets/demoStatic/iconLinkedin.png";
-import avatarUpload from "./../../../../assets/demoStatic/Avatars.png";
-import demoBackgroundPhoto from "./../../../../assets/demoStatic/demoBackground.png";
 import InputPrefix from "../../../../components/input/inputPrefix/inputPrefix";
 import avatarCompany from "./../../../../assets/demoStatic/avatar.png";
+import avatarUpload from "./../../../../assets/demoStatic/Avatars.png";
+import demoBackgroundPhoto from "./../../../../assets/demoStatic/demoBackground.png";
+import iconLinkedin from "./../../../../assets/demoStatic/iconLinkedin.png";
+import "./editProfileView.scss";
 
 const items: TabsProps["items"] = [
   {

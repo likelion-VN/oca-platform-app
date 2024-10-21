@@ -12,11 +12,10 @@ import {
   Button,
   Checkbox,
   Input,
-  message,
   Radio,
   Skeleton,
   Space,
-  Tooltip,
+  Tooltip
 } from "antd";
 
 import classNames from "classnames";
@@ -268,7 +267,7 @@ const HomePage: React.FC<IPropsHome> = () => {
           _.assign(newState, {
             listJob: [],
             jobDetail: {},
-          });
+          })
           _.assign(updateHomeGoto, {
             listJob: [],
             jobDetail: [],
@@ -281,8 +280,6 @@ const HomePage: React.FC<IPropsHome> = () => {
         dispatch(updateGotoData("home", updateHomeGoto));
         pageCurrent.current = newPage;
         setState(newState);
-      } else {
-        message.warning("Work is over!");
       }
     } catch (error) {
       setState({
@@ -312,104 +309,6 @@ const HomePage: React.FC<IPropsHome> = () => {
     setState({ isLoadingList: true, isLoadingDetail: true });
     getListJob();
   };
-
-  // const menu = (
-  //   <Menu className="menu-filter">
-  //     <Menu.Item className="menu-filter-header">Filter</Menu.Item>
-  //     <Menu.Item className="menu-filter-jobType">
-  //       <div className="menu-title">
-  //         <div className="title-filter">O-CA Program</div>
-  //         <ButtonComponent
-  //           type="link"
-  //           size="small"
-  //           title="Clear"
-  //           // onClick={clearPrograms}
-  //         />
-  //       </div>
-  //       <div className="menu-options">
-  //         <Checkbox.Group
-  //           options={JobTypeOptions}
-  //           // value={checkedPrograms}
-  //           // onChange={handleProgramChange}
-  //         />
-  //       </div>
-  //     </Menu.Item>
-
-  //     <Menu.Item className="menu-filter-application">
-  //       <Row justify="space-between" align="middle" style={{ marginBottom: 8 }}>
-  //         <Col>
-  //           <div style={{ fontWeight: 500 }}>Application Terms</div>
-  //         </Col>
-  //         <Col>
-  //           <Button
-  //             type="link"
-  //             size="small"
-  //             // onClick={clearTerms}
-  //           >
-  //             Clear
-  //           </Button>
-  //         </Col>
-  //       </Row>
-  //       <Radio.Group
-  //       // onChange={handleTermsChange}
-  //       // value={applicationTerms}
-  //       >
-  //         <Space direction="vertical">
-  //           <Radio className="radio-custom" value="Non-negotiable">
-  //             Non-negotiable
-  //           </Radio>
-  //           <Radio className="radio-custom" value="Negotiable">
-  //             Negotiable
-  //           </Radio>
-  //         </Space>
-  //       </Radio.Group>
-  //     </Menu.Item>
-
-  //     <Menu.Item className="menu-filter-workplace">
-  //       <Row justify="space-between" align="middle" style={{ marginBottom: 8 }}>
-  //         <Col>
-  //           <div style={{ fontWeight: 500 }}>Work Type</div>
-  //         </Col>
-  //         <Col>
-  //           <Button
-  //             type="link"
-  //             size="small"
-  //             // onClick={clearWorkType}
-  //           >
-  //             Clear
-  //           </Button>
-  //         </Col>
-  //       </Row>
-  //       <Checkbox.Group
-  //         options={WorkTypeOptions}
-  //         // value={workType}
-  //         // onChange={handleWorkTypeChange}
-  //       />
-  //     </Menu.Item>
-
-  //     <Menu.Item key="footer">
-  //       <div style={{ textAlign: "center" }}>
-  //         <Button
-  //           type="primary"
-  //           // onClick={handleApplyFilters}
-  //           style={{ width: "80%", marginBottom: 10 }}
-  //         >
-  //           Apply filters
-  //         </Button>
-  //         <Button
-  //           // onClick={handleReset}
-  //           style={{ width: "80%" }}
-  //         >
-  //           Reset
-  //         </Button>
-  //       </div>
-  //     </Menu.Item>
-  //   </Menu>
-  // );
-
-  // const handleVisibleChange = (flag: boolean) => {
-  //   setState({ visible: flag });
-  // };
 
   const handleChangeJobType = (values: string[]) => {
     const isModified = !_.isEqual(_.sortBy(state.jobType), _.sortBy(values));

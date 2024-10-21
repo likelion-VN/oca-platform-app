@@ -2,6 +2,7 @@ import { BellOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown, MenuProps } from "antd";
 import React from "react";
 import { BackRightIcon, UserIcon } from "../../assets/svg";
+import { logoutUrl } from "../../constants";
 import { clearAllCookies } from "../../utils";
 import auth from "../../utils/auth";
 import { safeNavigate } from "../../utils/helper";
@@ -19,6 +20,11 @@ const Header: React.FC<IPropsHeader> = ({ toggleCollapsed, toggleDrawer }) => {
   };
 
   const handleLogout = () => {
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = logoutUrl;
+
+    document.body.appendChild(iframe);
     auth.clearLocalStorage();
     clearAllCookies();
     safeNavigate("/sign-in");
