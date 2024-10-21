@@ -40,19 +40,19 @@ const LoginPage = () => {
       `width=${width},height=${height},top=${top},left=${left}`
     );
     // *: For developer
-    auth.setIsLogin(true);
-    const idToken =
-      "eyJhbGciOiJSUzI1NiIsImtpZCI6IjczZTI1Zjk3ODkxMTljNzg3NWQ1ODA4N2E3OGFjMjNmNWVmMmVkYTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDYwNzI0MDMyNzU3OTIwMDM5MjEiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoicXVhbmdraGFpMDkwMUBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IkJRREFBb0dWN2VyVkNDU1lLRGV5WEEiLCJub25jZSI6InFRaE1uU0JsTWVfOVJDd25qa09VT2p2eVNmbFQxc2RiU1F6Z2k1TXBvRFkiLCJuYW1lIjoiRG9RdWFuZyBLaGFpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xhQVY1SFU3VDZOa2Y1ZlhkUU9TczhsRnFNaGxzZGJmMHJwb1Y0a0ttRnEybm9tQT1zOTYtYyIsImdpdmVuX25hbWUiOiJEb1F1YW5nICIsImZhbWlseV9uYW1lIjoiS2hhaSAiLCJpYXQiOjE3Mjk0OTY1MTcsImV4cCI6MTcyOTUwMDExN30.Q-O2Q9WdBfGO7XnDcXdwSAKHf3WhFI2c4VnFhihvA0g9kYJOnSxCOvdAVir2O-gO1BeDRT9pqf0Yes_5_7VUPWz18PIJgFtBBESgEkNwppI3k0EFj7rZU4b4J1wjDeeu3DPu5gJ-G3vnS4B5h73lzz53dlu9-bApNeOs0yH8ZaQDnwvPyAldtHQs2kCsDNeo6BAwpo86AniWtZvso3ELWAKjVFNXcninTIMnKQaqpU_vr14-lxwqqRIM7p50a5mo96nx2j-o91lUilj1z5GBrZfri1gVVzMUShArXscd9nSBSAW9sZvWqHaqmV3LKespCbJUo0LIxPR8EQn7FECgrg";
-    const email = "quangkhai0901@likelion.net";
-    Cookies.set("user_token", idToken, { path: "/", secure: true });
-    Cookies.set("user_email", encodeURIComponent(email), {
-      path: "/",
-      secure: true,
-    });
-    // Set accout type
-    // auth.setCandidateUser(true);
-    auth.setCompanyUser(true);
-    safeNavigate("/dash-board");
+    // auth.setIsLogin(true);
+    // const idToken =
+    //   "eyJhbGciOiJSUzI1NiIsImtpZCI6IjczZTI1Zjk3ODkxMTljNzg3NWQ1ODA4N2E3OGFjMjNmNWVmMmVkYTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDYwNzI0MDMyNzU3OTIwMDM5MjEiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoicXVhbmdraGFpMDkwMUBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IkZfVDV1SFFCSU1fY2xiTk8tS0xYVlEiLCJub25jZSI6IlZPcEMwOG9OUWw4UnVwLU0wWFc1RGtrbF9xeTNwWXpjMGh3ZFdDMEVsTXMiLCJuYW1lIjoiRG9RdWFuZyBLaGFpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xhQVY1SFU3VDZOa2Y1ZlhkUU9TczhsRnFNaGxzZGJmMHJwb1Y0a0ttRnEybm9tQT1zOTYtYyIsImdpdmVuX25hbWUiOiJEb1F1YW5nICIsImZhbWlseV9uYW1lIjoiS2hhaSAiLCJpYXQiOjE3Mjk1MDQ3MTksImV4cCI6MTcyOTUwODMxOX0.mZy2Dz3oLKTGNIuWp35gkBOrK1ubBgP3sJ6MajA87qbjWwUhWWjWYUtLdsHsOE-GWFPRAZyEkGqGjKIMM2gNqNI5xckM26qkYeIhXtVhuAWCZcU5AFIclI8Vjhq7My9DA1g-sN2qT_qLVfqrlEn01dnwOgoNaXov91atCTpWbSi23UgGs8oUd7sxt6oOiNw4cv74nYOwIywB2zhEEV_NFSZE_so7A7HbbAcKzEGanbfPKIpz8r7glogFNJ-atiAckVIK77MSZAQYb2V3hJhg_yxZ1vNeqP8W_QDPo3A8Bgzvzwzggx1vTG7WiqUL0tmJlIRR5KmpBdKLBOma9OnneQ";
+    // const email = "quangkhai0901@likelion.net";
+    // Cookies.set("user_token", idToken, { path: "/", secure: true });
+    // Cookies.set("user_email", encodeURIComponent(email), {
+    //   path: "/",
+    //   secure: true,
+    // });
+    // // Set accout type
+    // // auth.setCandidateUser(true);
+    // auth.setCompanyUser(true);
+    // safeNavigate("/dash-board");
   };
 
   useEffect(() => {

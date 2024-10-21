@@ -296,14 +296,14 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               return (
                 <InputQuillCustom
                   key={index}
-                  id={item.idNewTask}
+                  id={item?.taskId}
                   className="mutiple-input-quill"
                   disabled={disabled}
-                  valuePrefix={item.description}
-                  value={item.newTask}
+                  valuePrefix={item?.description}
+                  value={item?.newTask}
                   onKeyDown={(e) => {
                     if (onKeyDown) {
-                      onKeyDown(e, item.id);
+                      onKeyDown(e, item?.taskId);
                     }
                   }}
                   handleChangeMutiple={handleChangeMutiple}

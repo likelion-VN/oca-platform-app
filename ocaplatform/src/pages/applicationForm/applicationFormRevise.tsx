@@ -3,6 +3,7 @@
 
 import { EllipsisOutlined } from "@ant-design/icons";
 import classNames from "classnames";
+import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import _ from "lodash";
 import { ArrowLeft } from "phosphor-react";
@@ -134,6 +135,7 @@ const ApplicationFormRevise = () => {
       if (state.step < 2) {
         setState({ step: state.step + 1 });
       } else {
+        console.log(newForm.current);
         const formData = newFormDataFormatter(newForm.current);
         handleApply(formData);
       }
@@ -370,13 +372,16 @@ const ApplicationFormRevise = () => {
                   title="Task"
                   type="mutiple-input-quill"
                   disabled={!detailJob.jobNegotiable}
-                  listDataMutipleInput={_.map(detailJob.tasks, (task) => ({
-                    ...task.delta.company,
-                    newTask: task.delta.candidate?.description || "",
-                    isRemove:
-                      task.negotiable &&
-                      _.isEmpty(task.delta.candidate.description),
-                  }))}
+                  listDataMutipleInput={_.map(detailJob.tasks, (task) => {
+                    return {
+                      ...task.delta.company,
+                      newTask: task.delta.candidate?.description || "",
+                      taskId: uuidv4(),
+                      isRemove:
+                        task.negotiable &&
+                        _.isEmpty(task.delta.candidate.description),
+                    };
+                  })}
                   subTitle={detailJob.jobNegotiable && "(Negotiable)"}
                 />
               </div>

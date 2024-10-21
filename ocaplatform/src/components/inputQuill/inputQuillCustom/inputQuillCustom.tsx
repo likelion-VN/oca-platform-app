@@ -56,29 +56,25 @@ function InputQuillCustom({
         new Delta([{ insert: { prefix: valuePrefix } }, { insert: value }])
       );
 
-      // Ngăn chặn việc xóa prefix
-      quill.on("text-change", (_delta, _oldDelta, _source) => {
+      quill.on("text-change", (delta, oldDelta, source) => {
         const currentContents = quill.getContents();
         const selection = quill.getSelection();
         if (!selection) return;
 
         const prefixLength = valuePrefix.length;
 
-        // Kiểm tra nếu con trỏ nằm ở phía trước prefix
+        // Kiểm tra nếu con trỏ đang nằm trong prefix
         if (selection.index < prefixLength) {
-          // Chỉ đặt lại con trỏ nếu nó đang nằm trong vùng prefix
-          if (selection.index !== prefixLength) {
-            quill.setSelection(prefixLength, 0, "silent");
-          }
+          quill.setSelection(prefixLength, 0, "silent");
+          return; // Không tiếp tục xử lý nếu đang ở trong prefix
         }
 
-        // Kiểm tra nếu người dùng cố gắng xóa prefix
-        if (currentContents.ops && !currentContents.ops[0].insert.prefix) {
-          quill.setContents(
-            new Delta([
-              { insert: { prefix: valuePrefix } },
-              ...currentContents.ops.slice(1),
-            ])
+        // Kiểm tra nếu prefix bị xóa, cập nhật nội dung thay vì set lại toàn bộ
+        const firstOp = currentContents.ops[0];
+        if (!firstOp.insert || !firstOp.insert.prefix) {
+          quill.updateContents(
+            new Delta([{ retain: prefixLength }, ...delta.ops]),
+            "silent"
           );
         }
       });
@@ -208,7 +204,7 @@ function InputQuillCustom({
       quill.setContents(new Delta([{ insert: value }]));
     }
   }, [value]);
-
+  // console.log(id);
   return (
     <div className="customEditor">
       <ReactQuill
