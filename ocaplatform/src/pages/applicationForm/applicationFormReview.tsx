@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { EllipsisOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
+import {
+  EllipsisOutlined,
+  ExportOutlined,
+  UpOutlined,
+} from "@ant-design/icons";
 import _ from "lodash";
-import { ArrowLeft } from "phosphor-react";
-import { useEffect, useRef } from "react";
+import { ArrowLeft, GraduationCap } from "phosphor-react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { EditFormIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
@@ -19,81 +22,20 @@ import useActions from "../../utils/customHook/useActions";
 import useMergeState from "../../utils/customHook/useMergeState";
 import { formatDate } from "../../utils/formatter";
 import { safeNavigate } from "../../utils/helper";
+import { renderStatus } from "../dashboard/dashboard.h";
+import "../dashboard/dashboard.s.scss";
 import "./applicationFormReview.s.scss";
 
 const applicationFormReview = () => {
   const loadingPageAction = useActions(loadingPage);
   const location = useLocation();
   const { jobDetailReview } = location.state || {};
-  const newForm = useRef({
-    step1: {},
-    step2: {},
-    jobId: 0,
-    jobTypeId: 0,
-    applicationId: 0,
-  });
 
   const [state, setState] = useMergeState({
     detailJob: jobDetailReview,
     isOpenModal: false,
     isRevising: true,
   });
-
-  const createIntitialData = async () => {
-    const { detailJob } = state;
-    _.assign(newForm.current, {
-      step1: {
-        currentJobTitle: detailJob.jobTitle?.delta?.company || "",
-        currentJobType: detailJob.jobType?.name || "",
-        currentStartDate: detailJob.workPeriodStart?.delta?.company
-          ? dayjs(detailJob.workPeriodStart.delta.company).toISOString()
-          : "",
-        currentEndDate: detailJob.workPeriodEnd?.delta?.company
-          ? dayjs(detailJob.workPeriodEnd.delta.company).toISOString()
-          : "",
-        currentWorkplaceType: getLabelByValue(
-          WorkTypeOptions,
-          detailJob.workplaceType?.delta?.company
-        ),
-        currentHoursPerWeek: detailJob.workHoursPerWeek?.delta?.company || "",
-        currentDescription: detailJob.job?.description || "",
-        currentTasks: _.map(detailJob.tasks, (task) => ({
-          id: task?.delta?.company?.id || "",
-          idNewTask: task?.delta?.candidate?.id || null,
-          description: task?.delta?.company?.description || "",
-          newTask: task?.delta?.candidate?.description || "",
-          isRemove:
-            task.negotiable && _.isEmpty(task.delta.candidate.description),
-        })),
-        currentQualifications: _.map(
-          detailJob.qualifications,
-          (qualification) => qualification.description
-        ).join("\n"),
-        jobTitle: detailJob.jobTitle?.delta?.candidate || "",
-        startDate: detailJob.workPeriodStart?.delta?.candidate || "",
-        endDate: detailJob.workPeriodEnd?.delta?.candidate || "",
-        workplaceType: getLabelByValue(
-          WorkTypeOptions,
-          detailJob.workplaceType?.delta?.candidate
-        ),
-        hoursPerWeek: detailJob.workHoursPerWeek?.delta?.candidate || "",
-        negotiable: detailJob.jobNegotiable || false,
-      },
-      step2: {
-        email: detailJob.email || "",
-        phoneNumber: detailJob.phoneNumber || "",
-        portfolio: detailJob.portfolio || "",
-        personalWebsite: detailJob.personalWebsites || [],
-        selfIntroduction: detailJob.introduction || "",
-        listAttachment: detailJob.attachments || [],
-        selectedResumeId: detailJob.selectedAttachment?.id || null,
-      },
-      jobId: detailJob.job?.id || 0,
-      jobTypeId: detailJob.jobType?.id || 0,
-      applicationId: detailJob.applicationId || 0,
-    });
-    loadingPageAction();
-  };
 
   const onBackToHome = () => {
     safeNavigate("/application");
@@ -108,7 +50,6 @@ const applicationFormReview = () => {
   };
 
   useEffect(() => {
-    createIntitialData();
     loadingPageAction();
   }, [state.detailJob]);
 
@@ -167,8 +108,35 @@ const applicationFormReview = () => {
           <div className="content-title">
             <div className="job-title">
               {detailJob.jobTitle.delta.company}
-              {/* {detailJob.jobNegotiable && } */}
+              {detailJob.jobNegotiable && (
+                <span className="title-sub">(Negotiable)</span>
+              )}
             </div>
+            {renderStatus(detailJob.statusId)}
+          </div>
+          <div className="info-candidate">
+            <div className="info-detail">
+              <img
+                src={detailJob.job.company.companyAvatarUrl}
+                alt="notification-icon"
+                className="candidate-avatar"
+                width={56}
+                height={56}
+              />
+              <div className="candidate-description">
+                <div className="title">Johnny Hammer</div>
+                <div className="candidate-info-education">
+                  <GraduationCap size={16} color="#FF7710" />
+                  Stanford University - Humanities and Art
+                </div>
+              </div>
+            </div>
+            <ButtonComponent
+              className="view-btn"
+              title="View profile"
+              icon={<ExportOutlined />}
+              iconPosition="end"
+            />
           </div>
           <div className="form-application">
             <InputPrefix
@@ -178,11 +146,6 @@ const applicationFormReview = () => {
               valuePrefix={detailJob.jobTitle.delta.company}
               disabled={!detailJob.jobNegotiable}
               type="input"
-              onClick={
-                detailJob.jobNegotiable
-                  ? () => handleOpenModal(true)
-                  : undefined
-              }
               readOnly
             />
             <InputPrefix
@@ -206,11 +169,6 @@ const applicationFormReview = () => {
                 valuePrefix={formatDate(
                   detailJob.workPeriodStart.delta.company
                 )}
-                onClick={
-                  detailJob.jobNegotiable
-                    ? () => handleOpenModal(true)
-                    : undefined
-                }
               />
               <InputPrefix
                 value={
@@ -224,11 +182,6 @@ const applicationFormReview = () => {
                 disabled={!detailJob.jobNegotiable}
                 placeholder=""
                 valuePrefix={formatDate(detailJob.workPeriodEnd.delta.company)}
-                onClick={
-                  detailJob.jobNegotiable
-                    ? () => handleOpenModal(true)
-                    : undefined
-                }
               />
             </div>
             <div className="double-input">
@@ -244,11 +197,6 @@ const applicationFormReview = () => {
                   WorkTypeOptions,
                   detailJob.workplaceType.delta.company
                 )}
-                onClick={
-                  detailJob.jobNegotiable
-                    ? () => handleOpenModal(true)
-                    : undefined
-                }
               />
               <InputPrefix
                 value={detailJob.workHoursPerWeek.delta?.candidate}
@@ -258,11 +206,6 @@ const applicationFormReview = () => {
                 disabled={!detailJob.jobNegotiable}
                 readOnly
                 type="input"
-                onClick={
-                  detailJob.jobNegotiable
-                    ? () => handleOpenModal(true)
-                    : undefined
-                }
               />
             </div>
             <InputPrefix
@@ -271,27 +214,19 @@ const applicationFormReview = () => {
               disabled
               type="text-area"
             />
-            <div
-              onClick={
-                detailJob.jobNegotiable
-                  ? () => handleOpenModal(true)
-                  : undefined
-              }
-            >
-              <InputPrefix
-                title="Task"
-                type="mutiple-input-quill"
-                disabled={!detailJob.jobNegotiable}
-                listDataMutipleInput={_.map(detailJob.tasks, (task) => ({
-                  ...task.delta.company,
-                  newTask: task.delta.candidate?.description || "",
-                  isRemove:
-                    task.negotiable &&
-                    _.isEmpty(task.delta.candidate.description),
-                }))}
-                subTitle={detailJob.jobNegotiable && "(Negotiable)"}
-              />
-            </div>
+            <InputPrefix
+              title="Task"
+              type="mutiple-input-quill"
+              disabled={!detailJob.jobNegotiable}
+              listDataMutipleInput={_.map(detailJob.tasks, (task) => ({
+                ...task.delta.company,
+                newTask: task.delta.candidate?.description || "",
+                isRemove:
+                  task.negotiable &&
+                  _.isEmpty(task.delta.candidate.description),
+              }))}
+              subTitle={detailJob.jobNegotiable && "(Negotiable)"}
+            />
             <InputPrefix
               value={_.map(
                 detailJob.job.qualifications,
@@ -303,10 +238,7 @@ const applicationFormReview = () => {
             />
             <div className="resume">
               <div className="resume-title">Resume</div>
-              <div
-                className="resume-content"
-                onClick={() => handleOpenModal(true)}
-              >
+              <div className="resume-content">
                 <div className="resume-content-left">
                   <div className="resume-name">
                     {detailJob.selectedAttachment.name}
@@ -322,7 +254,6 @@ const applicationFormReview = () => {
               </div>
             </div>
             <InputDefault
-              onClick={() => handleOpenModal(true)}
               value={detailJob.email}
               title="Email"
               type="input"
@@ -330,7 +261,6 @@ const applicationFormReview = () => {
               readonly
             />
             <InputDefault
-              onClick={() => handleOpenModal(true)}
               value={detailJob.phoneNumber}
               title="Phone number"
               type="input"
@@ -338,7 +268,6 @@ const applicationFormReview = () => {
               readonly
             />
             <InputDefault
-              onClick={() => handleOpenModal(true)}
               value={detailJob.portfolio}
               title="Portfolio (Optional)"
               type="input"
@@ -348,7 +277,6 @@ const applicationFormReview = () => {
             />
             {_.map(detailJob.personalWebsites, (website) => (
               <InputDefault
-                onClick={() => handleOpenModal(true)}
                 value={website}
                 title="Personal website (Optional)"
                 type="input"
@@ -358,12 +286,10 @@ const applicationFormReview = () => {
               />
             ))}
             <InputDefault
-              onClick={() => handleOpenModal(true)}
               value={detailJob.introduction}
               title="Self-Introduction (Optional)"
               type="text-area"
               optional
-              placeholder="Describe yourself in your own words..."
               readonly
             />
           </div>
@@ -371,17 +297,16 @@ const applicationFormReview = () => {
             <div className="action-left"></div>
             <div className="action-right">
               <ButtonComponent
-                title="Cancel"
-                size="large"
-                onClick={onBackToHome}
+                className="reject-btn"
+                title="Reject"
+                // onClick={onBackToHome}
               />
               <ButtonComponent
-                className="continue-btn"
+                className="select-btn"
                 type="primary"
-                size="large"
-                title="Revising"
-                disabled={detailJob.statusId !== 1 && detailJob.statusId !== 2}
-                onClick={() => handleOpenModal(true)}
+                icon={<UpOutlined />}
+                iconPosition="end"
+                title="Select next step"
               />
             </div>
           </div>

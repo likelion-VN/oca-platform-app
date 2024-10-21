@@ -1,0 +1,473 @@
+@import "../../styles/variables.scss";
+
+.background-application-form-review {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $neutral-grey;
+    height: 64px;
+
+    .back-btn {
+      display: flex;
+      align-self: center;
+      padding: 18px 24px;
+      color: $dark-navy-blue !important;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+    }
+  }
+
+  .content-review {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .content-title {
+      margin: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      width: 736px;
+      .job-title {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 32px;
+      }
+      .title-sub {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 600;
+        color: $bright-blue;
+      }
+    }
+
+    .info-candidate {
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid $neutral-grey;
+      padding: 24px 40px;
+      border-radius: 12px;
+      width: 656px;
+      margin-bottom: 12px;
+      .info-detail {
+        display: flex;
+        .candidate-avatar {
+          border-radius: 8px;
+          align-self: center;
+          object-fit: contain;
+        }
+        .candidate-description {
+          margin-left: 12px;
+          align-self: center;
+          .title {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+          }
+          .candidate-info {
+            &-education {
+              svg {
+                margin-right: 4px;
+              }
+              display: flex;
+              align-items: center;
+              margin-top: 4px;
+              font-size: 12px;
+              font-weight: 500;
+              line-height: 16px;
+              color: $charcoal-grey;
+            }
+          }
+        }
+      }
+      .view-btn {
+        align-self: center;
+      }
+    }
+
+    .form-application {
+      display: flex;
+      flex-direction: column;
+      row-gap: 24px;
+      border: 1px solid $neutral-grey;
+      padding: 32px 40px;
+      border-radius: 12px;
+      width: 656px;
+      height: calc(100vh - 407px);
+      overflow-y: auto;
+
+      .double-input {
+        display: flex;
+        column-gap: 24px;
+
+        .input-prefix {
+          flex: 1;
+        }
+      }
+
+      .resume {
+        &-title {
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 16px;
+        }
+
+        &-content {
+          margin-top: 12px;
+          border: 1px solid $neutral-grey;
+          border-radius: 4px;
+          display: flex;
+          justify-content: space-between;
+          padding: 12px 14px;
+
+          &-left {
+            .resume-name {
+              font-size: 14px;
+              font-weight: 600;
+              line-height: 20px;
+            }
+
+            .resume-upload-date {
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 16px;
+              color: $silver-grey;
+              margin-top: 4px;
+            }
+          }
+
+          &-right {
+            align-self: center;
+          }
+        }
+      }
+    }
+  }
+
+  .content-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .switch-background {
+      height: 40px;
+      border-radius: 40px;
+      background: $off-white;
+      padding: 4px;
+    }
+
+    .switch-component {
+      display: flex;
+      align-items: center;
+      margin-top: 24px;
+      font-weight: 600;
+      line-height: 16px;
+      font-size: 12px;
+
+      .switch-item {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        border-radius: 40px;
+        font-size: 14px;
+
+        &-index {
+          display: flex;
+          color: $pure-white;
+          background-color: $silver-grey;
+          border-radius: 50%;
+          align-items: center;
+          justify-content: center;
+          height: 24px;
+          width: 24px;
+          margin-right: 6px;
+        }
+
+        &-title {
+          color: $silver-grey;
+        }
+
+        &.active {
+          background-color: $pure-white;
+
+          .switch-item-index {
+            display: flex;
+            color: $pure-white;
+            background-color: $dark-navy-blue;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            width: 24px;
+            margin-right: 6px;
+          }
+
+          .switch-item-title {
+            color: $dark-navy-blue;
+          }
+        }
+      }
+    }
+
+    .content-title {
+      margin: 24px 0;
+      text-align: center;
+
+      .title-step {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 32px;
+        margin-bottom: 8px;
+        color: $dark-navy-blue;
+      }
+
+      .subtitle-step {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: $silver-grey;
+
+        .question-btn {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .form-application {
+      display: flex;
+      flex-direction: column;
+      row-gap: 24px;
+      border: 1px solid $neutral-grey;
+      padding: 32px 40px;
+      border-radius: 12px;
+      width: 656px;
+      height: calc(100vh - 390px);
+      overflow-y: auto;
+
+      .double-input {
+        display: flex;
+        column-gap: 24px;
+
+        .input-prefix {
+          flex: 1;
+        }
+      }
+
+      .resume {
+        &-title {
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 16px;
+        }
+
+        &-subtitle {
+          font-size: 12px;
+          font-weight: 400;
+          color: $charcoal-grey;
+          margin-top: 6px;
+        }
+
+        &-content {
+          margin-top: 12px;
+          border: 1px solid $neutral-grey;
+          border-radius: 4px;
+          display: flex;
+          justify-content: space-between;
+          padding: 12px 14px;
+
+          &-left {
+            .resume-name {
+              font-size: 14px;
+              font-weight: 600;
+              line-height: 20px;
+            }
+
+            .resume-upload-date {
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 16px;
+              color: $silver-grey;
+              margin-top: 4px;
+            }
+          }
+
+          &-right {
+            align-self: center;
+          }
+        }
+
+        .ant-upload {
+          width: 100%;
+
+          .upload-btn {
+            border: 2px dashed $neutral-grey;
+            border-radius: 4px;
+            background: $off-white;
+            margin-top: 12px;
+
+            &:hover {
+              cursor: pointer;
+            }
+
+            &-content {
+              display: flex;
+              margin: 17px 0;
+              flex-direction: column;
+              align-items: center;
+
+              .name-btn {
+                display: flex;
+                align-items: center;
+                color: $bright-orange;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 600;
+                margin-bottom: 6px;
+
+                span {
+                  display: flex;
+                  align-items: center;
+                  margin-right: 4px;
+                }
+              }
+
+              .subname-btn {
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 16px;
+                color: $silver-grey;
+              }
+            }
+          }
+        }
+      }
+
+      .multiple-input {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+
+        &-row {
+          display: flex;
+          column-gap: 16px;
+
+          .input-default {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+
+  .action {
+    display: flex;
+    width: 736px;
+    justify-content: space-between;
+    margin: 20px 0;
+
+    &-left {
+      display: flex;
+      align-self: center;
+    }
+
+    &-right {
+      display: flex;
+      column-gap: 24px;
+
+      .reject-btn {
+        width: 90px;
+        border-color: $tomato-red;
+        color: $dark-crimson;
+        &:hover {
+          color: $dark-crimson;
+          border-color: $tomato-red;
+        }
+      }
+      .select-btn {
+        width: 185px;
+        background-color: $dark-navy-blue;
+        &:hover {
+          background-color: $dark-navy-blue;
+        }
+      }
+    }
+  }
+}
+
+.modal-remove,
+.modal-apply,
+.modal-success,
+.modal-revise {
+  .modal-content-custom {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+
+    img {
+      width: 80px;
+      align-self: center;
+      margin-bottom: 28px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 32px;
+
+      &-content {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: center;
+        margin-top: 16px;
+      }
+
+      &-caution {
+        margin-top: 8px;
+        color: $earthy-gold;
+        text-align: center;
+        line-height: 20px;
+      }
+    }
+  }
+
+  .modal-footer-custom {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+    margin-top: 40px;
+    column-gap: 24px;
+
+    .revise-btn,
+    .remove-btn,
+    .submit-btn,
+    .cancel-btn {
+      flex: 1;
+      font-size: 14px;
+      font-family: "Inter";
+      height: 48px;
+    }
+
+    .remove-btn {
+      background: $crimson-red !important;
+    }
+
+    .submit-btn,
+    .revise-btn {
+      background: $bright-orange !important;
+    }
+
+    .confirm-btn {
+      background: $bright-orange !important;
+      width: 180px;
+      height: 48px;
+    }
+  }
+}
+
+.visible {
+  display: none !important;
+}

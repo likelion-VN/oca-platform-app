@@ -139,7 +139,7 @@ const ApplicationCompanyPage: React.FC<IPropsApplicationCompany> = () => {
 
   const handleOnclick = () => {
     const { jobDetail } = state;
-    safeNavigate("/application-form-revise", {
+    safeNavigate("/application-form-review", {
       state: { jobDetailReview: jobDetail },
     });
   };

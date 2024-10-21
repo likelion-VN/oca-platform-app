@@ -20,11 +20,21 @@ const Header: React.FC<IPropsHeader> = ({ toggleCollapsed, toggleDrawer }) => {
   };
 
   const handleLogout = () => {
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.src = logoutUrl;
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + window.outerWidth / 2 - width / 2;
+    const top = window.screenY + window.outerHeight / 2 - height / 2;
+    const logoutWindow = window.open(
+      logoutUrl,
+      "_blank",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
 
-    document.body.appendChild(iframe);
+    if (logoutWindow) {
+      logoutWindow.onload = () => {
+        logoutWindow.close();
+      };
+    }
     auth.clearLocalStorage();
     clearAllCookies();
     safeNavigate("/sign-in");
