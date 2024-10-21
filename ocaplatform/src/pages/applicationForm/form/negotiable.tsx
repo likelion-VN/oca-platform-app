@@ -135,7 +135,9 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     } else {
       setState(defaultData);
     }
-  }, [defaultData]);
+  }, [state.currentTasks?.length]);
+
+  console.log(state);
 
   return (
     <>

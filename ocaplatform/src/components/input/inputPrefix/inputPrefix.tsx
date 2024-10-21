@@ -41,7 +41,7 @@ interface IPropsInputPrefix {
   placeholder?: string;
   autoSize?: { minRows: number; maxRows: number };
   filterOption?: (inputValue: string, option: any) => boolean;
-  classNameCustom: string;
+  classNameCustom?: string;
   tagRender?: SelectProps["tagRender"];
   labelInValue?: boolean;
 }
