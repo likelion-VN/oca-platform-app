@@ -120,7 +120,6 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
       onChange(value);
     }
   };
-  console.log(listDataMutipleInput);
 
   const renderInput = (type: string) => {
     switch (type) {
@@ -165,13 +164,6 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
         return (
           <div className="text-area-input" onClick={onClick}>
             {_.map(value, (item, index) => (
-              // <ProtectedDefaultQuill
-              //   id={item.id}
-              //   value={item.description}
-              //   newValue={item.newTask}
-              //   isRemove={item.isRemove}
-              //   onContentChange={onChangeMultiple}
-              // />
               <Input
                 key={index}
                 allowClear={allowClear}

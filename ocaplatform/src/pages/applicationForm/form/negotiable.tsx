@@ -37,7 +37,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 
   const handleChangeMutiple = (value: string, id: string) => {
     const { currentTasks } = state;
-    console.log(value);
     if (currentTasks.length > 0) {
       const updateTask = _.map(currentTasks, (task) => {
         return task.taskId == id
@@ -88,7 +87,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   const handleKeyDown = useCallback(
     (id: number, e: React.KeyboardEvent<HTMLInputElement>) => {
       const { currentTasks } = state;
-      console.log(currentTasks);
       if (e.key === "Delete" || e.key === "Backspace") {
         const task = _.find(currentTasks, (item) => item?.taskId === id);
         if (task) {
@@ -107,7 +105,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         }
       }
       if (e.key === "Enter") {
-        console.log("first");
         e.preventDefault();
         handleAddTaskBelow(id);
       }
@@ -134,7 +131,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         taskId: newId,
       };
       const newDefaultData = defaultData;
-      newDefaultData.currentTasks.push(newTask);
+      newDefaultData.currentTasks?.push(newTask);
       setState(newDefaultData);
     } else {
       // map lại currentTasks để thêm taskId bằng uuid

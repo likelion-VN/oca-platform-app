@@ -60,7 +60,6 @@ function InputQuillCustom({
       }
       quill.on("text-change", (delta, _oldDelta, _source) => {
         const currentContents = quill.getContents();
-        console.log(currentContents);
         const selection = quill.getSelection();
         if (!selection) return;
 
@@ -113,7 +112,6 @@ function InputQuillCustom({
         .getText()
         .replace(valuePrefix as string, "")
         .trim();
-      console.log(textWithoutPrefix);
       // Kiểm tra nếu nội dung chứa nhiều thẻ <p> do nhấn Enter
       let newContent = `<p><strong>${valuePrefix}</strong><span> ${textWithoutPrefix}</span></p>`;
 
@@ -152,7 +150,6 @@ function InputQuillCustom({
     }
   };
 
-  // console.log(id);
   return (
     <div className="customEditor">
       <ReactQuill
