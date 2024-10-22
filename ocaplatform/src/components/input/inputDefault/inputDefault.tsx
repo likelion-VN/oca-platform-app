@@ -103,6 +103,7 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
             <Input.Group compact>
               <Select
                 className="select-country"
+                disabled={disabled}
                 value={{
                   value: value?.phoneCode,
                   label: (
@@ -114,7 +115,7 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
                   ),
                 }}
                 onChange={handleSelectChange}
-                style={{ width: "15%" }}
+                style={{ width: "14%" }}
                 dropdownStyle={{ width: '300px'}}
                 dropdownRender={(menu) => (
                   <div className="menu-select">
@@ -141,8 +142,9 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
                 ))}
               </Select>
               <Input
-                style={{ width: "85%" }}
-                placeholder={`${value.phoneCode} (000) 000-0000`}
+                prefix={value.phoneCode}
+                style={{ width: "86%" }}
+                placeholder='(000) 000-0000'
                 value={value?.phoneNumber}
                 onChange={handleInputChange}
                 disabled={disabled}

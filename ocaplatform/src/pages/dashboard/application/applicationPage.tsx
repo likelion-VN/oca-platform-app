@@ -9,7 +9,6 @@ const ApplicationPage = () => {
   const loadingPageAction = useActions(loadingPage);
 
   const isCompanyUser = auth.isCompanyUser();
-  console.log(isCompanyUser);
   useEffect(() => {
     loadingPageAction();
   }, []);
@@ -17,9 +16,9 @@ const ApplicationPage = () => {
   return (
     <div className="content-detail">
       {isCompanyUser ? (
-        <ApplicationCandidatePage />
-      ) : (
         <ApplicationCompanyPage />
+      ) : (
+        <ApplicationCandidatePage />
       )}
     </div>
   );
