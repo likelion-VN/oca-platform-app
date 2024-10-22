@@ -1,0 +1,66 @@
+.modal-add-tag-company {
+  width: 680px !important;
+
+  .ant-modal-header {
+    .ant-modal-title {
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+  }
+
+  .ant-modal-body {
+    p:first-child {
+      text-align: center;
+      font-size: 14px;
+      color: #666666;
+      margin-top: 25px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+      margin-top: 5px;
+      color: #0F172A;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .select-add-tag-company-culture {
+      .ant-select-selector {
+        padding: 5px 0;
+        border-color: #0F172A;
+      }
+
+      .tag-redner-company-culture {
+        height: 28px;
+        display: flex;
+        background-color: #F5F5F5;
+        padding: 4px 8px 4px 12px;
+        align-items: center;
+        border-radius: 32px;
+        border: none;
+        margin-inline-end: 4px;
+      }
+    }
+  }
+
+  .ant-modal-footer {
+    button {
+      &.btn-edit-cancel {
+        margin-right: 15px;
+      }
+    }
+  }
+}
+
+.ant-select-dropdown {
+  .ant-select-item {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #0F172A;
+  }
+}

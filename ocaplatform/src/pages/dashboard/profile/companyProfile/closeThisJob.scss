@@ -1,0 +1,61 @@
+.modal-close-this-job {
+  width: 500px !important;
+
+  .ant-modal-body {
+    text-align: center;
+
+    h3 {
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 700;
+      color: #050318;
+      margin: 0;
+      margin-bottom: 15px;
+      margin-top: 40px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      color: #0F172A;
+      padding: 0 20px;
+      margin-bottom: 40px;
+    }
+  }
+
+  .ant-modal-footer {
+    .footer-close-this-job {
+      display: flex;
+      column-gap: 20px;
+
+      button {
+        flex: 1;
+        height: 48px;
+
+        &.btn-close-job {
+          background-color: #D92D20;
+          color: white;
+          border: none;
+
+          &:hover {
+            background-color: #D92D20;
+            color: white;
+          }
+        }
+
+        &.btn-edit-cancel {
+          border: 1px solid #A3A3A3;
+          font-weight: 600;
+          color: #0F172A;
+
+          &:hover {
+            color: #0F172A;
+          }
+        }
+      }
+    }
+  }
+
+
+}

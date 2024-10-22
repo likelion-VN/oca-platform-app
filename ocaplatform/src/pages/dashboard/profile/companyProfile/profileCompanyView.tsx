@@ -1,4 +1,4 @@
-import { Collapse, CollapseProps, Dropdown, MenuProps } from "antd";
+import { Collapse, CollapseProps, Dropdown, MenuProps, Tag } from "antd";
 import ButtonComponent from "../../../../components/button/button";
 import ModalComponent from "../../../../components/modal/modal";
 import useMergeState from "../../../../utils/customHook/useMergeState";
@@ -15,6 +15,10 @@ import iconPlusCircle from "./../../../../assets/demoStatic/plusCircle.png";
 import iconSetting from "./../../../../assets/demoStatic/setting.png";
 // import JobPostingModal from "./jobPostingModal";
 import CompleteProfile from "./completeProfile";
+import CloseThisJob from "./closeThisJob";
+import StatusPost from "./statusPost";
+import ModalAddTagCompany from "./modalAddTagCompany";
+import _ from "lodash";
 
 const itemsDropdown: MenuProps["items"] = [
   {
@@ -40,28 +44,51 @@ const text = `
   it can be found as a welcome guest in many households across the world.
 `;
 
-const items: CollapseProps["items"] = [
-  {
-    key: "1",
-    label: "Company Culture",
-    children: <p>{text}</p>,
-  },
-  {
-    key: "2",
-    label: "Languages",
-    children: <p>{text}</p>,
-  },
-  {
-    key: "3",
-    label: "Focus Areas",
-    children: <p>{text}</p>,
-  },
+const listOptionCompanyCulture = [
+  { label: "#Product Knowledge", value: "Product Knowledge" },
+  { label: "#Product Liability", value: "Product Liability" },
+  { label: "#Product Marketing", value: "Product Marketing" },
+  { label: "#Product Placement", value: "Product Placement" },
+  { label: "#Product Management", value: "Product Management" },
+  { label: "#Product Ad Campaign", value: "Product Ad Campaign" },
+];
+
+const listOptionLanguages = [
+  { label: "English", value: "en" },
+  { label: "Vietnamese", value: "vi" },
+  { label: "Spanish", value: "es" },
+  { label: "French", value: "fr" },
+  { label: "German", value: "de" },
+  { label: "Chinese", value: "zh" },
+  { label: "Japanese", value: "ja" },
+  { label: "Korean", value: "ko" },
+  { label: "Russian", value: "ru" },
+  { label: "Italian", value: "it" },
 ];
 
 const ProfileCompanyView = () => {
   const [state, setState] = useMergeState({
+    dataListSelectModal: {
+      titleCollapse: "",
+      options: [],
+      titleMutipleSelect: "",
+      placeholder: "",
+      onChange: () => {},
+      tagRender: (props: any) => {
+        return { ...props };
+      },
+    },
     openCreateJobModal: true,
+    openAddTagModal: true,
+    listSelectedCompanyCulture: [],
+    listSelectedLanguages: [],
+    listSelectedFocusAreas: [],
   });
+
+  console.log(state.listSelectedCompanyCulture);
+  const handleSelectCompanyCulture = (value: string[]) => {
+    setState({ listSelectedCompanyCulture: value });
+  };
 
   const handleShowModalCreateJob = () => {
     setState({ openCreateJobModal: true });
@@ -70,6 +97,146 @@ const ProfileCompanyView = () => {
   const handleCloseModalCreateJob = () => {
     setState({ openCreateJobModal: false });
   };
+
+  const handleShowModalAddTag = (
+    type: "company-culture" | "languages" | "focus-area"
+  ) => {
+    let newDataListSelectModal = {};
+    switch (type) {
+      case "company-culture":
+        newDataListSelectModal = {
+          titleCollapse: "Company Culture",
+          options: listOptionCompanyCulture,
+          titleMutipleSelect: "Company Culture",
+          placeholder: "Type a skill and press Enter to create a tag.",
+          onChange: (value: string[]) => handleSelectCompanyCulture(value),
+          tagRender: (props: any) => {
+            const { label, closable, onClose } = props;
+            const onPreventMouseDown = (
+              event: React.MouseEvent<HTMLSpanElement>
+            ) => {
+              event.preventDefault();
+              event.stopPropagation();
+            };
+            return (
+              <Tag
+                onMouseDown={onPreventMouseDown}
+                closable={closable}
+                onClose={onClose}
+                className="tag-redner-company-culture"
+              >
+                {_.isString(label) ? label.replace(/#/g, "") : label}
+              </Tag>
+            );
+          },
+        };
+        break;
+
+      default:
+        break;
+    }
+    setState({
+      openAddTagModal: true,
+      dataListSelectModal: newDataListSelectModal,
+    });
+  };
+
+  const handleCloseModalAddTag = () => {
+    setState({ openAddTagModal: false });
+  };
+
+  const items: CollapseProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <div>
+          <div className="title-collapse">
+            <p>Company Culture</p>
+            <button
+              onClick={() => {
+                handleShowModalAddTag("company-culture");
+              }}
+              className="btn-open-add-tag"
+            >
+              <img src={iconPlusCircle} />
+            </button>
+          </div>
+          <div className="list-tag-render-collapse">
+            {state.listSelectedCompanyCulture.map(
+              (item: string, index: number) => {
+                return (
+                  <Tag className="tag-render-collapse" key={index}>
+                    {item}
+                  </Tag>
+                );
+              }
+            )}
+          </div>
+        </div>
+      ),
+      children: <p>{text}</p>,
+    },
+    {
+      key: "2",
+      label: (
+        <div>
+          <div className="title-collapse">
+            <p>Languages</p>
+            <button
+              onClick={() => {
+                handleShowModalAddTag("languages");
+              }}
+              className="btn-open-add-tag"
+            >
+              <img src={iconPlusCircle} />
+            </button>
+          </div>
+          <div className="list-tag-render-collapse">
+            {state.listSelectedCompanyCulture.map(
+              (item: string, index: number) => {
+                return (
+                  <Tag className="tag-render-collapse" key={index}>
+                    {item}
+                  </Tag>
+                );
+              }
+            )}
+          </div>
+        </div>
+      ),
+      children: <p>{text}</p>,
+    },
+    {
+      key: "3",
+      label: (
+        <div>
+          <div className="title-collapse">
+            <p>Focus Areas</p>
+            <button
+              onClick={() => {
+                handleShowModalAddTag("focus-area");
+              }}
+              className="btn-open-add-tag"
+            >
+              <img src={iconPlusCircle} />
+            </button>
+          </div>
+          <div className="list-tag-render-collapse">
+            {state.listSelectedCompanyCulture.map(
+              (item: string, index: number) => {
+                return (
+                  <Tag className="tag-render-collapse" key={index}>
+                    {item}
+                  </Tag>
+                );
+              }
+            )}
+          </div>
+        </div>
+      ),
+      children: <p>{text}</p>,
+    },
+  ];
 
   return (
     <>
@@ -149,7 +316,7 @@ const ProfileCompanyView = () => {
           <Collapse
             className="company-detail-collapse"
             expandIcon={() => {
-              return <img src={iconPlusCircle} />;
+              return null;
             }}
             expandIconPosition="end"
             accordion
@@ -349,7 +516,7 @@ const ProfileCompanyView = () => {
         open={state.openCreateJobModal}
         children={<EditProfileView />}
       /> */}
-      <ModalComponent
+      {/* <ModalComponent
         title={""}
         centered
         onCancel={handleCloseModalCreateJob}
@@ -360,12 +527,73 @@ const ProfileCompanyView = () => {
               className="btn-edit-cancel"
               title="Cancel"
             />
-            <ButtonComponent className="btn-edit-save" title="Edit profile" />
+            <ButtonComponent
+              className="btn-edit-profile"
+              title="Edit profile"
+            />
           </div>
         }
-        className="modal-form-edit-profile"
+        className="modal-complete-profile"
         open={state.openCreateJobModal}
         children={<CompleteProfile />}
+      /> */}
+      {/* <ModalComponent
+        title={""}
+        centered
+        onCancel={handleCloseModalCreateJob}
+        footer={
+          <div className="footer-close-this-job">
+            <ButtonComponent className="btn-close-job" title="Close job" />
+            <ButtonComponent
+              onClick={handleCloseModalCreateJob}
+              className="btn-edit-cancel"
+              title="Cancel"
+            />
+          </div>
+        }
+        className="modal-close-this-job"
+        open={state.openCreateJobModal}
+        children={<CloseThisJob />}
+      /> */}
+      {/* <ModalComponent
+        title={""}
+        centered
+        onCancel={handleCloseModalCreateJob}
+        footer={
+          <div className="footer-status-post">
+            <ButtonComponent className="btn-oke" title="OK" />
+          </div>
+        }
+        className="modal-status-post"
+        open={state.openCreateJobModal}
+        children={<StatusPost />}
+      /> */}
+      <ModalComponent
+        title={"Add Company Culture Tags"}
+        centered
+        onCancel={handleCloseModalAddTag}
+        footer={
+          <div className="footer-status-post">
+            <ButtonComponent
+              onClick={handleCloseModalAddTag}
+              className="btn-edit-cancel"
+              title="Cancel"
+            />
+            <ButtonComponent className="btn-edit-save" title="Save" />
+          </div>
+        }
+        className="modal-add-tag-company"
+        open={state.openAddTagModal}
+        children={
+          <ModalAddTagCompany
+            titleMultipleSelect={state.dataListSelectModal.titleMutipleSelect}
+            placeholder={state.dataListSelectModal.placeholder}
+            tagRender={state.dataListSelectModal.tagRender}
+            listOption={state.dataListSelectModal.options}
+            onChange={state.dataListSelectModal.onChange}
+            handleSelectCompanyCulture={handleSelectCompanyCulture}
+          />
+        }
       />
     </>
   );
