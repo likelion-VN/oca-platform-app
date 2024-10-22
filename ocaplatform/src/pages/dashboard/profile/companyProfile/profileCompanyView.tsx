@@ -85,7 +85,6 @@ const ProfileCompanyView = () => {
     listSelectedFocusAreas: [],
   });
 
-  console.log(state.listSelectedCompanyCulture);
   const handleSelectCompanyCulture = (value: string[]) => {
     setState({ listSelectedCompanyCulture: value });
   };

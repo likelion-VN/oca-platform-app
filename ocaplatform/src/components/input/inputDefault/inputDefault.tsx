@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SearchOutlined } from "@ant-design/icons";
-import { Input, Select } from "antd";
+import { DatePicker, Input, Select, TimePicker } from "antd";
+import { RangePickerProps } from "antd/es/date-picker";
 import TextArea from "antd/es/input/TextArea";
 import classNames from "classnames";
+import dayjs from "dayjs";
 import _ from "lodash";
 import React, { useState } from "react";
 import "./inputDefault.s.scss";
@@ -11,6 +13,7 @@ const { Option } = Select;
 
 interface IPropsInputDefault {
   value?: any;
+  valueSelect?: any;
   title?: string;
   subTitle?: string;
   onChange?: (e: any) => void;
@@ -24,11 +27,16 @@ interface IPropsInputDefault {
   errorMsg?: string;
   allowClear?: boolean;
   readonly?: boolean;
-  listData?: any[];
+  option?: any[];
+  maxLength?: number;
+  showCount?: boolean;
+  maxRows?: number;
+  showSearch?: boolean;
 }
 
 const InputDefault: React.FC<IPropsInputDefault> = ({
   value,
+  valueSelect,
   title,
   optional,
   onChange,
@@ -41,13 +49,21 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
   errorMsg,
   allowClear = false,
   readonly = false,
-  listData = [],
+  option = [],
+  maxLength,
+  showCount = false,
+  maxRows = 4,
+  showSearch = false,
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
-  const handleInputChange = (e: any) => {
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    return current && current < dayjs().endOf("day");
+  };
+
+  const handleInputChange = (value: any) => {
     if (onChange) {
-      onChange(e);
+      onChange(value);
     }
   };
 
@@ -87,15 +103,18 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
             onClick={onClick}
             value={value}
             onChange={handleInputChange}
-            autoSize={{ minRows: 4, maxRows: 4 }}
+            autoSize={{ minRows: maxRows, maxRows: maxRows }}
             disabled={disabled}
             placeholder={placeholder}
             allowClear={allowClear}
             readOnly={readonly}
+            maxLength={maxLength}
+            showCount={showCount}
+            style={{ resize: "none" }}
           />
         );
       case "phone-number":
-        const filteredCountries = _.filter(listData, (country) =>
+        const filteredCountries = _.filter(option, (country) =>
           country.name.toLowerCase().includes(searchValue.toLowerCase())
         );
         return (
@@ -105,18 +124,18 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
                 className="select-country"
                 disabled={disabled}
                 value={{
-                  value: value?.phoneCode,
+                  value: valueSelect?.phoneCode,
                   label: (
-                      <img
-                        src={value?.flag}
-                        alt="flag"
-                        style={{ width: "24px", height: '16px', }}
-                      />
+                    <img
+                      src={valueSelect?.flag}
+                      alt="flag"
+                      style={{ width: "24px", height: "16px" }}
+                    />
                   ),
                 }}
                 onChange={handleSelectChange}
-                style={{ width: "14%" }}
-                dropdownStyle={{ width: '300px'}}
+                style={{ width: "65px" }}
+                dropdownStyle={{ width: "300px" }}
                 dropdownRender={(menu) => (
                   <div className="menu-select">
                     <Input
@@ -132,20 +151,25 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
               >
                 {_.map(filteredCountries, (country) => (
                   <Option key={country.phoneCode} value={country.phoneCode}>
-                      <img
-                        src={country.flag}
-                        alt={country.name}
-                        style={{ width: "24px", height: '16px', marginRight: "8px" }}
-                      />
-                      {country.name} <span className="phone-code">({country.phoneCode})</span>
+                    <img
+                      src={country.flag}
+                      alt={country.name}
+                      style={{
+                        width: "24px",
+                        height: "16px",
+                        marginRight: "8px",
+                      }}
+                    />
+                    {country.name}{" "}
+                    <span className="phone-code">({country.phoneCode})</span>
                   </Option>
                 ))}
               </Select>
               <Input
-                prefix={value.phoneCode}
-                style={{ width: "86%" }}
-                placeholder='(000) 000-0000'
-                value={value?.phoneNumber}
+                prefix={valueSelect?.phoneCode}
+                style={{ width: "calc(100% - 65px)" }}
+                placeholder="(000) 000-0000"
+                value={value}
                 onChange={handleInputChange}
                 disabled={disabled}
                 allowClear={allowClear}
@@ -154,6 +178,52 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
             </Input.Group>
             {errorMsg && <span className="msg-error">{errorMsg}</span>}
           </>
+        );
+      case "date-picker":
+        return (
+          <DatePicker
+            value={value}
+            onChange={handleInputChange}
+            format="MM/DD/YYYY"
+            disabled={disabled}
+            placeholder={placeholder}
+            allowClear={allowClear}
+            readOnly={readonly}
+            disabledDate={disabledDate}
+            style={{ width: "100%", height: "40px", borderRadius: "4px" }}
+            showTime={false}
+          />
+        );
+      case "time-picker":
+        return (
+          <TimePicker
+            value={value}
+            onChange={handleInputChange}
+            format="HH:mm"
+            disabled={disabled}
+            placeholder={placeholder}
+            allowClear={allowClear}
+            readOnly={readonly}
+            style={{ width: "100%", height: "40px", borderRadius: "4px" }}
+          />
+        );
+      case "select":
+        return (
+          <Select
+            value={value}
+            onChange={handleSelectChange}
+            disabled={disabled}
+            allowClear={allowClear}
+            placeholder={placeholder}
+            showSearch={showSearch}
+            style={{ width: "100%", height: "40px", borderRadius: "4px" }}
+          >
+            {_.map(option, (item) => (
+              <Option key={item.value} value={item.value}>
+                {item.label}
+              </Option>
+            ))}
+          </Select>
         );
       default:
         return <></>;

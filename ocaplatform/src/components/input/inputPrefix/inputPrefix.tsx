@@ -120,6 +120,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
       onChange(value);
     }
   };
+  console.log(listDataMutipleInput);
 
   const renderInput = (type: string) => {
     switch (type) {

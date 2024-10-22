@@ -4,3 +4,10 @@ export interface Option {
   value: string | number | boolean;
   isDisabled?: boolean;
 }
+
+export interface CountryOption {
+  name: string;
+  phoneCode: string;
+  flag: string;
+  timezone: string[];
+}

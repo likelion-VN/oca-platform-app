@@ -7,6 +7,7 @@ import {
   ProfileOutlined,
 } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
+import dayjs from "dayjs";
 import _ from "lodash";
 import {
   ArrowLeft,
@@ -16,7 +17,8 @@ import {
   GraduationCap,
   Phone,
 } from "phosphor-react";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Congratulation } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
@@ -24,11 +26,10 @@ import InputDefault from "../../components/input/inputDefault/inputDefault";
 import InputPrefix from "../../components/input/inputPrefix/inputPrefix";
 import ModalComponent from "../../components/modal/modal";
 import { WorkTypeOptions } from "../../constants/selectOptions";
-import { fetchCountries } from "../../services/fetchCountries";
 import loadingPage from "../../store/actions/loading";
 import { getLabelByValue } from "../../utils";
 import useActions from "../../utils/customHook/useActions";
-import useMergeState from "../../utils/customHook/useMergeState";
+import { useSetState } from "../../utils/customHook/useSetState";
 import { formatDate } from "../../utils/formatter";
 import { safeNavigate } from "../../utils/helper";
 import { renderStatus } from "../dashboard/dashboard.h";
@@ -36,11 +37,12 @@ import "../dashboard/dashboard.s.scss";
 import "./applicationFormReview.s.scss";
 
 const applicationFormReview = () => {
+  const countriesOption = useSelector((state: any) => state.countriesOptions)
   const loadingPageAction = useActions(loadingPage);
   const location = useLocation();
   const { jobDetailReview } = location.state || {};
 
-  const [state, setState] = useMergeState({
+  const [state, setState] = useSetState({
     detailJob: jobDetailReview,
     isOpenRejectModal: false,
     isOpenPhoneModal: false,
@@ -48,10 +50,34 @@ const applicationFormReview = () => {
     isOpenScheduleModal: false,
     isOpenSuccessModal: false,
     isOpenGuidelineModal: false,
-    listCountry: [],
-    selectedCountry: {
-      phoneCode: "+1",
-      flag: "https://flagcdn.com/ca.svg",
+    phoneModal: {
+      selectedCountry: {
+        phoneCode: "+1",
+        flag: "https://flagcdn.com/ca.svg",
+      },
+    },
+    emailModal: {
+      selectedCountry: {
+        phoneCode: "+1",
+        flag: "https://flagcdn.com/ca.svg",
+      },
+      phoneValue: "",
+      email: "",
+      emailMsg:
+        "We would like to schedule a phone call before the interview. Please let us know your availability.",
+    },
+    scheduleModal: {
+      selectedCountry: {
+        phoneCode: "+1",
+        flag: "https://flagcdn.com/ca.svg",
+      },
+      position: "",
+      interviewDate: dayjs(),
+      interviewTime: "",
+      timezone: "",
+      phoneValue: "",
+      email: "",
+      emailMsg: "",
     },
   });
 
@@ -136,39 +162,62 @@ const applicationFormReview = () => {
     },
   ];
 
-  const handleGetListContries = async () => {
-    const listCountry = await fetchCountries();
-    setState({ listCountry });
+  const handleInputChange = (
+    groupKey: string,
+    key: string,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    setState((prevState: any) => ({
+      ...prevState,
+      [groupKey]: {
+        ...prevState[groupKey],
+        [key]: e.target.value,
+      },
+    }));
   };
 
-  const handleCountryChange = (value: string) => {
-    const { listCountry, selectedCountry } = state;
-    const country = _.find(listCountry, (c) => c.phoneCode === value);
-    console.log("test", value, country);
+  const handleCountryChange = (groupKey: string, value: string) => {
+    const country = _.find(countriesOption, (c) => c.phoneCode === value);
     if (country) {
-      setState({
-        selectedCountry: {
-          phoneCode: country.phoneCode,
-          flag: country.flag,
-          phoneNumber: selectedCountry.phoneNumber,
+      setState((prevState: any) => ({
+        ...prevState,
+        [groupKey]: {
+          ...prevState[groupKey],
+          selectedCountry: {
+            phoneCode: country.phoneCode,
+            flag: country.flag,
+          },
         },
-      });
+      }));
     }
   };
 
-  const handlePhoneNumberChange = (e: any) => {
+  const handleSelectChange = (groupKey: string, key: string, value: any) => {
+    setState((prevState: any) => ({
+      ...prevState,
+      [groupKey]: {
+        ...prevState[groupKey],
+        [key]: value,
+      },
+    }));
+  };
+
+  const handlePhoneNumberChange = (
+    groupKey: string,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     const phoneNumber = e.target.value;
     const sanitizedValue = phoneNumber.replace(/[^0-9()-\s]/g, "");
-    setState({
-      selectedCountry: {
-        ...state.selectedCountry,
-        phoneNumber: sanitizedValue,
+    setState((prevState: any) => ({
+      ...prevState,
+      [groupKey]: {
+        ...prevState[groupKey],
+        phoneValue: sanitizedValue,
       },
-    });
+    }));
   };
 
   useEffect(() => {
-    handleGetListContries();
     loadingPageAction();
   }, [state.detailJob]);
 
@@ -230,10 +279,9 @@ const applicationFormReview = () => {
             <InputDefault
               title="Candidate's phone number"
               type="phone-number"
-              onChange={handlePhoneNumberChange}
-              onChangeSelect={handleCountryChange}
-              value={state.selectedCountry}
-              listData={state.listCountry}
+              valueSelect={state.phoneModal.selectedCountry}
+              value={detailJob.phoneNumber}
+              option={countriesOption}
               disabled
             />
             <div className="notice-form">
@@ -249,6 +297,7 @@ const applicationFormReview = () => {
         open={state.isOpenEmailModal}
         onCancel={() => handleOpenEmailModal(false)}
         centered
+        width={680}
         footer={
           <div className="modal-footer-custom">
             <ButtonComponent
@@ -270,21 +319,32 @@ const applicationFormReview = () => {
           <div className="title">Sending an email</div>
           <div className="title-content">
             <div className="double-input">
-            <InputDefault
-              title="Contact number"
-              type="phone-number"
-              onChange={handlePhoneNumberChange}
-              onChangeSelect={handleCountryChange}
-              value={state.selectedCountry}
-              listData={state.listCountry}
-            />
-             <InputDefault
-              title="Contact email"
-              type="input"
-              onChange={handlePhoneNumberChange}
-              value={state.selectedCountry}
-            />
+              <InputDefault
+                title="Contact number"
+                type="phone-number"
+                onChange={(e) => handlePhoneNumberChange("emailModal", e)}
+                onChangeSelect={(e) => handleCountryChange("emailModal", e)}
+                valueSelect={state.emailModal.selectedCountry}
+                value={state.emailModal.phoneValue}
+                option={countriesOption}
+              />
+              <InputDefault
+                title="Contact email"
+                type="input"
+                placeholder="Enter contact email"
+                value={state.emailModal.email}
+                onChange={(e) => handleInputChange("emailModal", "email", e)}
+              />
             </div>
+            <InputDefault
+              title="Your message"
+              type="text-area"
+              maxLength={1000}
+              showCount
+              maxRows={8}
+              value={state.emailModal.emailMsg}
+              onChange={(e) => handleInputChange("emailModal", "emailMsg", e)}
+            />
             <div className="notice-form">
               <sup>*</sup>This email will be send to both of you and candidate
             </div>
@@ -296,6 +356,7 @@ const applicationFormReview = () => {
         open={state.isOpenScheduelModal}
         onCancel={() => handleOpenScheduelModal(false)}
         centered
+        width={680}
         footer={
           <div className="modal-footer-custom">
             <ButtonComponent
@@ -303,14 +364,14 @@ const applicationFormReview = () => {
               title="Cancel"
               size="large"
               type="default"
-              // onClick={}
+              onClick={() => handleOpenScheduelModal(false)}
             />
             <ButtonComponent
               className="send-btn"
               title="Send"
               size="large"
               type="primary"
-              onClick={() => handleOpenRejectModal(false)}
+              // onClick={() => handleOpenRejectModal(false)}
             />
           </div>
         }
@@ -318,6 +379,75 @@ const applicationFormReview = () => {
         <div className="modal-content-custom">
           <div className="title">Schedule an interview</div>
           <div className="title-content">
+            <InputDefault
+              title="Position"
+              type="input"
+              placeholder="Enter job title"
+              value={state.scheduleModal.position}
+              onChange={(e) =>
+                handleInputChange("scheduleModal", "position", e)
+              }
+            />
+            <div className="double-input">
+              <InputDefault
+                title="Interview Date"
+                type="date-picker"
+                onChange={(value) =>
+                  handleSelectChange("scheduleModal", "interviewDate", value)
+                }
+                value={state.scheduleModal.interviewDate}
+              />
+              <InputDefault
+                title="Interview Time"
+                type="time-picker"
+                onChange={(value) =>
+                  handleSelectChange("scheduleModal", "interviewTime", value)
+                }
+                value={state.scheduleModal.interviewTime}
+              />
+            </div>
+            <InputDefault
+              title="Time zone"
+              type="select"
+              placeholder="Select time zone"
+              option={state.listTimezone}
+              onChangeSelect={(value) =>
+                handleSelectChange("scheduleModal", "timezone", value)
+              }
+              showSearch
+            />
+            <div className="double-input">
+              <InputDefault
+                title="Contact number"
+                type="phone-number"
+                onChange={(e) => handlePhoneNumberChange("scheduleModal", e)}
+                onChangeSelect={(e) => handleCountryChange("scheduleModal", e)}
+                valueSelect={state.scheduleModal.selectedCountry}
+                value={state.scheduleModal.phoneValue}
+                option={countriesOption}
+              />
+              <InputDefault
+                title="Contact email"
+                type="input"
+                placeholder="Enter contact email"
+                value={state.scheduleModal.email}
+                onChange={(e) => handleInputChange("scheduleModal", "email", e)}
+              />
+            </div>
+            <InputDefault
+              title="Your message"
+              type="text-area"
+              maxLength={1000}
+              showCount
+              maxRows={8}
+              placeholder={
+                "Please write the message you would like to send, including:\n• Interview Process\n• What should be prepared\n• Interview duration"
+              }
+              value={state.scheduleModal.emailMsg}
+              onChange={(e) =>
+                handleInputChange("scheduleModal", "emailMsg", e)
+              }
+            />
             <div className="notice-form">
               <sup>*</sup>This email will be send to both of you and candidate
             </div>

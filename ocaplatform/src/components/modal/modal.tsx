@@ -10,6 +10,7 @@ interface IPropsModal {
   centered?: boolean;
   children?: React.ReactNode;
   title?: React.ReactNode;
+  width?: number;
 }
 
 const ModalComponent: React.FC<IPropsModal> = ({
@@ -21,6 +22,7 @@ const ModalComponent: React.FC<IPropsModal> = ({
   centered,
   children,
   title,
+  width,
 }) => {
   return (
     <Modal
@@ -32,6 +34,7 @@ const ModalComponent: React.FC<IPropsModal> = ({
       onOk={onOk}
       centered={centered}
       maskClosable={false}
+      width={width}
     >
       {children}
     </Modal>
