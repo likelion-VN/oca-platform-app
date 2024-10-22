@@ -9,7 +9,6 @@ const ApplicationPage = () => {
   const loadingPageAction = useActions(loadingPage);
 
   const isCompanyUser = auth.isCompanyUser();
-  console.log(isCompanyUser);
   useEffect(() => {
     loadingPageAction();
   }, []);

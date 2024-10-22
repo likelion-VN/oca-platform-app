@@ -45,60 +45,29 @@ function InputQuillCustom({
   className,
   handleChangeMutiple,
 }: InputQuillDefaultProps) {
-  const [valueHtml, setValueHtml] = useState(""); // Lưu trữ nội dung đã chỉnh sửa
+  const [valueHtml, setValueHtml] = useState(value); // Đặt state ban đầu với value
   const quillRef = useRef<ReactQuill>(null); // Tham chiếu đến Quill editor
 
   useEffect(() => {
     if (quillRef.current && valuePrefix) {
       const quill = quillRef.current.getEditor();
+      // const index = quill.getLength();
 
-      // Xóa nội dung hiện tại và chèn prefix không thể chỉnh sửa
+      // Chỉ thiết lập nội dung nếu chưa có nội dung (tránh thiết lập lại mỗi lần nhập liệu)
       if (!valueHtml) {
         quill.setContents(
           new Delta([{ insert: { prefix: valuePrefix } }, { insert: value }])
         );
       }
-      quill.on("text-change", (delta, _oldDelta, _source) => {
-        const currentContents = quill.getContents();
-        console.log(currentContents);
-        const selection = quill.getSelection();
-        if (!selection) return;
 
-        const prefixLength = valuePrefix.length;
-
-        // Kiểm tra nếu con trỏ nằm ở phía trước prefix
-        if (selection.index < prefixLength) {
-          // Chỉ đặt lại con trỏ nếu nó đang nằm trong vùng prefix
-          if (selection.index !== prefixLength) {
-            quill.setSelection(prefixLength, 0, "silent");
-          }
+      quill.on("selection-change", (range) => {
+        if (range && range.index < valuePrefix.length) {
+          // Đặt con trỏ ngay sau prefix khi editor được focus
+          quill.setSelection(valuePrefix.length, 0, "silent");
         }
-
-        // Kiểm tra nếu prefix bị xóa, cập nhật nội dung thay vì set lại toàn bộ
-        const firstOp = currentContents.ops && currentContents.ops[0];
-        if (!firstOp?.insert || !firstOp.insert.prefix) {
-          quill.updateContents(
-            new Delta([
-              { insert: { prefix: valuePrefix } },
-              ...(currentContents.ops ? currentContents.ops.slice(1) : []),
-            ]),
-            "silent"
-          );
-        }
-
-        // Ngăn chặn việc xóa prefix
-        delta.ops &&
-          delta.ops.forEach((op) => {
-            if (op.delete && selection.index <= prefixLength) {
-              quill.updateContents(
-                new Delta([{ retain: prefixLength }, { delete: op.delete }]),
-                "silent"
-              );
-            }
-          });
       });
     }
-  }, [valuePrefix, valueHtml]);
+  }, [valuePrefix, valueHtml]); // Cập nhật useEffect khi valuePrefix hoặc valueHtml thay đổi
 
   const handleChange = (
     _value: string,
@@ -106,59 +75,40 @@ function InputQuillCustom({
     _source: any,
     editor: ReactQuill.UnprivilegedEditor
   ) => {
-    // Lưu lại vị trí con trỏ hiện tại
-
     if (valuePrefix) {
       const textWithoutPrefix = editor
         .getText()
         .replace(valuePrefix as string, "")
         .trim();
-      console.log(textWithoutPrefix);
-      // Kiểm tra nếu nội dung chứa nhiều thẻ <p> do nhấn Enter
-      let newContent = `<p><strong>${valuePrefix}</strong><span> ${textWithoutPrefix}</span></p>`;
+      const newContent = `<p><strong>${valuePrefix}</strong><span> ${textWithoutPrefix}</span></p>`; // Tạo cấu trúc mới
 
-      // Cập nhật lại nội dung vào state nếu có thay đổi
+      // Kiểm tra sự khác biệt trước khi cập nhật state (tránh cập nhật không cần thiết)
       if (valueHtml !== newContent) {
         setValueHtml(newContent);
-      }
-
-      // kiểm tra nếu có nội dung mới thì thêm class change-value vào thẻ strong
-      if (textWithoutPrefix) {
-        // xử lí thay thế dùng ref gọi tới editor và dom tới
-        if (quillRef.current) {
-          const editorRoot = quillRef.current.getEditor().root;
-          const strongElement = editorRoot.querySelector(
-            ".customEditor .ql-editor strong"
-          );
-          if (strongElement) {
-            strongElement.classList.add("change-value");
-          }
-        }
       }
     } else {
       const textWithoutPrefix = editor.getText().trim();
       setValueHtml(`<p><span>${textWithoutPrefix}</span></p>`);
     }
 
-    // Lấy nội dung mới đã được chỉnh sửa
     const newText = editor
       .getText()
       .replace(valuePrefix ? valuePrefix : ("" as string), "")
       .trim();
 
+    // Chỉ gọi onChange khi có sự thay đổi nội dung
     if (value !== newText) {
       onChange && onChange(newText);
       handleChangeMutiple && id && handleChangeMutiple(newText, id.toString());
     }
   };
 
-  // console.log(id);
   return (
     <div className="customEditor">
       <ReactQuill
         className={className}
         id={id ? id : ""}
-        defaultValue={valueHtml}
+        defaultValue={valueHtml} // Sử dụng defaultValue thay vì value
         readOnly={disabled}
         ref={quillRef}
         theme="snow"

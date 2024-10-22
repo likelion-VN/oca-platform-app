@@ -31,8 +31,8 @@ const items: CollapseProps["items"] = [
 ];
 
 const StudentViewCompany = () => {
-  const [state, setState] = useMergeState({
-    openModalSendEmail: false,
+  const [state, _setState] = useMergeState({
+    openModalSendEmail: true,
   });
   return (
     <>

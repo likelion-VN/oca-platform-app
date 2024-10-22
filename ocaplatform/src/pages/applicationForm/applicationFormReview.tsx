@@ -143,7 +143,6 @@ const applicationFormReview = () => {
         flag: country.flags.png,
       }));
 
-      console.log(countryData);
       return countryData;
     } catch (error) {
       console.error("Error:", error);
