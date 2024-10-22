@@ -504,12 +504,20 @@
     .cancel-btn {
       flex: 1;
       font-size: 14px;
-      font-family: "Inter";
       height: 48px;
+      font-weight: 600;
     }
 
     .remove-btn {
       background: $crimson-red !important;
+    }
+
+    .cancel-btn {
+      border-color: $cool-grey;
+      &:hover {
+        border-color: $cool-grey;
+        color: $dark-navy-blue;
+      }
     }
 
     .submit-btn,
