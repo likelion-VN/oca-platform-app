@@ -219,7 +219,7 @@ const applicationFormReview = () => {
               className="ok-btn"
               title="OK"
               type="primary"
-              // onClick={}
+              onClick={() => handleOpenPhoneModal(false)}
             />
           </div>
         }
@@ -234,6 +234,7 @@ const applicationFormReview = () => {
               onChangeSelect={handleCountryChange}
               value={state.selectedCountry}
               listData={state.listCountry}
+              disabled
             />
             <div className="notice-form">
               <sup>*</sup>If the candidate doesn't answer, consider sending a
@@ -268,6 +269,22 @@ const applicationFormReview = () => {
         <div className="modal-content-custom">
           <div className="title">Sending an email</div>
           <div className="title-content">
+            <div className="double-input">
+            <InputDefault
+              title="Contact number"
+              type="phone-number"
+              onChange={handlePhoneNumberChange}
+              onChangeSelect={handleCountryChange}
+              value={state.selectedCountry}
+              listData={state.listCountry}
+            />
+             <InputDefault
+              title="Contact email"
+              type="input"
+              onChange={handlePhoneNumberChange}
+              value={state.selectedCountry}
+            />
+            </div>
             <div className="notice-form">
               <sup>*</sup>This email will be send to both of you and candidate
             </div>

@@ -27,14 +27,18 @@
   }
   .ant-input-group {
     .ant-select {
+      margin-inline-end: 0;
       .ant-select-selector {
         border-start-start-radius: 4px !important;
         border-end-start-radius: 4px !important;
+        border-inline-end-width: 0;
       }
     }
-    .ant-input {
+    .ant-input-affix-wrapper {
+      border-inline-start: 0;
       border-start-end-radius: 4px;
       border-end-end-radius: 4px;
+      padding-left: 0;
     }
   }
   .ant-input {
