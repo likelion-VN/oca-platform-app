@@ -14,9 +14,9 @@ import iconPlus from "./../../../../assets/demoStatic/plus.png";
 import iconPlusCircle from "./../../../../assets/demoStatic/plusCircle.png";
 import iconSetting from "./../../../../assets/demoStatic/setting.png";
 // import JobPostingModal from "./jobPostingModal";
-import CompleteProfile from "./completeProfile";
-import CloseThisJob from "./closeThisJob";
-import StatusPost from "./statusPost";
+// import CompleteProfile from "./completeProfile";
+// import CloseThisJob from "./closeThisJob";
+// import StatusPost from "./statusPost";
 import ModalAddTagCompany from "./modalAddTagCompany";
 import _ from "lodash";
 
@@ -53,18 +53,18 @@ const listOptionCompanyCulture = [
   { label: "#Product Ad Campaign", value: "Product Ad Campaign" },
 ];
 
-const listOptionLanguages = [
-  { label: "English", value: "en" },
-  { label: "Vietnamese", value: "vi" },
-  { label: "Spanish", value: "es" },
-  { label: "French", value: "fr" },
-  { label: "German", value: "de" },
-  { label: "Chinese", value: "zh" },
-  { label: "Japanese", value: "ja" },
-  { label: "Korean", value: "ko" },
-  { label: "Russian", value: "ru" },
-  { label: "Italian", value: "it" },
-];
+// const listOptionLanguages = [
+//   { label: "English", value: "en" },
+//   { label: "Vietnamese", value: "vi" },
+//   { label: "Spanish", value: "es" },
+//   { label: "French", value: "fr" },
+//   { label: "German", value: "de" },
+//   { label: "Chinese", value: "zh" },
+//   { label: "Japanese", value: "ja" },
+//   { label: "Korean", value: "ko" },
+//   { label: "Russian", value: "ru" },
+//   { label: "Italian", value: "it" },
+// ];
 
 const ProfileCompanyView = () => {
   const [state, setState] = useMergeState({
@@ -94,9 +94,9 @@ const ProfileCompanyView = () => {
     setState({ openCreateJobModal: true });
   };
 
-  const handleCloseModalCreateJob = () => {
-    setState({ openCreateJobModal: false });
-  };
+  // const handleCloseModalCreateJob = () => {
+  //   setState({ openCreateJobModal: false });
+  // };
 
   const handleShowModalAddTag = (
     type: "company-culture" | "languages" | "focus-area"

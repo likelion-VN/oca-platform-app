@@ -9,15 +9,19 @@ const ApplicationPage = () => {
   const loadingPageAction = useActions(loadingPage);
 
   const isCompanyUser = auth.isCompanyUser();
-
+  console.log(isCompanyUser);
   useEffect(() => {
-    loadingPageAction()
-  }, [])
+    loadingPageAction();
+  }, []);
 
-  return isCompanyUser ? (
-    <ApplicationCompanyPage />
-  ) : (
-    <ApplicationCandidatePage />
+  return (
+    <div className="content-detail">
+      {isCompanyUser ? (
+        <ApplicationCandidatePage />
+      ) : (
+        <ApplicationCompanyPage />
+      )}
+    </div>
   );
 };
 

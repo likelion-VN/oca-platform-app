@@ -122,6 +122,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   };
 
   useEffect(() => {
+    console.log(_.isEmpty(defaultData.currentTasks));
     if (_.isEmpty(defaultData.currentTasks)) {
       const newId = uuidv4();
       const newTask = {
@@ -145,7 +146,8 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     }
   }, [defaultData]);
 
-  console.log(state);
+  console.log(defaultData);
+  console.log("first");
 
   return (
     <>

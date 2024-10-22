@@ -64,9 +64,10 @@ const SidebarTemplate = () => {
             selectedKey={state.selectedKey}
             onSelect={handleSelect}
           />
-          <div className="content-detail">
-            <Outlet />
-          </div>
+
+          <Outlet />
+          {/* <div className="content-detail">
+          </div> */}
         </div>
         <DrawerComponent
           open={state.openDrawer}

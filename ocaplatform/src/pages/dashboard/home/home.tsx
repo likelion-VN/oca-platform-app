@@ -15,7 +15,7 @@ import {
   Radio,
   Skeleton,
   Space,
-  Tooltip
+  Tooltip,
 } from "antd";
 
 import classNames from "classnames";
@@ -267,7 +267,7 @@ const HomePage: React.FC<IPropsHome> = () => {
           _.assign(newState, {
             listJob: [],
             jobDetail: {},
-          })
+          });
           _.assign(updateHomeGoto, {
             listJob: [],
             jobDetail: [],
@@ -493,7 +493,7 @@ const HomePage: React.FC<IPropsHome> = () => {
   const { jobDetail } = state || {};
 
   return (
-    <>
+    <div className="content-detail">
       <ModalComponent
         className="modal-cancel"
         open={state.isOpenCancelModal}
@@ -1082,7 +1082,7 @@ const HomePage: React.FC<IPropsHome> = () => {
           </div>
         }
       />
-    </>
+    </div>
   );
 };
 

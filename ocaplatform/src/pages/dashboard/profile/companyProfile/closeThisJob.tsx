@@ -1,6 +1,4 @@
-import React from "react";
 import "./closeThisJob.scss";
-type Props = {};
 
 const CloseThisJob = () => {
   return (

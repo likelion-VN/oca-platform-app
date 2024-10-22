@@ -1,8 +1,8 @@
 import "./modalAddTagCompany.scss";
 import InputPrefix from "../../../../components/input/inputPrefix/inputPrefix";
-import { SelectProps, Tag } from "antd";
+// import { SelectProps, Tag } from "antd";
 import _ from "lodash";
-import { OptionProps } from "antd/es/select";
+// import { OptionProps } from "antd/es/select";
 import { Option } from "../../../../interfaces";
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 
 const ModalAddTagCompany = ({
   listOption,
-  handleSelectCompanyCulture,
+  // handleSelectCompanyCulture,
   titleMultipleSelect,
   onChange,
   placeholder,
