@@ -1,9 +1,7 @@
-import React from "react";
 import imgStatusSuccess from "./../../../../assets/demoStatic/iconStatusSuccess.png";
 import "./statusPost.scss";
-type Props = {};
 
-const StatusPost = (props: Props) => {
+const StatusPost = () => {
   return (
     <div>
       <img width={80} height={80} src={imgStatusSuccess} alt="" />

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import arrowLeft from "./../../../../assets/demoStatic/arrowLeft.png";
 import "./studentViewCompany.scss";
@@ -8,7 +7,6 @@ import bannerCompanyHeader from "./../../../../assets/demoStatic/banner.png";
 import avatarCompany from "./../../../../assets/demoStatic/avatar.png";
 import bellCompany from "./../../../../assets/demoStatic/BellRinging.png";
 import iconOpenLink from "./../../../../assets/demoStatic/iconOpenLink.png";
-import iconEdit from "./../../../../assets/demoStatic/edit.png";
 import iconSendEmail from "./../../../../assets/demoStatic/iconSendEmail.png";
 
 const items: CollapseProps["items"] = [
@@ -30,7 +28,7 @@ const items: CollapseProps["items"] = [
 ];
 
 const StudentViewCompany = () => {
-  const [state, setState] = useState({});
+  // const [state, setState] = useState({});
   return (
     <div className="student-view-company-profile">
       <div className="back-to-profile-company">

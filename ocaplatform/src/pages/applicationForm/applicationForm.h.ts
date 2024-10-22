@@ -4,7 +4,7 @@ import { RequestApplicationForm } from "../../interfaces/applicationForm";
 
 const newFormDataFormatter = (newFormData: any) => {
   const { applicationId, jobId, jobTypeId, step1, step2 } = newFormData;
-  const newListTask = _.filter(step1.currentTasks, task => !_.isNil(task.description) && !_.isNil(task.newTask));
+  const newListTask = _.filter(step1.currentTasks, task => !_.isNil(task?.description) && !_.isNil(task?.newTask));
   console.log(newFormData)
   const formDataFormatted: RequestApplicationForm = {
     jobId,

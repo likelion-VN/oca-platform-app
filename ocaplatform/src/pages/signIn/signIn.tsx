@@ -30,29 +30,29 @@ const LoginPage = () => {
 
   const loginByGoogle = () => {
     // *: For production
-    // const width = 500;
-    // const height = 600;
-    // const left = window.screenX + window.outerWidth / 2 - width / 2;
-    // const top = window.screenY + window.outerHeight / 2 - height / 2;
-    // window.open(
-    //   googleAuthUrl,
-    //   "Login by Google",
-    //   `width=${width},height=${height},top=${top},left=${left}`
-    // );
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + window.outerWidth / 2 - width / 2;
+    const top = window.screenY + window.outerHeight / 2 - height / 2;
+    window.open(
+      googleAuthUrl,
+      "Login by Google",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
     // *: For developer
-    auth.setIsLogin(true);
-    const idToken =
-      "eyJhbGciOiJSUzI1NiIsImtpZCI6IjczZTI1Zjk3ODkxMTljNzg3NWQ1ODA4N2E3OGFjMjNmNWVmMmVkYTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDYwNzI0MDMyNzU3OTIwMDM5MjEiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoicXVhbmdraGFpMDkwMUBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IjVpOUtQSFdPdFFPSTRJU0ZHQTNkYVEiLCJub25jZSI6ImdqSHByNnVoUEUzbHhxX1REUVZvdjJKUlRtd1dVY0l3MTVBcnQ0c0xwMzQiLCJuYW1lIjoiRG9RdWFuZyBLaGFpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xhQVY1SFU3VDZOa2Y1ZlhkUU9TczhsRnFNaGxzZGJmMHJwb1Y0a0ttRnEybm9tQT1zOTYtYyIsImdpdmVuX25hbWUiOiJEb1F1YW5nICIsImZhbWlseV9uYW1lIjoiS2hhaSAiLCJpYXQiOjE3Mjk1NjIxMjYsImV4cCI6MTcyOTU2NTcyNn0.OJPyyigp3c9mIhM41u2K821iSD6OBzY9xYSVoamiXWd8QPI_hHsSYzy3DFcv0MdQNG_UE-Pk5YJfuqLUNZzHOrxUIEgHvHLODiHiiXNiBMZrZLfqlX8MaD5qDp-kFrwlOvlfjkgHVC-FVC4CWDmJW3oVaf8-njbmKbuFztpixcf204_jfmVdQ8emZV184J7cNhMuTM_rODCnpE41qf3TM3rOnxbfIVMtotGZFjXGUI7tRUpRQzQFTZpjubV-a_Pup7e16amLsO-uF2sBzTmqTsKRCQ19J-I78GHjz0Ver1cpaxWtq3Jb6_LogOqF5QWBm_0JmRnClcH2dhfOCQkWeg";
-    const email = "quangkhai0901@likelion.net";
-    Cookies.set("user_token", idToken, { path: "/", secure: true });
-    Cookies.set("user_email", encodeURIComponent(email), {
-      path: "/",
-      secure: true,
-    });
-    // Set accout type
-    // auth.setCandidateUser(true);
-    auth.setCompanyUser(true);
-    safeNavigate("/dash-board");
+    // auth.setIsLogin(true);
+    // const idToken =
+    //   "eyJhbGciOiJSUzI1NiIsImtpZCI6IjczZTI1Zjk3ODkxMTljNzg3NWQ1ODA4N2E3OGFjMjNmNWVmMmVkYTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0MjIwNjY1MjU4OTEtZW02MnVubjhranNrNXVpMGM1Zzh1MHNxNWxscDMxY3MuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDYwNzI0MDMyNzU3OTIwMDM5MjEiLCJoZCI6Imxpa2VsaW9uLm5ldCIsImVtYWlsIjoicXVhbmdraGFpMDkwMUBsaWtlbGlvbi5uZXQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Ijg3WlZ4ZlFmWXAxWEZpWTVkLWpYSkEiLCJub25jZSI6Ik1fTVI4eV9FY0ZnblJ5RV9PMlFZaGJRWkhaWDcxeF9XaXNVTFBvSFB2Sm8iLCJuYW1lIjoiRG9RdWFuZyBLaGFpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xhQVY1SFU3VDZOa2Y1ZlhkUU9TczhsRnFNaGxzZGJmMHJwb1Y0a0ttRnEybm9tQT1zOTYtYyIsImdpdmVuX25hbWUiOiJEb1F1YW5nICIsImZhbWlseV9uYW1lIjoiS2hhaSAiLCJpYXQiOjE3Mjk1NjU3ODQsImV4cCI6MTcyOTU2OTM4NH0.i70Nn9oEgsHAvD_5bxcYNpRrxDm6D5Tq7xW2x2Gaqc0y2JcRW7dqjOg3HNTgzBzsCHwVmVLxdT3dQQ3_SBDhFBJU_9uub52M39TjqkI0BybjrDYvYVH3u5FsNkt-btjCVYa7OByiFz-wFbjL73yeXDfbKFtcpXYvyYDnHkLLr6Om_4OVs4TclfDgSulpF0rRzY2UqkqALZrSWu-hN4PDe-uj0n194tuuy8Wxh5IZU1G3jUE9ZgD8oaTEsVBHEVpwyhYPLxTjfkmdD7TqGgu2660kU5xC-Q7rFhRzBKCseefbx2aLuHOr28lok_hQtuIUQ9shf-JT0uAjvRVU3HM4ZA";
+    // const email = "quangkhai0901@likelion.net";
+    // Cookies.set("user_token", idToken, { path: "/", secure: true });
+    // Cookies.set("user_email", encodeURIComponent(email), {
+    //   path: "/",
+    //   secure: true,
+    // });
+    // // Set accout type
+    // // auth.setCandidateUser(true);
+    // auth.setCompanyUser(true);
+    // safeNavigate("/dash-board");
   };
 
   useEffect(() => {
