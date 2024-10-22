@@ -24,6 +24,7 @@ import InputDefault from "../../components/input/inputDefault/inputDefault";
 import InputPrefix from "../../components/input/inputPrefix/inputPrefix";
 import ModalComponent from "../../components/modal/modal";
 import { WorkTypeOptions } from "../../constants/selectOptions";
+import { fetchCountries } from "../../services/fetchCountries";
 import loadingPage from "../../store/actions/loading";
 import { getLabelByValue } from "../../utils";
 import useActions from "../../utils/customHook/useActions";
@@ -47,6 +48,11 @@ const applicationFormReview = () => {
     isOpenScheduleModal: false,
     isOpenSuccessModal: false,
     isOpenGuidelineModal: false,
+    listCountry: [],
+    selectedCountry: {
+      phoneCode: "+1",
+      flag: "https://flagcdn.com/ca.svg",
+    },
   });
 
   const onBackToHome = () => {
@@ -131,23 +137,34 @@ const applicationFormReview = () => {
   ];
 
   const handleGetListContries = async () => {
-    try {
-      const response = await fetch("https://restcountries.com/v3.1/all");
-      const countries = await response.json();
+    const listCountry = await fetchCountries();
+    setState({ listCountry });
+  };
 
-      const countryData = countries.map((country: any) => ({
-        name: country.name.common,
-        phoneCode:
-          country.idd.root +
-          (country.idd.suffixes ? country.idd.suffixes[0] : ""),
-        flag: country.flags.png,
-      }));
-
-      console.log(countryData);
-      return countryData;
-    } catch (error) {
-      console.error("Error:", error);
+  const handleCountryChange = (value: string) => {
+    const { listCountry, selectedCountry } = state;
+    const country = _.find(listCountry, (c) => c.phoneCode === value);
+    console.log("test", value, country);
+    if (country) {
+      setState({
+        selectedCountry: {
+          phoneCode: country.phoneCode,
+          flag: country.flag,
+          phoneNumber: selectedCountry.phoneNumber,
+        },
+      });
     }
+  };
+
+  const handlePhoneNumberChange = (e: any) => {
+    const phoneNumber = e.target.value;
+    const sanitizedValue = phoneNumber.replace(/[^0-9()-\s]/g, "");
+    setState({
+      selectedCountry: {
+        ...state.selectedCountry,
+        phoneNumber: sanitizedValue,
+      },
+    });
   };
 
   useEffect(() => {
@@ -210,6 +227,14 @@ const applicationFormReview = () => {
         <div className="modal-content-custom">
           <div className="title">Phone call</div>
           <div className="title-content">
+            <InputDefault
+              title="Candidate's phone number"
+              type="phone-number"
+              onChange={handlePhoneNumberChange}
+              onChangeSelect={handleCountryChange}
+              value={state.selectedCountry}
+              listData={state.listCountry}
+            />
             <div className="notice-form">
               <sup>*</sup>If the candidate doesn't answer, consider sending a
               brief text message introducing yourself and asking for their

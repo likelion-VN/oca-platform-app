@@ -2,7 +2,6 @@ import { fork, takeLatest } from "redux-saga/effects";
 import { APP_FLOW_ACTIONS } from "../../constants/appFlowAction";
 
 function* handleLoadPageRequest() {
-
 }
 
 function* loadPageRequest() {
