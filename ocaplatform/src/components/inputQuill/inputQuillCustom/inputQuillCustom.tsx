@@ -61,39 +61,27 @@ function InputQuillCustom({
         const currentContents = quill.getContents();
         const selection = quill.getSelection();
         if (!selection) return;
-
+        console.log(selection);
         const prefixLength = valuePrefix.length;
-
+        const text = quill.getText(0, selection.index + prefixLength);
         // Kiểm tra nếu con trỏ nằm ở phía trước prefix
-        if (selection.index < prefixLength) {
-          // Chỉ đặt lại con trỏ nếu nó đang nằm trong vùng prefix
-          if (selection.index !== prefixLength) {
-            quill.setSelection(prefixLength, 0, "silent");
-          }
-        }
-
+        // Chỉ đặt lại con trỏ nếu nó đang nằm trong vùng prefix
+        // if (selection.index !== prefixLength) {
+        //   quill.setSelection(prefixLength, 0, "silent");
+        // }
         // Kiểm tra nếu prefix bị xóa, cập nhật nội dung thay vì set lại toàn bộ
+        console.log(delta.ops);
+        console.log(currentContents.ops);
         const firstOp = currentContents.ops && currentContents.ops[0];
         if (!firstOp?.insert || !firstOp.insert.prefix) {
           quill.updateContents(
             new Delta([
               { insert: { prefix: valuePrefix } },
-              ...(currentContents.ops ? currentContents.ops.slice(1) : []),
+              ...(delta.ops || []),
             ]),
             "silent"
           );
         }
-
-        // Ngăn chặn việc xóa prefix
-        delta.ops &&
-          delta.ops.forEach((op) => {
-            if (op.delete && selection.index <= prefixLength) {
-              quill.updateContents(
-                new Delta([{ retain: prefixLength }, { delete: op.delete }]),
-                "silent"
-              );
-            }
-          });
       });
 
       // Sự kiện khi editor được focus
@@ -134,7 +122,6 @@ function InputQuillCustom({
           }
         }
       }
-
       if (valueHtml !== newContent) {
         setValueHtml(newContent);
       }

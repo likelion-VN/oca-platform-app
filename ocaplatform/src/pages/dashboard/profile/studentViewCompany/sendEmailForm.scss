@@ -1,0 +1,108 @@
+.modal-send-email-company {
+  width: 680px !important;
+
+  .ant-modal-header {
+    .ant-modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 28px;
+      color: #0F172A;
+      text-align: center;
+
+
+    }
+  }
+
+  .ant-modal-body {
+    .sumary {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.02em;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      color: #666666;
+      justify-content: center;
+
+      img {
+        margin-left: 5px;
+        cursor: pointer;
+      }
+    }
+
+    .field {
+      margin-bottom: 25px;
+
+      textarea {
+        height: max-content;
+      }
+
+      input {
+        color: #0F172A;
+      }
+    }
+
+    .field-upload {
+      margin-bottom: 25px;
+
+      p {
+        margin: 0;
+        margin-bottom: 5px;
+        //styleName: Body 2/Semibold;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+      }
+
+      .ant-upload-wrapper {
+        button {
+          border: none;
+          background: unset;
+          padding-left: 0px;
+          box-shadow: unset;
+          color: #FF7710;
+        }
+      }
+    }
+
+    .infor-reply {
+      margin: 0;
+      margin-top: 5px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.02em;
+
+    }
+  }
+
+  .ant-modal-footer {
+    .footer-form-send-email {
+      .btn-edit-cancel {
+
+        padding: 10px 24px;
+        border-radius: 4px;
+        border: 1px solid #A3A3A3;
+        font-size: 14px;
+        font-weight: 600;
+        color: #0F172A;
+        margin-right: 15px;
+
+        &:hover {
+          border: 1px solid #A3A3A3;
+          color: #0F172A;
+        }
+      }
+
+      .btn-edit-save {
+        padding: 10px 30px;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: #FF7710;
+        border: none;
+        color: #F5F5F5;
+      }
+    }
+  }
+}
