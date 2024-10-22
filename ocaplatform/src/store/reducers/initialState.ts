@@ -24,7 +24,6 @@ export default {
       listJob: [],
       jobDetail: {},
       count: null,
-
     }
   },
   me: {},

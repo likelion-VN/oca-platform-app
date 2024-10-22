@@ -47,6 +47,7 @@ function InputQuillCustom({
 }: InputQuillDefaultProps) {
   const [valueHtml, setValueHtml] = useState(""); // Lưu trữ nội dung đã chỉnh sửa
   const quillRef = useRef<ReactQuill>(null); // Tham chiếu đến Quill editor
+
   useEffect(() => {
     if (quillRef.current && valuePrefix) {
       const quill = quillRef.current.getEditor();
@@ -56,8 +57,7 @@ function InputQuillCustom({
         new Delta([{ insert: { prefix: valuePrefix } }, { insert: value }])
       );
 
-      // Ngăn chặn việc xóa prefix
-      quill.on("text-change", (_delta, _oldDelta, _source) => {
+      quill.on("text-change", (delta, _oldDelta, _source) => {
         const currentContents = quill.getContents();
         const selection = quill.getSelection();
         if (!selection) return;
@@ -72,15 +72,28 @@ function InputQuillCustom({
           }
         }
 
-        // Kiểm tra nếu người dùng cố gắng xóa prefix
-        if (currentContents.ops && !currentContents.ops[0].insert.prefix) {
-          quill.setContents(
+        // Kiểm tra nếu prefix bị xóa, cập nhật nội dung thay vì set lại toàn bộ
+        const firstOp = currentContents.ops && currentContents.ops[0];
+        if (!firstOp?.insert || !firstOp.insert.prefix) {
+          quill.updateContents(
             new Delta([
               { insert: { prefix: valuePrefix } },
-              ...currentContents.ops.slice(1),
-            ])
+              ...(currentContents.ops ? currentContents.ops.slice(1) : []),
+            ]),
+            "silent"
           );
         }
+
+        // Ngăn chặn việc xóa prefix
+        delta.ops &&
+          delta.ops.forEach((op) => {
+            if (op.delete && selection.index <= prefixLength) {
+              quill.updateContents(
+                new Delta([{ retain: prefixLength }, { delete: op.delete }]),
+                "silent"
+              );
+            }
+          });
       });
 
       // Sự kiện khi editor được focus
@@ -149,57 +162,6 @@ function InputQuillCustom({
     }
   }, [value]);
 
-  // const handleChange = (
-  //   _value: string,
-  //   _delta: any,
-  //   _source: any,
-  //   editor: ReactQuill.UnprivilegedEditor
-  // ) => {
-  //   if (valuePrefix) {
-  //     const textWithoutPrefix = editor
-  //       .getText()
-  //       .replace(valuePrefix as string, "")
-  //       .trim();
-  //     // const cleanedContent = textWithoutPrefix.replace(/\n/g, "");
-  //     const newContent = `<p><strong>${valuePrefix}</strong><span> ${textWithoutPrefix}</span></p>`; // Tạo cấu trúc mới
-
-  //     // kiểm tra nếu có nội dung mới thì thêm class change-value vào thẻ strong
-  //     console.log(textWithoutPrefix);
-  //     if (textWithoutPrefix) {
-  //       // xử lí thay thế dùng ref gọi tới editor và dom tới
-  //       if (quillRef.current) {
-  //         console.log(
-  //           quillRef.current
-  //             .getEditor()
-  //             .root.querySelector(".customEditor .ql-editor strong")
-  //         );
-  //         quillRef.current
-  //           .getEditor()
-  //           .root.querySelector(".customEditor .ql-editor strong")
-  //           ?.classList.add("change-value");
-  //       }
-  //       // document
-  //       //   .querySelector(".customEditor .ql-editor strong")
-  //       //   ?.classList.add("change-value");
-  //     }
-
-  //     if (valueHtml !== newContent) {
-  //       setValueHtml(newContent);
-  //     }
-  //   } else {
-  //     const textWithoutPrefix = editor.getText().trim();
-  //     setValueHtml(`<p><span>${textWithoutPrefix}</span></p>`);
-  //   }
-  //   const newText = editor
-  //     .getText()
-  //     .replace(valuePrefix ? valuePrefix : ("" as string), "")
-  //     .trim();
-  //   if (value !== newText) {
-  //     onChange && onChange(newText);
-  //     handleChangeMutiple && id && handleChangeMutiple(newText, id.toString());
-  //   }
-  // };
-
   useEffect(() => {
     if (!valuePrefix && quillRef.current && value) {
       const quill = quillRef.current.getEditor();
@@ -208,7 +170,7 @@ function InputQuillCustom({
       quill.setContents(new Delta([{ insert: value }]));
     }
   }, [value]);
-
+  // console.log(id);
   return (
     <div className="customEditor">
       <ReactQuill

@@ -37,4 +37,21 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const status = error.response?.status;
+
+    // Handle 401 Unauthorized or 302 Redirect
+    if (status === 401 || status === 302) {
+      message.error("Session expired or unauthorized access. Redirecting to sign-in...");
+      safeNavigate("/sign-in");
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;

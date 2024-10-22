@@ -1,7 +1,7 @@
 @import "../../../styles/variables.scss";
 
 .input-default {
-  .title {
+  .title-input {
     text-align: start;
     font-size: 14px;
     font-weight: 600;
@@ -10,6 +10,32 @@
   }
   .optional {
     color: $charcoal-grey;
+  }
+  .select-country {
+    height: 40px;
+    .ant-select-selection-item {
+      display: flex;
+      align-items: center;
+    }
+    .ant-select-selector {
+      &:hover,
+      &:focus-within {
+        border-color: $neutral-grey !important; // Remove hover border color
+        box-shadow: none !important; // Remove any shadow on hover
+      }
+    }
+  }
+  .ant-input-group {
+    .ant-select {
+      .ant-select-selector {
+        border-start-start-radius: 4px !important;
+        border-end-start-radius: 4px !important;
+      }
+    }
+    .ant-input {
+      border-start-end-radius: 4px;
+      border-end-end-radius: 4px;
+    }
   }
   .ant-input {
     border-radius: 4px;
@@ -56,5 +82,22 @@
     font-size: 12px;
     font-weight: 500;
     color: $crimson-red;
+  }
+}
+
+.menu-select {
+  font-size: 14px;
+  .search-select {
+    height: 40px;
+    border-bottom: 1px solid $neutral-grey;
+    border-radius: 0;
+  }
+  .phone-code {
+    color: $cool-grey;
+    margin-left: 4px;
+  }
+  .ant-select-item-option-content {
+    display: flex;
+    align-items: center;
   }
 }

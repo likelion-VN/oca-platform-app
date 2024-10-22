@@ -4,18 +4,27 @@
 import {
   EllipsisOutlined,
   ExportOutlined,
-  UpOutlined,
+  ProfileOutlined,
 } from "@ant-design/icons";
+import { Dropdown, MenuProps } from "antd";
 import _ from "lodash";
-import { ArrowLeft, GraduationCap } from "phosphor-react";
+import {
+  ArrowLeft,
+  CalendarPlus,
+  CaretUp,
+  EnvelopeSimple,
+  GraduationCap,
+  Phone,
+} from "phosphor-react";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { EditFormIcon } from "../../assets/svg";
+import { Congratulation } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import InputDefault from "../../components/input/inputDefault/inputDefault";
 import InputPrefix from "../../components/input/inputPrefix/inputPrefix";
 import ModalComponent from "../../components/modal/modal";
 import { WorkTypeOptions } from "../../constants/selectOptions";
+import { fetchCountries } from "../../services/fetchCountries";
 import loadingPage from "../../store/actions/loading";
 import { getLabelByValue } from "../../utils";
 import useActions from "../../utils/customHook/useActions";
@@ -33,23 +42,133 @@ const applicationFormReview = () => {
 
   const [state, setState] = useMergeState({
     detailJob: jobDetailReview,
-    isOpenModal: false,
-    isRevising: true,
+    isOpenRejectModal: false,
+    isOpenPhoneModal: false,
+    isOpenEmailModal: false,
+    isOpenScheduleModal: false,
+    isOpenSuccessModal: false,
+    isOpenGuidelineModal: false,
+    listCountry: [],
+    selectedCountry: {
+      phoneCode: "+1",
+      flag: "https://flagcdn.com/ca.svg",
+    },
   });
 
   const onBackToHome = () => {
     safeNavigate("/application");
   };
 
-  const handleRevise = () => {
-    setState({ isRevising: false, isOpenModal: false });
+  const handleOpenRejectModal = (isOpenRejectModal: boolean) => {
+    setState({ isOpenRejectModal });
   };
 
-  const handleOpenModal = (isOpenModal: boolean) => {
-    setState({ isOpenModal });
+  const handleOpenPhoneModal = (isOpenPhoneModal: boolean) => {
+    setState({ isOpenPhoneModal });
+  };
+
+  const handleOpenEmailModal = (isOpenEmailModal: boolean) => {
+    setState({ isOpenEmailModal });
+  };
+
+  const handleOpenScheduelModal = (isOpenScheduelModal: boolean) => {
+    setState({ isOpenScheduelModal });
+  };
+
+  const handleOpenSuccessModal = (isOpenSuccessModal: boolean) => {
+    setState({ isOpenSuccessModal });
+  };
+
+  const handleOpenGuidelineModal = (isOpenGuidelineModal: boolean) => {
+    setState({ isOpenGuidelineModal });
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      className: "menu-step-item",
+      label: (
+        <>
+          <Phone size={20} /> Contact by phone
+        </>
+      ),
+      key: "0",
+      onClick: () => handleOpenPhoneModal(true),
+    },
+    {
+      className: "menu-step-item",
+      label: (
+        <>
+          <EnvelopeSimple size={20} /> Send an email
+        </>
+      ),
+      key: "1",
+      onClick: () => handleOpenEmailModal(true),
+    },
+    {
+      type: "divider",
+    },
+    {
+      className: "menu-step-item",
+      label: (
+        <>
+          <CalendarPlus size={20} /> Schedule an interview
+        </>
+      ),
+      key: "2",
+      onClick: () => handleOpenScheduelModal(true),
+    },
+    {
+      className: "menu-step-item",
+      label: (
+        <>
+          <ProfileOutlined
+            style={{
+              fontSize: "17px",
+              paddingInlineStart: "1px",
+              marginInlineEnd: "2px",
+            }}
+          />{" "}
+          Send an offer latter
+        </>
+      ),
+      key: "3",
+      onClick: () => handleOpenSuccessModal(true),
+    },
+  ];
+
+  const handleGetListContries = async () => {
+    const listCountry = await fetchCountries();
+    setState({ listCountry });
+  };
+
+  const handleCountryChange = (value: string) => {
+    const { listCountry, selectedCountry } = state;
+    const country = _.find(listCountry, (c) => c.phoneCode === value);
+    console.log("test", value, country);
+    if (country) {
+      setState({
+        selectedCountry: {
+          phoneCode: country.phoneCode,
+          flag: country.flag,
+          phoneNumber: selectedCountry.phoneNumber,
+        },
+      });
+    }
+  };
+
+  const handlePhoneNumberChange = (e: any) => {
+    const phoneNumber = e.target.value;
+    const sanitizedValue = phoneNumber.replace(/[^0-9()-\s]/g, "");
+    setState({
+      selectedCountry: {
+        ...state.selectedCountry,
+        phoneNumber: sanitizedValue,
+      },
+    });
   };
 
   useEffect(() => {
+    handleGetListContries();
     loadingPageAction();
   }, [state.detailJob]);
 
@@ -57,39 +176,232 @@ const applicationFormReview = () => {
   return (
     <>
       <ModalComponent
-        className="modal-revise"
-        open={state.isOpenModal}
-        onCancel={() => handleOpenModal(false)}
+        className="modal-application-reject"
+        open={state.isOpenRejectModal}
+        onCancel={() => handleOpenRejectModal(false)}
         centered
         footer={
           <div className="modal-footer-custom">
             <ButtonComponent
-              className="revise-btn"
-              title="Start revising"
+              className="confirm-btn"
+              title="Confirm"
               size="large"
               type="primary"
-              onClick={handleRevise}
+              // onClick={}
             />
             <ButtonComponent
               className="cancel-btn"
               title="Cancel"
               size="large"
               type="default"
-              onClick={() => handleOpenModal(false)}
+              onClick={() => handleOpenRejectModal(false)}
             />
           </div>
         }
       >
         <div className="modal-content-custom">
-          <img src={EditFormIcon} alt="edit-form" />
-          <div className="title">Will you start revising your application?</div>
+          <div className="title">Reject this candidate?</div>
           <div className="title-content">
-            You can revise your application here and submit again.
+            Are you sure you want to reject this candidate? Please confirm that
+            you will not be moving forward with this candidate in the O-CA
+            program.
           </div>
-          <div className="title-caution">
-            <strong>Cautious:</strong> Resubmitting your application after
-            making changes without consulting the company may lead to issues in
-            the process.
+        </div>
+      </ModalComponent>
+      <ModalComponent
+        className="modal-application-phone"
+        open={state.isOpenPhoneModal}
+        onCancel={() => handleOpenPhoneModal(false)}
+        centered
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="ok-btn"
+              title="OK"
+              type="primary"
+              // onClick={}
+            />
+          </div>
+        }
+      >
+        <div className="modal-content-custom">
+          <div className="title">Phone call</div>
+          <div className="title-content">
+            <InputDefault
+              title="Candidate's phone number"
+              type="phone-number"
+              onChange={handlePhoneNumberChange}
+              onChangeSelect={handleCountryChange}
+              value={state.selectedCountry}
+              listData={state.listCountry}
+            />
+            <div className="notice-form">
+              <sup>*</sup>If the candidate doesn't answer, consider sending a
+              brief text message introducing yourself and asking for their
+              available times.
+            </div>
+          </div>
+        </div>
+      </ModalComponent>
+      <ModalComponent
+        className="modal-application-email"
+        open={state.isOpenEmailModal}
+        onCancel={() => handleOpenEmailModal(false)}
+        centered
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="cancel-btn"
+              title="Cancel"
+              type="default"
+              onClick={() => handleOpenEmailModal(false)}
+            />
+            <ButtonComponent
+              className="send-btn"
+              title="Send"
+              type="primary"
+              // onClick={() => handleOpenRejectModal(false)}
+            />
+          </div>
+        }
+      >
+        <div className="modal-content-custom">
+          <div className="title">Sending an email</div>
+          <div className="title-content">
+            <div className="notice-form">
+              <sup>*</sup>This email will be send to both of you and candidate
+            </div>
+          </div>
+        </div>
+      </ModalComponent>
+      <ModalComponent
+        className="modal-application-schedule"
+        open={state.isOpenScheduelModal}
+        onCancel={() => handleOpenScheduelModal(false)}
+        centered
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="cancel-btn"
+              title="Cancel"
+              size="large"
+              type="default"
+              // onClick={}
+            />
+            <ButtonComponent
+              className="send-btn"
+              title="Send"
+              size="large"
+              type="primary"
+              onClick={() => handleOpenRejectModal(false)}
+            />
+          </div>
+        }
+      >
+        <div className="modal-content-custom">
+          <div className="title">Schedule an interview</div>
+          <div className="title-content">
+            <div className="notice-form">
+              <sup>*</sup>This email will be send to both of you and candidate
+            </div>
+          </div>
+        </div>
+      </ModalComponent>
+      <ModalComponent
+        className="modal-application-success"
+        open={state.isOpenSuccessModal}
+        onCancel={() => handleOpenSuccessModal(false)}
+        centered
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="view-guideline-btn"
+              title="View onboarding guidelines"
+              type="primary"
+              onClick={() => {
+                handleOpenSuccessModal(false);
+                handleOpenGuidelineModal(true);
+              }}
+            />
+          </div>
+        }
+      >
+        <div className="modal-content-custom">
+          <img src={Congratulation} alt="congratulation" />
+          <div className="title">Congratulation!</div>
+          <div className="title-content">
+            You’ve successfully accepted a candidate! <br />
+            Let's move forward with the onboarding process
+          </div>
+        </div>
+      </ModalComponent>
+      <ModalComponent
+        className="modal-application-guideline"
+        open={state.isOpenGuidelineModal}
+        onCancel={() => {
+          handleOpenGuidelineModal(false);
+          safeNavigate("/application");
+        }}
+        centered
+        footer={
+          <div className="modal-footer-custom">
+            <ButtonComponent
+              className="ok-btn"
+              title="OK"
+              type="primary"
+              onClick={() => {
+                handleOpenGuidelineModal(false);
+                safeNavigate("/application");
+              }}
+            />
+          </div>
+        }
+      >
+        <div className="modal-content-custom">
+          <div className="title">Onboarding Guidelines</div>
+          <div className="title-content">
+            <div className="description">
+              Follow these steps to ensure a smooth onboarding experience
+            </div>
+            <div className="steps">
+              <span className="steps-item">
+                Step 1:
+                <ButtonComponent
+                  className="link-btn"
+                  title="Send the Offer Letter"
+                  type="link"
+                />
+              </span>
+              <span className="steps-item">
+                Step 2:
+                <ButtonComponent
+                  className="link-btn"
+                  title="Sign Employment Contract"
+                  type="link"
+                />
+              </span>
+              <span className="steps-item">
+                Step 3:
+                <ButtonComponent
+                  className="link-btn"
+                  title="Check Work Authorization"
+                  type="link"
+                />
+              </span>
+              <span className="steps-item">
+                Step 4:
+                <ButtonComponent
+                  className="link-btn"
+                  title="Prepare for working together"
+                  type="link"
+                />
+              </span>
+            </div>
+            <span className="notice">
+              <sup>*</sup>If you need more detailed guidance or next steps,
+              please click{" "}
+              <ButtonComponent className="link-btn" title="here" type="link" />
+            </span>
           </div>
         </div>
       </ModalComponent>
@@ -226,6 +538,7 @@ const applicationFormReview = () => {
                   _.isEmpty(task.delta.candidate.description),
               }))}
               subTitle={detailJob.jobNegotiable && "(Negotiable)"}
+              readOnly
             />
             <InputPrefix
               value={_.map(
@@ -299,15 +612,22 @@ const applicationFormReview = () => {
               <ButtonComponent
                 className="reject-btn"
                 title="Reject"
-                // onClick={onBackToHome}
+                onClick={() => handleOpenRejectModal(true)}
               />
-              <ButtonComponent
-                className="select-btn"
-                type="primary"
-                icon={<UpOutlined />}
-                iconPosition="end"
-                title="Select next step"
-              />
+              <Dropdown
+                overlayClassName="menu-step"
+                menu={{ items }}
+                trigger={["click"]}
+                placement="topRight"
+              >
+                <ButtonComponent
+                  className="select-btn"
+                  type="primary"
+                  icon={<CaretUp />}
+                  iconPosition="end"
+                  title="Select next step"
+                />
+              </Dropdown>
             </div>
           </div>
         </div>

@@ -37,10 +37,10 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 
   const handleChangeMutiple = (value: string, id: string) => {
     const { currentTasks } = state;
-
+    console.log(currentTasks);
     if (currentTasks.length > 0) {
       const updateTask = _.map(currentTasks, (task) => {
-        return task.idNewTask.toString() == id
+        return task.taskId == id
           ? { ...task, newTask: value, isRemove: false }
           : task;
       });
@@ -66,13 +66,14 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     (id: number) => {
       const newId = uuidv4();
       const newTask = {
-        id: newId,
+        id: null,
         description: "",
         newTask: "",
         isRemove: false,
+        taskId: newId,
       };
 
-      const currentIndex = _.findIndex(state.currentTasks, { id });
+      const currentIndex = _.findIndex(state.currentTasks, { taskId: id });
 
       if (currentIndex !== -1) {
         const updatedTasks = _.cloneDeep(state.currentTasks);
@@ -121,21 +122,32 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   };
 
   useEffect(() => {
-    if (_.isEmpty(state.currentTasks)) {
+    console.log(_.isEmpty(defaultData.currentTasks));
+    if (_.isEmpty(defaultData.currentTasks)) {
       const newId = uuidv4();
       const newTask = {
-        id: newId,
+        id: null,
         description: "",
         newTask: "",
         isRemove: false,
+        taskId: newId,
       };
       const newDefaultData = defaultData;
-      newDefaultData.currentTasks = [newTask];
+      newDefaultData.currentTasks = newTask;
       setState(newDefaultData);
     } else {
+      // map lại currentTasks để thêm taskId bằng uuid
+      const newTasks = _.map(defaultData.currentTasks, (task) => {
+        return { ...task, taskId: uuidv4() };
+      });
+      console.log(defaultData);
+      defaultData.currentTasks = newTasks;
       setState(defaultData);
     }
   }, [defaultData]);
+
+  console.log(defaultData);
+  console.log("first");
 
   return (
     <>
