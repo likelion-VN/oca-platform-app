@@ -37,7 +37,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
 
   const handleChangeMutiple = (value: string, id: string) => {
     const { currentTasks } = state;
-    console.log(currentTasks);
+    console.log(value);
     if (currentTasks.length > 0) {
       const updateTask = _.map(currentTasks, (task) => {
         return task.taskId == id
@@ -88,10 +88,11 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   const handleKeyDown = useCallback(
     (id: number, e: React.KeyboardEvent<HTMLInputElement>) => {
       const { currentTasks } = state;
+      console.log(currentTasks);
       if (e.key === "Delete" || e.key === "Backspace") {
-        const task = _.find(currentTasks, (item) => item.id === id);
+        const task = _.find(currentTasks, (item) => item?.taskId === id);
         if (task) {
-          if (task.description.trim() !== "" && task.newTask.trim() === "") {
+          if (task.description?.trim() !== "" && task.newTask?.trim() === "") {
             const updatedTasks = _.map(currentTasks, (t) =>
               t.id === id ? { ...t, isRemove: true } : t
             );
@@ -106,6 +107,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         }
       }
       if (e.key === "Enter") {
+        console.log("first");
         e.preventDefault();
         handleAddTaskBelow(id);
       }
@@ -122,7 +124,6 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
   };
 
   useEffect(() => {
-    console.log(_.isEmpty(defaultData.currentTasks));
     if (_.isEmpty(defaultData.currentTasks)) {
       const newId = uuidv4();
       const newTask = {
@@ -133,21 +134,17 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
         taskId: newId,
       };
       const newDefaultData = defaultData;
-      newDefaultData.currentTasks = newTask;
+      newDefaultData.currentTasks.push(newTask);
       setState(newDefaultData);
     } else {
       // map lại currentTasks để thêm taskId bằng uuid
       const newTasks = _.map(defaultData.currentTasks, (task) => {
         return { ...task, taskId: uuidv4() };
       });
-      console.log(defaultData);
       defaultData.currentTasks = newTasks;
       setState(defaultData);
     }
   }, [defaultData]);
-
-  console.log(defaultData);
-  console.log("first");
 
   return (
     <>
