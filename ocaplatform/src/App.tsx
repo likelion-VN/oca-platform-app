@@ -12,6 +12,7 @@ import AuthCallback from "./pages/signIn/authCallback";
 import SignIn from "./pages/signIn/signIn";
 import SidebarTemplate from "./template/sidebarTemplate/SidebarTemplate";
 import { setNavigate } from "./utils/helper";
+import StudentViewCompany from "./pages/dashboard/profile/studentViewCompany/studentViewCompany";
 const App: React.FC = () => {
   const navigate = useNavigate();
 
@@ -29,7 +30,8 @@ const App: React.FC = () => {
           <Route path="sign-in" element={<SignIn />} />
           <Route path="/" element={<SidebarTemplate />}>
             <Route path="dash-board" element={<HomePage />} />
-            <Route path="profile" element={<Profile />} />
+            {/* <Route path="profile" element={<Profile />} /> */}
+            <Route path="profile" element={<StudentViewCompany />} />
             <Route path="application" element={<ApplicationPage />} />
           </Route>
 
