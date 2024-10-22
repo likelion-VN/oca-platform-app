@@ -1,10 +1,12 @@
 import { combineReducers } from "@reduxjs/toolkit";
+import countriesOptions from "./countriesOptions";
 import goto from "./goto";
 import loading from "./loading";
 
 const reducers = combineReducers({
     loading,
-    goto
+    goto,
+    countriesOptions,
 })
 
 const rootReducer = (state: any, action: any) => {

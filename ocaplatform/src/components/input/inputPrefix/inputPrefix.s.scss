@@ -106,8 +106,16 @@
   background-color: $bright-orange !important;
 }
 
-.ant-picker-footer {
-  display: none;
+.ant-picker-date-panel-container {
+  .ant-picker-footer {
+    display: none;
+  }
+}
+
+.ant-picker-time-panel {
+  .ant-picker-footer {
+    display: block;
+  }
 }
 
 .ant-picker-cell-today .ant-picker-cell-inner::before {

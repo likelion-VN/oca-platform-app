@@ -43,7 +43,6 @@
   }
   .ant-input {
     border-radius: 4px;
-    font-family: "Inter";
     font-size: 14px;
     height: 40px;
     &:hover {
@@ -71,7 +70,6 @@
     }
     .ant-input {
       font-weight: 400;
-      color: $dark-navy-blue;
       height: unset;
     }
     &:hover {
@@ -81,6 +79,47 @@
       border-color: $neutral-grey;
       box-shadow: none;
     }
+  }
+
+  .ant-picker {
+    &-input {
+      font-weight: 400;
+
+      input {
+        font-size: 14px;
+      }
+    }
+
+    &:hover {
+      border-color: $neutral-grey;
+    }
+
+    &:focus-within {
+      border-color: $neutral-grey;
+      box-shadow: none;
+    }
+  }
+  .ant-select-selector {
+    border-radius: 4px;
+    border-color: $neutral-grey !important; /* Keep default border color */
+    box-shadow: none !important; /* Disable box-shadow */
+  }
+  
+  .ant-select-selector:hover {
+    border-color: $neutral-grey !important; /* Disable border color change on hover */
+    box-shadow: none !important; /* Disable box-shadow on hover */
+  }
+  
+  .ant-select-focused .ant-select-selector,
+  .ant-select-selector:focus,
+  .ant-select-selector:active {
+    border-color: $neutral-grey !important; /* Disable border color change on focus */
+    box-shadow: none !important; /* Disable box-shadow on focus and active states */
+  }
+  
+  .ant-select-open .ant-select-selector {
+    border-color: $neutral-grey !important; /* Maintain default border when select is open */
+    box-shadow: none !important; /* No box-shadow when select is open */
   }
   .msg-error {
     font-size: 12px;
