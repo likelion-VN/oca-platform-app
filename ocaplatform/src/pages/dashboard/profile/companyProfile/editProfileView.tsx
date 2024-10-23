@@ -98,15 +98,15 @@ const items: TabsProps["items"] = [
     children: (
       <div className="edit-company-profile-content">
         <div className="field-description">
-          <InputPrefix type="select-mutiple" title="Company Culture" />
+          <InputPrefix type="select-multiple" title="Company Culture" />
           <p>Use hashtags (#) for specific roles.(e.g., #Product Manager)</p>
         </div>
         <div className="field-description">
-          <InputPrefix type="select-mutiple" title="Languages" />
+          <InputPrefix type="select-multiple" title="Languages" />
           <p>Use hashtags (#) for specific roles.(e.g., #Product Manager)</p>
         </div>
         <div className="field-description">
-          <InputPrefix type="select-mutiple" title="Focus Areas" />
+          <InputPrefix type="select-multiple" title="Focus Areas" />
           <p>Use hashtags (#) for specific topics.(e.g., #Cybersecurity)</p>
         </div>
       </div>

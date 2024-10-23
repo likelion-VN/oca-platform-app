@@ -18,7 +18,8 @@ import classNames from "classnames";
 import dayjs from "dayjs";
 import _ from "lodash";
 import { ArrowLeft, Plus, PlusCircle, XCircle } from "phosphor-react";
-import React, { useEffect, useRef } from "react";
+import React, { ChangeEvent, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { SuccessIconGif } from "../../../assets/gif";
 import ButtonComponent from "../../../components/button/button";
 import InputDefault from "../../../components/input/inputDefault/inputDefault";
@@ -32,7 +33,7 @@ import loadingPage from "../../../store/actions/loading";
 import useActions from "../../../utils/customHook/useActions";
 import useMergeState from "../../../utils/customHook/useMergeState";
 import { safeNavigate } from "../../../utils/helper";
-import { validateEmail, validatePhoneNumber } from "../../../utils/validation";
+import { phoneNumberRegex, validateEmail, validatePhoneNumber } from "../../../utils/validation";
 
 interface ResumeFormProps {
   defaultData: any;
@@ -49,6 +50,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
   handleCancel,
   isSuccess = false,
 }) => {
+  const countriesOption = useSelector((state: any) => state.countriesOptions);
   const loadingPageAction = useActions(loadingPage);
   const dataAttachment = useRef<any[]>([]);
   const chosseFileErrorMessage = useRef<string | null>(null);
@@ -65,7 +67,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
 
   const handleInputRequiredChange = (
     keyValue: string,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: ChangeEvent<HTMLInputElement>
   ) => {
     setState({
       [keyValue]: e.target.value,
@@ -75,16 +77,16 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
 
   const handleInputChange = (
     keyValue: string,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: ChangeEvent<HTMLInputElement>
   ) => {
     setState({
       [keyValue]: e.target.value,
     });
   };
 
-  const handleNumberPhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNumberPhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const validInput = /^[0-9+]*$/.test(value);
+    const validInput = phoneNumberRegex.test(value);
     if (validInput) {
       setState({
         phoneNumber: value,
@@ -93,9 +95,22 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     }
   };
 
+  const handleCountryChange = (value: string) => {
+    const country = _.find(countriesOption, (c) => c.phoneCode === value);
+    if (country) {
+      setState({
+        selectedCountry: {
+          countryCode: country.countryCode,
+          phoneCode: country.phoneCode,
+          flag: country.flag,
+        },
+      });
+    }
+  };
+
   const handleMultipleInputChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: ChangeEvent<HTMLInputElement>
   ) => {
     const personalWebsiteCloned = _.cloneDeep(state.personalWebsite);
     personalWebsiteCloned[index] = e.target.value;
@@ -261,7 +276,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
     }
     if (state.email) {
       if (!validateEmail(state.email)) {
-        _.assign(errors, { email: "Email is valid." });
+        _.assign(errors, { email: "Email is unvalid." });
       } else {
         _.unset(errors, "email");
       }
@@ -269,13 +284,11 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
       _.assign(errors, { email: "Field is required." });
     }
     if (state.phoneNumber) {
-      if (!validatePhoneNumber(state.phoneNumber)) {
-        _.assign(errors, { phoneNumber: "Phone number is valid." });
+      if (!validatePhoneNumber(state.phoneNumber, state.selectedCountry.countryCode)) {
+        _.assign(errors, { phoneNumber: "Phone number is unvalid." });
       } else {
         _.unset(errors, "phoneNumber");
       }
-    } else {
-      _.assign(errors, { phoneNumber: "Field is required." });
     }
     setState({ errors });
   };
@@ -548,13 +561,16 @@ const ResumeForm: React.FC<ResumeFormProps> = ({
           errorMsg={state.errors.email}
         />
         <InputDefault
-          value={state.phoneNumber}
-          title="Phone number"
-          type="input"
-          placeholder="Enter phone number"
-          allowClear
+          title="Phone number (Optional)"
+          type="phone-number"
           onChange={handleNumberPhoneChange}
+          onChangeSelect={handleCountryChange}
+          valueSelect={state.selectedCountry}
+          value={state.phoneNumber}
+          option={countriesOption}
           errorMsg={state.errors.phoneNumber}
+          optional
+          allowClear
         />
         <InputDefault
           value={state.portfolio}

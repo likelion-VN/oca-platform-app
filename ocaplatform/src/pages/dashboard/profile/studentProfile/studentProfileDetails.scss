@@ -1,0 +1,133 @@
+.student-wrapper-more-info {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #DBDBDB;
+  border-radius: 4px;
+}
+
+.student-profile-detail {
+  height: max-content;
+
+  &-title {
+    padding: 20px;
+    padding-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h3 {
+      color: #0F172A;
+      margin: 0;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .btn-student-detail-edit {
+      background-color: unset;
+      cursor: pointer;
+      color: white;
+      border: none;
+    }
+  }
+
+  &-content {
+    padding: 0 20px 15px 20px;
+
+    &-item {
+      display: flex;
+      align-items: start;
+      margin-top: 20px;
+
+      p {
+        margin: 0;
+      }
+
+      .content-item-logo {
+        margin-right: 10px;
+        width: 56px;
+
+        img {
+          width: 100%;
+          height: 56px;
+          border-radius: 8px;
+        }
+      }
+
+      .content-item-text {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h4 {
+          font-size: 14px;
+          color: #0F172A;
+          font-weight: 600;
+          margin: 0;
+        }
+      }
+
+      .content-item-text-location {
+        font-size: 12px;
+        font-weight: 400;
+        color: #666666;
+        margin: 5px 0;
+      }
+
+      .content-item-text-created-at {
+        font-size: 12px;
+        font-weight: 400;
+        color: #666666;
+        display: flex;
+        align-items: center;
+
+        .created-at-status {
+          margin-right: 5px;
+          display: flex;
+          align-items: center;
+
+          .status-shape {
+            width: 6px;
+            height: 6px;
+            background-color: #039855;
+            border-radius: 50%;
+            margin-right: 5px;
+          }
+
+          font-weight: 600;
+          color: #039855;
+        }
+      }
+
+      .content-item-text-applicant {
+        border-radius: 4px;
+        padding: 2px 6px;
+        background-color: #fff3eb;
+        font-size: 12px;
+        display: inline-block;
+        margin-top: 10px;
+      }
+
+      .content-item-action {
+        margin-left: 10px;
+
+        button {
+          border: none;
+          background-color: unset;
+          font-size: 16px;
+          padding: 5px;
+          cursor: pointer;
+        }
+      }
+
+      .content-item-time-start-end {
+        font-size: 12px;
+        font-weight: 500;
+        color: #8F8F8F;
+      }
+    }
+  }
+
+
+}

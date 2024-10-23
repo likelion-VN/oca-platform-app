@@ -35,7 +35,7 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
     }
   };
 
-  const handleChangeMutiple = (value: string, id: string) => {
+  const handleChangeMultiple = (value: string, id: string) => {
     const { currentTasks } = state;
     if (currentTasks.length > 0) {
       const updateTask = _.map(currentTasks, (task) => {
@@ -256,26 +256,16 @@ const NegotiableForm: React.FC<NegotiableFormProps> = ({
           disabled
           type="text-area"
         />
-        {/* <InputPrefix
-          value={state.currentTasks}
-          title="Task"
-          subTitle={state.negotiable && "(Negotiable)"}
-          type="text-area-input"
-          disabled={!state.negotiable}
-          onChangeMultiple={(e, id) => handleTaskChange(id, e)}
-          onKeyDown={(e, id) => handleKeyDown(id, e)}
-        /> */}
-
         <InputPrefix
           value={state.currentTasks}
           title="Task"
-          type="mutiple-input-quill"
+          type="multiple-input-quill"
           disabled={!state.negotiable}
-          listDataMutipleInput={state.currentTasks}
+          listDataMultipleInput={state.currentTasks}
           onKeyDown={(e, id) => handleKeyDown(id, e)}
           subTitle={state.negotiable && "(Negotiable)"}
           idNewTask={state.idNewTask}
-          handleChangeMutiple={handleChangeMutiple}
+          handleChangeMultiple={handleChangeMultiple}
         />
 
         <InputPrefix

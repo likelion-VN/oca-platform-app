@@ -10,4 +10,12 @@ export interface CountryOption {
   phoneCode: string;
   flag: string;
   timezone: string[];
+  countryCode: string;
+}
+
+export interface TimezoneOption {
+  id: number;
+  tzIdentifier: string;
+  utcOffsetSdt: string;
+  utfOffsetDst: string;
 }

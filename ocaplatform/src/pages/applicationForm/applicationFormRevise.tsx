@@ -3,12 +3,13 @@
 
 import { EllipsisOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import _ from "lodash";
 import { ArrowLeft } from "phosphor-react";
 import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import { CheckIcon, EditFormIcon } from "../../assets/svg";
 import ButtonComponent from "../../components/button/button";
 import InputDefault from "../../components/input/inputDefault/inputDefault";
@@ -29,12 +30,42 @@ import NegotiableForm from "./form/negotiable";
 import ResumeForm from "./form/resume";
 
 const ApplicationFormRevise = () => {
+  const countriesOption = useSelector((state: any) => state.countriesOptions);
   const loadingPageAction = useActions(loadingPage);
   const location = useLocation();
   const { jobDetailReview } = location.state || {};
   const newForm = useRef({
-    step1: {},
-    step2: {},
+    step1: {
+      currentJobTitle: "",
+      currentJobType: "",
+      currentStartDate: "",
+      currentEndDate: "",
+      currentWorkplaceType: "",
+      currentHoursPerWeek: "",
+      currentDescription: "",
+      currentTasks: [],
+      currentQualifications: "",
+      jobTitle: "",
+      startDate: "",
+      endDate: "",
+      workplaceType: "",
+      hoursPerWeek: "",
+      negotiable: false,
+    },
+    step2: {
+      email: "",
+      phoneNumber: "",
+      portfolio: "",
+      personalWebsite: [],
+      selfIntroduction: "",
+      listAttachment: [],
+      selectedResumeId: null,
+      selectedCountry: {
+        countryCode: "",
+        phoneCode: "",
+        flag: "",
+      },
+    },
     jobId: 0,
     jobTypeId: 0,
     applicationId: 0,
@@ -50,6 +81,10 @@ const ApplicationFormRevise = () => {
 
   const createIntitialData = async () => {
     const { detailJob } = state;
+    const country = _.find(
+      countriesOption,
+      (c) => c.phoneCode === (detailJob.extension || "+1")
+    );
     _.assign(newForm.current, {
       step1: {
         currentJobTitle: detailJob.jobTitle?.delta?.company || "",
@@ -96,6 +131,11 @@ const ApplicationFormRevise = () => {
         selfIntroduction: detailJob.introduction || "",
         listAttachment: detailJob.attachments || [],
         selectedResumeId: detailJob.selectedAttachment?.id || null,
+        selectedCountry: {
+          countryCode: country.countryCode,
+          phoneCode: country.phoneCode,
+          flag: country.flag,
+        },
       },
       jobId: detailJob.job?.id || 0,
       jobTypeId: detailJob.jobType?.id || 0,
@@ -342,25 +382,6 @@ const ApplicationFormRevise = () => {
                 disabled
                 type="text-area"
               />
-              {/* <InputPrefix
-                value={_.map(detailJob.tasks, (task) => ({
-                  ...task.delta.company,
-                  newTask: task.delta.candidate?.description,
-                  isRemove:
-                    task.negotiable &&
-                    _.isEmpty(task.delta.candidate.description),
-                }))}
-                title="Task"
-                subTitle={detailJob.jobNegotiable && "(Negotiable)"}
-                type="text-area-input"
-                disabled={!detailJob.jobNegotiable}
-                readOnly
-                onClick={
-                  detailJob.jobNegotiable
-                    ? () => handleOpenModal(true)
-                    : undefined
-                }
-              /> */}
               <div
                 onClick={
                   detailJob.jobNegotiable
@@ -370,9 +391,9 @@ const ApplicationFormRevise = () => {
               >
                 <InputPrefix
                   title="Task"
-                  type="mutiple-input-quill"
+                  type="multiple-input-quill"
                   disabled={!detailJob.jobNegotiable}
-                  listDataMutipleInput={_.map(detailJob.tasks, (task) => {
+                  listDataMultipleInput={_.map(detailJob.tasks, (task) => {
                     return {
                       ...task.delta.company,
                       newTask: task.delta.candidate?.description || "",
@@ -425,10 +446,13 @@ const ApplicationFormRevise = () => {
               <InputDefault
                 onClick={() => handleOpenModal(true)}
                 value={detailJob.phoneNumber}
-                title="Phone number"
-                type="input"
+                valueSelect={newForm.current.step2.selectedCountry}
+                option={countriesOption}
+                title="Phone number (Optional)"
+                type="phone-number"
                 placeholder="Enter phone number"
                 readonly
+                optional
               />
               <InputDefault
                 onClick={() => handleOpenModal(true)}
@@ -456,7 +480,6 @@ const ApplicationFormRevise = () => {
                 title="Self-Introduction (Optional)"
                 type="text-area"
                 optional
-                placeholder="Describe yourself in your own words..."
                 readonly
               />
             </div>
