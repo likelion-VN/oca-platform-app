@@ -56,11 +56,13 @@
 }
 
 .ant-select-dropdown {
-  .ant-select-item {
-    height: 40px;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #0F172A;
+  .select-mutiple-option-wrapper {
+    .ant-select-item {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #0F172A;
+    }
   }
 }
