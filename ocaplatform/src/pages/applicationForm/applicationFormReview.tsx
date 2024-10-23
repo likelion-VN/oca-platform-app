@@ -12,6 +12,7 @@ import _ from "lodash";
 import {
   ArrowLeft,
   CalendarPlus,
+  CaretDown,
   CaretUp,
   EnvelopeSimple,
   GraduationCap,
@@ -37,7 +38,8 @@ import "../dashboard/dashboard.s.scss";
 import "./applicationFormReview.s.scss";
 
 const applicationFormReview = () => {
-  const countriesOption = useSelector((state: any) => state.countriesOptions)
+  const countriesOption = useSelector((state: any) => state.countriesOptions);
+  const timezonesOption = useSelector((state: any) => state.timezonesOptions);
   const loadingPageAction = useActions(loadingPage);
   const location = useLocation();
   const { jobDetailReview } = location.state || {};
@@ -50,14 +52,18 @@ const applicationFormReview = () => {
     isOpenScheduleModal: false,
     isOpenSuccessModal: false,
     isOpenGuidelineModal: false,
+    selectedVersion: 0,
+    selectedCountry: {},
     phoneModal: {
       selectedCountry: {
+        countryCode: "CA",
         phoneCode: "+1",
         flag: "https://flagcdn.com/ca.svg",
       },
     },
     emailModal: {
       selectedCountry: {
+        countryCode: "CA",
         phoneCode: "+1",
         flag: "https://flagcdn.com/ca.svg",
       },
@@ -68,17 +74,19 @@ const applicationFormReview = () => {
     },
     scheduleModal: {
       selectedCountry: {
+        countryCode: "CA",
         phoneCode: "+1",
         flag: "https://flagcdn.com/ca.svg",
       },
       position: "",
-      interviewDate: dayjs(),
+      interviewDate: "",
       interviewTime: "",
       timezone: "",
       phoneValue: "",
       email: "",
       emailMsg: "",
     },
+    dateArray: ["2024-10-01", "2024-10-08"],
   });
 
   const onBackToHome = () => {
@@ -109,23 +117,74 @@ const applicationFormReview = () => {
     setState({ isOpenGuidelineModal });
   };
 
-  const items: MenuProps["items"] = [
+  const createVersionMenu = (dates: string[]): MenuProps["items"] => {
+    return dates.map((date, index) => {
+      const formattedDate =
+        dayjs(date).format("MMM D") +
+        (dayjs(date).date() === 1
+          ? "st"
+          : dayjs(date).date() === 2
+          ? "nd"
+          : dayjs(date).date() === 3
+          ? "rd"
+          : "th");
+
+      return {
+        key: index.toString(),
+        label: (
+          <div className="menu-version-item">
+            <div className="item-date">{formattedDate}</div>
+            <div className="item-version">Version {index + 1}</div>
+          </div>
+        ),
+        onClick: () => {
+          setState({ selectedVersion: index });
+        },
+      };
+    });
+  };
+
+  const versionMenu: MenuProps["items"] = createVersionMenu(state.dateArray);
+
+  const buttonMenu: MenuProps["items"] = [
+    ...(state.detailJob.phoneNumber && [
+      {
+        className: "menu-step-item",
+        label: (
+          <div className="step-item">
+            <div className="step-item-left">
+              <Phone size={20} /> Contact by phone
+            </div>
+            {/* <div className="step-item-right">
+            <Tooltip
+              title="You’ve contacted this candidate by phone"
+              placement="right"
+            >
+              <img src={CheckIcon} alt="check-icon" />
+            </Tooltip>
+          </div> */}
+          </div>
+        ),
+        key: "0",
+        onClick: () => handleOpenPhoneModal(true),
+      },
+    ]),
     {
       className: "menu-step-item",
       label: (
-        <>
-          <Phone size={20} /> Contact by phone
-        </>
-      ),
-      key: "0",
-      onClick: () => handleOpenPhoneModal(true),
-    },
-    {
-      className: "menu-step-item",
-      label: (
-        <>
-          <EnvelopeSimple size={20} /> Send an email
-        </>
+        <div className="step-item">
+          <div className="step-item-left">
+            <EnvelopeSimple size={20} /> Send an email
+          </div>
+          {/* <div className="step-item-right">
+            <Tooltip
+              title="You’ve sent an email to the candidate."
+              placement="right"
+            >
+              <img src={CheckIcon} alt="check-icon" />
+            </Tooltip>
+          </div> */}
+        </div>
       ),
       key: "1",
       onClick: () => handleOpenEmailModal(true),
@@ -136,9 +195,19 @@ const applicationFormReview = () => {
     {
       className: "menu-step-item",
       label: (
-        <>
-          <CalendarPlus size={20} /> Schedule an interview
-        </>
+        <div className="step-item">
+          <div className="step-item-left">
+            <CalendarPlus size={20} /> Schedule an interview
+          </div>
+          {/* <div className="step-item-right">
+            <Tooltip
+              title="You’ve sent an interview schedule to the candidate"
+              placement="right"
+            >
+              <img src={CheckIcon} alt="check-icon" />
+            </Tooltip>
+          </div> */}
+        </div>
       ),
       key: "2",
       onClick: () => handleOpenScheduelModal(true),
@@ -146,16 +215,18 @@ const applicationFormReview = () => {
     {
       className: "menu-step-item",
       label: (
-        <>
-          <ProfileOutlined
-            style={{
-              fontSize: "17px",
-              paddingInlineStart: "1px",
-              marginInlineEnd: "2px",
-            }}
-          />{" "}
-          Send an offer latter
-        </>
+        <div className="step-item">
+          <div className="step-item-left">
+            <ProfileOutlined
+              style={{
+                fontSize: "17px",
+                paddingInlineStart: "1px",
+                marginInlineEnd: "2px",
+              }}
+            />
+            Send an offer latter
+          </div>
+        </div>
       ),
       key: "3",
       onClick: () => handleOpenSuccessModal(true),
@@ -184,6 +255,7 @@ const applicationFormReview = () => {
         [groupKey]: {
           ...prevState[groupKey],
           selectedCountry: {
+            countryCode: country.countryCode,
             phoneCode: country.phoneCode,
             flag: country.flag,
           },
@@ -218,6 +290,17 @@ const applicationFormReview = () => {
   };
 
   useEffect(() => {
+    const country = _.find(
+      countriesOption,
+      (c) => c.phoneCode === (state.detailJob.extension || "+1")
+    );
+    setState({
+      selectedCountry: {
+        countryCode: country.countryCode,
+        phoneCode: country.phoneCode,
+        flag: country.flag,
+      },
+    });
     loadingPageAction();
   }, [state.detailJob]);
 
@@ -410,7 +493,7 @@ const applicationFormReview = () => {
               title="Time zone"
               type="select"
               placeholder="Select time zone"
-              option={state.listTimezone}
+              option={timezonesOption}
               onChangeSelect={(value) =>
                 handleSelectChange("scheduleModal", "timezone", value)
               }
@@ -565,13 +648,35 @@ const applicationFormReview = () => {
         </div>
         <div className="content-review">
           <div className="content-title">
-            <div className="job-title">
-              {detailJob.jobTitle.delta.company}
-              {detailJob.jobNegotiable && (
-                <span className="title-sub">(Negotiable)</span>
-              )}
+            <div className="content-title-left">
+              <div className="job-title">
+                {detailJob.jobTitle.delta.company}
+                {"  "}
+                {detailJob.jobNegotiable && (
+                  <span className="title-sub">(Negotiable)</span>
+                )}
+              </div>
+              <div className="revised-history">
+                <div className="revised-history-title">
+                  Revised application version history:
+                </div>
+                <Dropdown
+                  overlayClassName="menu-version"
+                  menu={{ items: versionMenu }}
+                  trigger={["click"]}
+                >
+                  <div className="revised-history-version">
+                    Version {state.selectedVersion + 1}
+                    <span className="caret-down-icon">
+                      <CaretDown size={12} color="#fff" />
+                    </span>
+                  </div>
+                </Dropdown>
+              </div>
             </div>
-            {renderStatus(detailJob.statusId)}
+            <div className="content-title-right">
+              {renderStatus(detailJob.statusId)}
+            </div>
           </div>
           <div className="info-candidate">
             <div className="info-detail">
@@ -675,9 +780,9 @@ const applicationFormReview = () => {
             />
             <InputPrefix
               title="Task"
-              type="mutiple-input-quill"
+              type="multiple-input-quill"
               disabled={!detailJob.jobNegotiable}
-              listDataMutipleInput={_.map(detailJob.tasks, (task) => ({
+              listDataMultipleInput={_.map(detailJob.tasks, (task) => ({
                 ...task.delta.company,
                 newTask: task.delta.candidate?.description || "",
                 isRemove:
@@ -722,10 +827,12 @@ const applicationFormReview = () => {
             />
             <InputDefault
               value={detailJob.phoneNumber}
-              title="Phone number"
-              type="input"
-              placeholder="Enter phone number"
+              valueSelect={state.selectedCountry}
+              title="Phone number (Optional)"
+              type="phone-number"
+              option={countriesOption}
               readonly
+              optional
             />
             <InputDefault
               value={detailJob.portfolio}
@@ -763,7 +870,7 @@ const applicationFormReview = () => {
               />
               <Dropdown
                 overlayClassName="menu-step"
-                menu={{ items }}
+                menu={{ items: buttonMenu }}
                 trigger={["click"]}
                 placement="topRight"
               >

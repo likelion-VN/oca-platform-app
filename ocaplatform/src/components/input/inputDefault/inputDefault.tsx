@@ -119,7 +119,7 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
         );
         return (
           <>
-            <Input.Group compact>
+            <Input.Group className="phone-number-input" compact>
               <Select
                 className="select-country"
                 disabled={disabled}
@@ -166,6 +166,7 @@ const InputDefault: React.FC<IPropsInputDefault> = ({
                 ))}
               </Select>
               <Input
+                onClick={onClick}
                 prefix={valueSelect?.phoneCode}
                 style={{ width: "calc(100% - 65px)" }}
                 placeholder="(000) 000-0000"

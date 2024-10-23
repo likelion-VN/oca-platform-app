@@ -32,7 +32,7 @@ interface InputQuillDefaultProps {
   id?: string;
   onKeyDown?: (e: any) => void;
   className?: string;
-  handleChangeMutiple?: (value: string, id: string) => void;
+  handleChangeMultiple?: (value: string, id: string) => void;
 }
 
 function InputQuillCustom({
@@ -43,7 +43,7 @@ function InputQuillCustom({
   id,
   onKeyDown,
   className,
-  handleChangeMutiple,
+  handleChangeMultiple,
 }: InputQuillDefaultProps) {
   const [valueHtml, setValueHtml] = useState(""); // Lưu trữ nội dung đã chỉnh sửa
   const quillRef = useRef<ReactQuill>(null); // Tham chiếu đến Quill editor
@@ -146,7 +146,7 @@ function InputQuillCustom({
 
     if (value !== newText) {
       onChange && onChange(newText);
-      handleChangeMutiple && id && handleChangeMutiple(newText, id.toString());
+      handleChangeMultiple && id && handleChangeMultiple(newText, id.toString());
     }
   };
 

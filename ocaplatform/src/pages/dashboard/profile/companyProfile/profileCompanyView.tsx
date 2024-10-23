@@ -17,8 +17,8 @@ import iconSetting from "./../../../../assets/demoStatic/setting.png";
 // import CompleteProfile from "./completeProfile";
 // import CloseThisJob from "./closeThisJob";
 // import StatusPost from "./statusPost";
-import ModalAddTagCompany from "./modalAddTagCompany";
 import _ from "lodash";
+import ModalAddTagCompany from "./modalAddTagCompany";
 
 const itemsDropdown: MenuProps["items"] = [
   {
@@ -71,7 +71,7 @@ const ProfileCompanyView = () => {
     dataListSelectModal: {
       titleCollapse: "",
       options: [],
-      titleMutipleSelect: "",
+      titleMultipleSelect: "",
       placeholder: "",
       onChange: () => {},
       tagRender: (props: any) => {
@@ -106,7 +106,7 @@ const ProfileCompanyView = () => {
         newDataListSelectModal = {
           titleCollapse: "Company Culture",
           options: listOptionCompanyCulture,
-          titleMutipleSelect: "Company Culture",
+          titleMultipleSelect: "Company Culture",
           placeholder: "Type a skill and press Enter to create a tag.",
           onChange: (value: string[]) => handleSelectCompanyCulture(value),
           tagRender: (props: any) => {
@@ -585,7 +585,7 @@ const ProfileCompanyView = () => {
         open={state.openAddTagModal}
         children={
           <ModalAddTagCompany
-            titleMultipleSelect={state.dataListSelectModal.titleMutipleSelect}
+            titleMultipleSelect={state.dataListSelectModal.titleMultipleSelect}
             placeholder={state.dataListSelectModal.placeholder}
             tagRender={state.dataListSelectModal.tagRender}
             listOption={state.dataListSelectModal.options}

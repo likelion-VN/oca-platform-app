@@ -34,9 +34,9 @@ interface IPropsInputPrefix {
   options?: Option[];
   readOnly?: boolean;
   allowClear?: boolean;
-  listDataMutipleInput?: any[];
+  listDataMultipleInput?: any[];
   idNewTask?: string;
-  handleChangeMutiple?: (value: string, id: string) => void;
+  handleChangeMultiple?: (value: string, id: string) => void;
   handleChangeInputQuill?: (value: string) => void;
   placeholder?: string;
   autoSize?: { minRows: number; maxRows: number };
@@ -61,8 +61,8 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   options,
   readOnly = false,
   allowClear = false,
-  listDataMutipleInput,
-  handleChangeMutiple,
+  listDataMultipleInput,
+  handleChangeMultiple,
   handleChangeInputQuill,
   placeholder,
   autoSize,
@@ -93,7 +93,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
     }
   };
 
-  const handleInputChangeMutiple = (
+  const handleInputChangeMultiple = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
@@ -171,7 +171,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                 allowClear={allowClear}
                 value={item.newTask}
                 placeholder=""
-                onChange={(e) => handleInputChangeMutiple(e, item.id)}
+                onChange={(e) => handleInputChangeMultiple(e, item.id)}
                 onKeyDown={(e) => handleKeyDown(e, item.id)}
                 readOnly={readOnly}
                 disabled={disabled}
@@ -251,7 +251,6 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             value={value}
             allowClear={allowClear}
             onClear={() => handleSelectChange(null)}
-            size="large"
           >
             <Input
               size="large"
@@ -279,7 +278,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             onChange={handleChangeInputQuill}
           />
         );
-      case "mutiple-input-quill":
+      case "multiple-input-quill":
         return (
           <div
             className={classNames(
@@ -287,12 +286,12 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
               disabled && "text-area-input-disabled"
             )}
           >
-            {_.map(listDataMutipleInput, (item, index) => {
+            {_.map(listDataMultipleInput, (item, index) => {
               return (
                 <InputQuillCustom
                   key={index}
                   id={item?.taskId}
-                  className="mutiple-input-quill"
+                  className="multiple-input-quill"
                   disabled={disabled}
                   valuePrefix={item?.description}
                   value={item?.newTask}
@@ -301,7 +300,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
                       onKeyDown(e, item?.taskId);
                     }
                   }}
-                  handleChangeMutiple={handleChangeMutiple}
+                  handleChangeMultiple={handleChangeMultiple}
                 />
               );
             })}
@@ -316,11 +315,11 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             placeholder={placeholder}
           />
         );
-      case "select-mutiple":
+      case "select-multiple":
         return (
           <Select
             mode="multiple"
-            className={`select-mutiple-field ${classNameCustom}`}
+            className={`select-multiple-field ${classNameCustom}`}
             allowClear
             tagRender={tagRender}
             style={{ width: "100%" }}
