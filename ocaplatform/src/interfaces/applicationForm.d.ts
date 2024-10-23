@@ -48,7 +48,33 @@ export interface RequestApplicationForm {
   phoneNumber: string;
   personalWebsites: string[];
   introduction: string;
-  selectedAttachmentId: number,
+  selectedAttachmentId: number;
   attachmentIds: number[];
   applicationId?: number;
+}
+
+export interface RequestSendEmail {
+  applicationId: number;
+  contactNumber: {
+    phoneValue: string;
+    extension: string;
+  };
+  contactEmail: string;
+  message: string;
+}
+
+export interface RequestScheduleInterview {
+  applicationId: number;
+  position: string;
+  interviewDate: string;
+  interviewTime: {
+    hour: number;
+    minute: number;
+    second: number;
+    nano: number;
+  };
+  timezoneId: number;
+  contactNumber: string;
+  contactEmail: string;
+  message: string;
 }

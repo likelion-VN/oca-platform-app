@@ -1,5 +1,5 @@
+import axios from "axios";
 import { CountryOption } from "../interfaces";
-import axios from "./axiosConfig";
 
 export const fetchCountries = async (): Promise<CountryOption[] | void> => {
   try {
@@ -7,24 +7,19 @@ export const fetchCountries = async (): Promise<CountryOption[] | void> => {
     const countries = response.data;
 
     const countryData = countries.map((country: any) => {
-      const timeZones = country.timezones || [];
-
-      const formattedTimeZones = timeZones.map((tz: string) => {
-        const offset = tz.replace("UTC", "GMT");
-
-        return `(${offset}) ${
-          country.capital ? country.capital[0] : country.name.common
-        }`;
-      });
       return {
         name: country.name.common,
         phoneCode:
           country.idd.root +
           (country.idd.suffixes ? country.idd.suffixes[0] : ""),
         flag: country.flags.png,
-        timezone: formattedTimeZones,
+        countryCode: country.cca2,
       };
     });
+
+    countryData.sort((a: CountryOption, b: CountryOption) =>
+      a.name.localeCompare(b.name)
+    );
 
     return countryData;
   } catch (error) {

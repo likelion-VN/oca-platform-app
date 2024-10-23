@@ -64,6 +64,7 @@ const newFormDataFormatter = (newFormData: any) => {
     portfolio: step2.portfolio,
     email: step2.email,
     phoneNumber: step2.phoneNumber,
+    extension: step2.selectedCountry.phoneCode,
     personalWebsites: step2.personalWebsite,
     introduction: step2.selfIntroduction,
     attachmentIds: _.map(step2.listAttachment, attachment => attachment.id),

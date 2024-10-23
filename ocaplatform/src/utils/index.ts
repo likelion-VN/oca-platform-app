@@ -49,4 +49,10 @@ const clearAllCookies = () => {
   });
 };
 
-export { calculateDaysDiff, clearAllCookies, getLabelByValue, isTokenExpired };
+export {
+  calculateDaysDiff,
+  clearAllCookies,
+  getLabelByValue,
+  isTokenExpired
+};
+

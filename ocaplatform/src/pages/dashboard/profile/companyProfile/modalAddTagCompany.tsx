@@ -1,7 +1,6 @@
-import "./modalAddTagCompany.scss";
 import InputPrefix from "../../../../components/input/inputPrefix/inputPrefix";
+import "./modalAddTagCompany.scss";
 // import { SelectProps, Tag } from "antd";
-import _ from "lodash";
 // import { OptionProps } from "antd/es/select";
 import { Option } from "../../../../interfaces";
 
@@ -33,7 +32,7 @@ const ModalAddTagCompany = ({
           (option?.label ?? "").toLowerCase().includes(inputValue.toLowerCase())
         }
         onChange={onChange}
-        type="select-mutiple"
+        type="select-multiple"
         title={titleMultipleSelect}
         placeholder={placeholder}
       />

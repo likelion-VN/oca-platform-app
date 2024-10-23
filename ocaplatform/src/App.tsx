@@ -27,6 +27,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch({ type: APP_FLOW_ACTIONS.SET_COUNTRIES_OPTIONS });
+    dispatch({ type: APP_FLOW_ACTIONS.SET_TIMEZONES_OPTIONS });
   }, [dispatch]);
 
   return (

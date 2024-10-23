@@ -1,12 +1,17 @@
+import { CountryCode, parsePhoneNumberFromString } from 'libphonenumber-js';
+
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
-const validatePhoneNumber = (phoneNumber: string) => {
-  const phoneRegex = /^\+?[0-9]{10,15}$/;
+const phoneNumberRegex = /^[0-9\s\-()]*$/;
+
+const validatePhoneNumber = (phoneNumber: string, countryCode: CountryCode) => {
   
-  return phoneRegex.test(phoneNumber);
+  const phoneNumberInstance = parsePhoneNumberFromString(phoneNumber, countryCode);
+  
+  return phoneNumberInstance?.isValid();
 };
 
-export { validateEmail, validatePhoneNumber };
+export { phoneNumberRegex, validateEmail, validatePhoneNumber };

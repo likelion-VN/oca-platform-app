@@ -72,6 +72,11 @@ const ApplicationForm = () => {
         selfIntroduction: "",
         listAttachment: [],
         selectedResumeId: null,
+        selectedCountry: {
+          countryCode: 'CA',
+          phoneCode: "+1",
+          flag: "https://flagcdn.com/ca.svg",
+        }
       },
       jobId: detailJob.id,
       jobTypeId: detailJob.jobType.id,
