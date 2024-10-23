@@ -44,6 +44,7 @@ interface IPropsInputPrefix {
   classNameCustom?: string;
   tagRender?: SelectProps["tagRender"];
   labelInValue?: boolean;
+  classNameTitle?: string;
 }
 
 const InputPrefix: React.FC<IPropsInputPrefix> = ({
@@ -68,6 +69,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
   filterOption,
   classNameCustom,
   tagRender,
+  classNameTitle,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -326,6 +328,20 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
             options={options}
             filterOption={filterOption}
             onChange={onChange}
+            dropdownRender={(menu) => {
+              return (
+                <div className="select-mutiple-option-wrapper">{menu}</div>
+              );
+            }}
+          />
+        );
+      case "date-pick-month":
+        return (
+          <DatePicker
+            className="date-pick-month"
+            onChange={onChange}
+            picker="month"
+            placeholder={placeholder}
           />
         );
       default:
@@ -335,7 +351,7 @@ const InputPrefix: React.FC<IPropsInputPrefix> = ({
 
   return (
     <div className="input-prefix">
-      <div className="title">
+      <div className={`title ${classNameTitle ? classNameTitle : ""}`}>
         {title}
         <span>
           <Tooltip
